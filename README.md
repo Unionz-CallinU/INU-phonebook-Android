@@ -1,6 +1,6 @@
 # INU-phonebook-Android
 
-### Commit Message Convention
+### __Commit Message Convention__
 작성된 형식에 따라 Commit Message를 작성
 
 #### type
@@ -9,3 +9,9 @@
 - docs : 문서 수정
 - refactor : 코드 리팩토링
 - gradle : gradle 환경 수정
+
+---
+
+### __Issue__
+
+---
