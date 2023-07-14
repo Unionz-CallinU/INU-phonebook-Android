@@ -1,5 +1,4 @@
 # INU-phonebook-Android
----
 
 ## Commit Message Convention
 작성된 형식에 따라 Commit Message를 작성
