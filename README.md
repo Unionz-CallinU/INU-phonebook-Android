@@ -1,9 +1,9 @@
 # INU-phonebook-Android
 
-## Commit Message Convention
+### Commit Message Convention
 작성된 형식에 따라 Commit Message를 작성
 
-### type
+#### type
 - feat : 새로운 기능 추가
 - fix : 오류 수정
 - docs : 문서 수정
