@@ -7,13 +7,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoriteScreen(
-
+    navController : NavController,
+    itemViewModel: ItemViewModel
 ){
     Scaffold(
         topBar = {
