@@ -13,6 +13,7 @@ import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.Screen.DescriptionScreen
 import com.example.inuphonebook.Screen.FavoriteScreen
 import com.example.inuphonebook.Screen.HomeScreen
+import com.example.inuphonebook.Screen.SearchScreen
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -42,6 +43,11 @@ fun PhoneBookApp(
                 FavoriteScreen(
                     itemViewModel = itemViewModel,
                     navController = navController
+                )
+            }
+            composable(Screens.SearchScreen.name){
+                SearchScreen(
+                    itemViewModel = itemViewModel
                 )
             }
         }

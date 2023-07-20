@@ -16,30 +16,30 @@ import org.w3c.dom.Text
 fun TopBar(
     modifier : Modifier = Modifier,
     title : String = "",
-    navigationIcon : Int,
-    navigationIconClick : () -> Unit = {},
-    actionIcon : Int,
-    actionIconClick : () -> Unit = {}
+    homeIcon : Int,
+    homeClick : () -> Unit = {},
+    favoriteIcon : Int,
+    favoriteClick : () -> Unit = {}
 ){
     TopAppBar(
         title = {Text(title)},
         modifier = modifier,
         navigationIcon = {
             IconButton(
-                onClick = navigationIconClick
+                onClick = homeClick
             ){
                 Icon(
-                    painter = painterResource(navigationIcon),
+                    painter = painterResource(homeIcon),
                     contentDescription = "navigationIcon"
                 )
             }
         },
         actions = {
             IconButton(
-                onClick = actionIconClick
+                onClick = favoriteClick
             ){
                 Icon(
-                    painter = painterResource(actionIcon),
+                    painter = painterResource(favoriteIcon),
                     contentDescription = "actionIcon"
                 )
             }
