@@ -75,7 +75,16 @@ class ItemViewModel {
     val professorDatas : LiveData<MutableList<Item>>
         get() = _professorDatas
 
-    private val _selectedItem = mutableStateOf<Item?>(null)
+    //실험용 dummy test 기본을 NULL로 주고 데이터를 받자
+    private val _selectedItem = mutableStateOf<Item>(
+        Item(
+            image = R.drawable.ic_launcher_foreground,
+            name = "Test1",
+            department = "컴퓨터 공학부",
+            phone = "010-xxxx-xxxx",
+            favorite = false
+        )
+    )
     val selectedItem : State<Item?> get() = _selectedItem
 
     //선택된 item을 지정하여 description 시 이용

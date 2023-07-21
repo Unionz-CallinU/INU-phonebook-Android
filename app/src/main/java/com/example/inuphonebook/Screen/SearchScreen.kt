@@ -32,6 +32,7 @@ import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
+import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.DividerLineColor
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
@@ -122,7 +123,8 @@ fun SearchScreen(
                 ListItem(
                     item = headquarter,
                     onClick = {
-
+                        itemViewModel.setSelectedItem(headquarter)
+                        navController.navigate(Screens.DescriptionScreen.name)
                     },
                     onFavoriteClick = {
                         //LocalDB의 Favorite List를 저장
@@ -155,7 +157,8 @@ fun SearchScreen(
                 ListItem(
                     item = professor,
                     onClick = {
-
+                        itemViewModel.setSelectedItem(professor)
+                        navController.navigate(Screens.DescriptionScreen.name)
                     },
                     onFavoriteClick = {
 
