@@ -15,8 +15,8 @@
 ### __Issue__
 
 #### 해야 할 일
-- Local DB 구성
+- Local DB 구성 >> SharedPreference? or RoomDB? 
 - 서버와 통신할 Retrofit 구성
-- UI 구성 (아이콘 or 로고 위치 공간만 확보)
+- Data의 형식을 정해야 함
 
 ---
