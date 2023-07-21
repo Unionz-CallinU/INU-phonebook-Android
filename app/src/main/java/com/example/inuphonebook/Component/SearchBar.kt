@@ -21,7 +21,7 @@ fun SearchBar(
     modifier : Modifier = Modifier,
     value : String = "",
     onValueChange : (String) -> Unit,
-    fontSize : TextUnit = 15.sp,
+    fontSize : TextUnit = 20.sp,
     textColor : Color = Color.Black,
     placeHolder : String,
     trailingIcon : Int,

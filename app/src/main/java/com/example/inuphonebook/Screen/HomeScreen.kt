@@ -69,12 +69,13 @@ fun HomeScreen(
             onValueChange = {content ->
                 searchContent = content
             },
-            fontSize = 20.sp,
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
                 //itemViewModel에 검색을 시켜 놓기
                 coroutineScope.launch { itemViewModel.search(searchContent) }
-                navController.navigate(Screens.SearchScreen.name)
+                navController.navigate(
+                    route = "${Screens.SearchScreen.name}/$searchContent",
+                )
             },
             placeHolder = "상세 정보를 입력하세요",
             onKeyboardDone = {

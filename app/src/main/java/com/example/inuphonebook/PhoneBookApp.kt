@@ -39,14 +39,15 @@ fun PhoneBookApp(
                     navController = navController
                 )
             }
-            composable(Screens.FavoriteScreen.name){
-                FavoriteScreen(
+            composable("${Screens.SearchScreen.name}/{searchContent}"){backStackEntry ->
+                SearchScreen(
                     itemViewModel = itemViewModel,
-                    navController = navController
+                    navController = navController,
+                    backStackEntry.arguments?.getString("searchContent")
                 )
             }
-            composable(Screens.SearchScreen.name){
-                SearchScreen(
+            composable(Screens.FavoriteScreen.name){
+                FavoriteScreen(
                     itemViewModel = itemViewModel,
                     navController = navController
                 )
