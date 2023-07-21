@@ -22,8 +22,8 @@ fun FavoriteScreen(
         topBar = {
             TopBar(
                 title = "즐겨찾기",
-                navigationIcon = R.drawable.ic_launcher_foreground,
-                actionIcon = R.drawable.ic_launcher_foreground
+                homeIcon = R.drawable.ic_launcher_foreground,
+                favoriteIcon = R.drawable.ic_launcher_foreground
             )
         }
     ){

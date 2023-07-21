@@ -25,8 +25,8 @@ fun DescriptionScreen(
     Scaffold(
         topBar = {
             TopBar(
-                navigationIcon = R.drawable.ic_launcher_foreground,
-                actionIcon = R.drawable.ic_launcher_foreground,
+                homeIcon = R.drawable.ic_launcher_foreground,
+                favoriteIcon = R.drawable.ic_launcher_foreground,
             )
         }
     ){

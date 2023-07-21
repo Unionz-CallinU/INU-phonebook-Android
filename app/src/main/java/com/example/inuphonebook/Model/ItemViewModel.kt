@@ -14,7 +14,6 @@ class ItemViewModel {
 
     private val _datas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList)
 
-    //교수님 리스트와 학과 사무실 리스트 구분
     val datas : LiveData<MutableList<Item>>
         get() = _datas
 
@@ -33,16 +32,9 @@ class ItemViewModel {
         coroutineScope{
             launch{
                 val results = mutableListOf<Item>()//서버에서 데이터를 받음
-                
-                separateList()
+                submitList(results)
             }
         }
-    }
-
-    //받아온 데이터를 1, 2에 보일 데이터로 분리
-    private fun separateList(){
-        //학과 사무실과 교수님 2개의 데이터로 구분
-        
     }
 
     //데이터 갱신

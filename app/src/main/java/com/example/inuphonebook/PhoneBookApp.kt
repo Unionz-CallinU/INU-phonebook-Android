@@ -47,7 +47,8 @@ fun PhoneBookApp(
             }
             composable(Screens.SearchScreen.name){
                 SearchScreen(
-                    itemViewModel = itemViewModel
+                    itemViewModel = itemViewModel,
+                    navController = navController
                 )
             }
         }

@@ -1,10 +1,13 @@
 package com.example.inuphonebook.Component
 
+import android.widget.ImageButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -34,6 +37,7 @@ fun CustomEditText(
     keyboardOptions : KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
     placeholder : String = "",
     trailingIcon : Int,
+    onTrailingClick : () -> Unit,
     onKeyboardDone : () -> Unit,
 ){
     OutlinedTextField(
@@ -56,10 +60,15 @@ fun CustomEditText(
             containerColor = Color.Transparent
         ),
         trailingIcon = {
-            Image(
+            IconButton(
+                onClick = onTrailingClick,
                 modifier = Modifier.size(25.dp),
-                painter = painterResource(trailingIcon),
-                contentDescription = "Trailing Icon"
+                content = {
+                    Icon(
+                        painter = painterResource(trailingIcon),
+                        contentDescription = "Trailing Icon"
+                    )
+                }
             )
         }
     )

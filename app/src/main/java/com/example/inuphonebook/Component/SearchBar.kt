@@ -1,9 +1,11 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,6 +14,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun SearchBar(
@@ -22,21 +25,20 @@ fun SearchBar(
     textColor : Color = Color.Black,
     placeHolder : String,
     trailingIcon : Int,
+    onTrailingClick : () -> Unit,
     onKeyboardDone : () -> Unit
 ){
-    Row(
-        modifier = modifier
-    ){
-        CustomEditText(
-            fontSize = fontSize,
-            textColor = textColor,
-            value = value,
-            onValueChange = onValueChange,
-            trailingIcon = trailingIcon,
-            placeholder = placeHolder,
-            onKeyboardDone = onKeyboardDone
-        )
-    }
+    CustomEditText(
+        modifier = modifier,
+        fontSize = fontSize,
+        textColor = textColor,
+        value = value,
+        onValueChange = onValueChange,
+        trailingIcon = trailingIcon,
+        placeholder = placeHolder,
+        onKeyboardDone = onKeyboardDone,
+        onTrailingClick = onTrailingClick
+    )
 }
 
 @Preview
@@ -50,8 +52,9 @@ fun TestSearchBar(){
                 modifier = Modifier,
                 onValueChange = {},
                 trailingIcon = R.drawable.search_icon,
-                placeHolder = "",
-                onKeyboardDone = {}
+                onTrailingClick = {},
+                placeHolder = "상세 정보를 입력하세요",
+                onKeyboardDone = {},
             )
         }
 
