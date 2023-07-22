@@ -1,6 +1,8 @@
 package com.example.inuphonebook
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,7 +24,6 @@ fun PhoneBookApp(
 ){
     INUPhoneBookTheme {
         val navController = rememberNavController()
-
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name

@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -174,7 +175,7 @@ fun SearchScreen(
 fun TestSearchScreen(){
     INUPhoneBookTheme {
         SearchScreen(
-            itemViewModel = ItemViewModel(),
+            itemViewModel = ItemViewModel(LocalContext.current),
             navController = rememberNavController(),
             _searchContent = "정보 대학"
         )

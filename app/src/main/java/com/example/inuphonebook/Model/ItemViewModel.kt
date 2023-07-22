@@ -1,15 +1,26 @@
 package com.example.inuphonebook.Model
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.inuphonebook.LocalDB.Employee
+import com.example.inuphonebook.LocalDB.Professor
+import com.example.inuphonebook.LocalDB.RoomDB
+import com.example.inuphonebook.LocalDB.RoomDao
+import com.example.inuphonebook.LocalDB.RoomRepository
 import com.example.inuphonebook.R
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class ItemViewModel {
+class ItemViewModel(context : Context) : ViewModel() {
+
+    private val roomRepo : RoomRepository = RoomRepository.get(context)
 
     //임시 더미 데이터
     private val tmpList1 = mutableListOf<Item>(
@@ -60,20 +71,27 @@ class ItemViewModel {
     )
 
 
-    /** 데이터를 나눠서 받음 : 2번의 통신 필요
-     *  데이터를 한 번에 받아서 구분 : 구분 짓을 type이 필요
-     *  한 번에 받는 다면 받은 list를 기반으로 두 개의 list로 구분 짓는 방식이 필요     * */
-
-    //학과 사무실 리스트
+    //임원진 리스트
     private val _employeeDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList1)
     //교수진 리스트
     private val _professorDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList2)
+    //즐겨찾기 교수 리스트
+    private val _favProfessorDatas : MutableLiveData<List<Professor>> = MutableLiveData<List<Professor>>()
+    //즐겨찾기 임원진 리스트
+    private val _favEmployeeDatas : MutableLiveData<List<Employee>> = MutableLiveData<List<Employee>>()
 
     val employeeDatas : LiveData<MutableList<Item>>
         get() = _employeeDatas
 
     val professorDatas : LiveData<MutableList<Item>>
         get() = _professorDatas
+
+    val favProfessorDatas : LiveData<List<Professor>>
+        get() = _favProfessorDatas
+
+    val favEmployeeDatas : LiveData<List<Employee>>
+        get() = _favEmployeeDatas
+
 
     //실험용 dummy test 기본을 NULL로 주고 데이터를 받자
     private val _selectedItem = mutableStateOf<Item>(
@@ -110,4 +128,43 @@ class ItemViewModel {
         tmpList2.clear()
     }
 
+    /** RoomDB에서 데이터 받아오기 */
+    //fav professor list 받아오기
+    fun getAllProfessor(){
+        viewModelScope.launch(Dispatchers.IO){
+            val tmpList = roomRepo.getAllProfessor()
+            _favProfessorDatas.postValue(tmpList)
+        }
+    }
+    //fav professor list에 값 추가
+    fun insertProfessor(professor : Professor){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.insertProfessor(professor)
+        }
+    }
+    //fav professor 삭제
+    fun deleteProfessor(id : Int){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.deleteProfessor(id)
+        }
+    }
+    //fav professor list 받아오기
+    fun getAllEmployee(){
+        viewModelScope.launch(Dispatchers.IO){
+            val tmpList = roomRepo.getAllEmployee()
+            _favEmployeeDatas.postValue(tmpList)
+        }
+    }
+    //fav professor list에 값 추가
+    fun insertEmployee(employee : Employee){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.insertEmployee(employee)
+        }
+    }
+    //fav professor 삭제
+    fun deleteEmployee(id : Int){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.deleteProfessor(id)
+        }
+    }
 }
