@@ -54,6 +54,13 @@ dependencies {
     //liveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.3'
 
+    //RoomDB
+    implementation 'androidx.room:room-runtime:2.5.0'
+    annotationProcessor 'androidx.room:room-compiler:2.5.0'
+
+    //kotlin extension and coroutine support for room
+    implementation 'androidx.room:room-ktx:2.5.0'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

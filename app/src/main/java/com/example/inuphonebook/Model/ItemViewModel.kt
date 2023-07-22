@@ -65,12 +65,12 @@ class ItemViewModel {
      *  한 번에 받는 다면 받은 list를 기반으로 두 개의 list로 구분 짓는 방식이 필요     * */
 
     //학과 사무실 리스트
-    private val _headquarterDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList1)
+    private val _employeeDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList1)
     //교수진 리스트
     private val _professorDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList2)
 
-    val headquarterDatas : LiveData<MutableList<Item>>
-        get() = _headquarterDatas
+    val employeeDatas : LiveData<MutableList<Item>>
+        get() = _employeeDatas
 
     val professorDatas : LiveData<MutableList<Item>>
         get() = _professorDatas

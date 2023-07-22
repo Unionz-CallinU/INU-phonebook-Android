@@ -44,149 +44,183 @@ fun DescriptionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 20.dp),
+            .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
             favoriteIcon = R.drawable.tmp_favorite,
         )
-        Spacer(Modifier.height(50.dp))
+        Column{
+            Spacer(Modifier.height(50.dp))
 
-        Icon(
-            modifier = Modifier.clip(shape = CircleShape),
-            painter = painterResource(item.image),
-            contentDescription = "Icon",
-        )
+            Icon(
+                modifier = Modifier.clip(shape = CircleShape),
+                painter = painterResource(item.image),
+                contentDescription = "Icon",
+            )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .padding(top = 25.dp)
-        ){
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .weight(1f)
-                    .fillMaxHeight()
+                    .padding(top = 25.dp)
             ){
-                Text(
-                    text = "교수명",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "교수명",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "전화번호",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "주전공",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "담당과목",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "연구실",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "이메일",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "홈페이지",
-                    fontSize = 20.sp
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "교수명",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = item.name,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "전화번호",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = item.phone,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "주전공",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = "주전공",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "담당 과목",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = "item.major",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "연구실",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = "item.lab",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "이메일",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = "item.email",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth().height(25.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Row(
+                        modifier = Modifier.weight(2f)
+                    ){
+                        Text(
+                            text = "홈페이지",
+                            fontSize = 20.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.weight(3f)
+                    ){
+                        Text(
+                            text = "item.homepage",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
             }
-            Column(
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxHeight()
-            ){
 
-                Text(
-                    text = item.name,
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = item.phone,
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = item.department,
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "담당과목",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "연구실",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "이메일",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "홈페이지?",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-                Text(
-                    text = "교수명",
-                    fontSize = 20.sp
-                )
-
-                Spacer(Modifier.height(5.dp))
-
-            }
         }
     }
 }

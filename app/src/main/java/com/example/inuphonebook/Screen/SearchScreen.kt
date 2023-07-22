@@ -49,7 +49,7 @@ fun SearchScreen(
     var searchContent by remember{mutableStateOf(_searchContent)}
     val coroutineScope = rememberCoroutineScope()
 
-    val headquaterList = itemViewModel.headquarterDatas.observeAsState()
+    val employeeDatas = itemViewModel.employeeDatas.observeAsState()
     val professorList = itemViewModel.professorDatas.observeAsState()
 
     if (searchContent == null){
@@ -102,7 +102,7 @@ fun SearchScreen(
         Spacer(Modifier.height(17.dp))
 
         //if(학과 사무실 정보의 list.size가 0이 아니라면)
-        if(headquaterList.value?.size != 0){
+        if(employeeDatas.value?.size != 0){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,11 +119,11 @@ fun SearchScreen(
         }
 
         LazyColumn{
-            items(headquaterList.value!!){headquarter ->
+            items(employeeDatas.value!!){employee ->
                 ListItem(
-                    item = headquarter,
+                    item = employee,
                     onClick = {
-                        itemViewModel.setSelectedItem(headquarter)
+                        itemViewModel.setSelectedItem(employee)
                         navController.navigate(Screens.DescriptionScreen.name)
                     },
                     onFavoriteClick = {
