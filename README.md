@@ -15,7 +15,7 @@
 ### __Issue__
 
 #### 해야 할 일
-- Local DB 구성 >> SharedPreference? or RoomDB? 
+- Local DB 구성 - RoomDB 
 - 서버와 통신할 Retrofit 구성
 - Data의 형식을 정해야 함
 
