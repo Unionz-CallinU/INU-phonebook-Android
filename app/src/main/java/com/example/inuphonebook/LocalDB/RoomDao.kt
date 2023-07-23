@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface RoomDao {
@@ -20,6 +21,10 @@ interface RoomDao {
     @Insert(onConflict = OnConflictStrategy.NONE)
     fun insertProfessor(professor : Professor)
 
+    //즐겨찾기 수정 by 교수님
+    @Query("UPDATE professor SET isFavorite = (:isFavorite) WHERE id = (:id)")
+    fun updateProfessor(id : Int, isFavorite : Boolean)
+
     //즐겨찾기 임직원 list 받기
     @Query("SELECT * FROM employee")
     fun getAllEmployee() : List<Employee>
@@ -31,5 +36,9 @@ interface RoomDao {
     //즐겨찾기 추가 by 임직원
     @Insert(onConflict = OnConflictStrategy.NONE)
     fun insertEmployee(employee : Employee)
+
+    //즐겨찾기 수정 by 임직원
+    @Query("UPDATE employee SET isFavorite = (:isFavorite) WHERE id = (:id)")
+    fun updateEmployee(id : Int, isFavorite : Boolean)
 
 }

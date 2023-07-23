@@ -94,7 +94,7 @@ class ItemViewModel(context : Context) : ViewModel() {
 
 
     //실험용 dummy test 기본을 NULL로 주고 데이터를 받자
-    private val _selectedItem = mutableStateOf<Item>(
+    private val _selectedItem = mutableStateOf<Any>(
         Item(
             image = R.drawable.ic_launcher_foreground,
             name = "Test1",
@@ -103,10 +103,10 @@ class ItemViewModel(context : Context) : ViewModel() {
             favorite = false
         )
     )
-    val selectedItem : State<Item?> get() = _selectedItem
+    val selectedItem : State<Any?> get() = _selectedItem
 
     //선택된 item을 지정하여 description 시 이용
-    fun setSelectedItem(item : Item){
+    fun setSelectedItem(item : Any){
         _selectedItem.value = item
     }
 
@@ -148,23 +148,34 @@ class ItemViewModel(context : Context) : ViewModel() {
             roomRepo.deleteProfessor(id)
         }
     }
-    //fav professor list 받아오기
+    fun updateProfessor(professor: Professor){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.updateProfessor(professor.id, professor.isFavorite)
+        }
+    }
+    //fav employee list 받아오기
     fun getAllEmployee(){
         viewModelScope.launch(Dispatchers.IO){
             val tmpList = roomRepo.getAllEmployee()
             _favEmployeeDatas.postValue(tmpList)
         }
     }
-    //fav professor list에 값 추가
+    //fav employee list에 값 추가
     fun insertEmployee(employee : Employee){
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.insertEmployee(employee)
         }
     }
-    //fav professor 삭제
+    //fav employee 삭제
     fun deleteEmployee(id : Int){
         viewModelScope.launch(Dispatchers.IO){
-            roomRepo.deleteProfessor(id)
+            roomRepo.deleteEmployee(id)
+        }
+    }
+    //fav employee 수정
+    fun updateEmployee(employee: Employee){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.updateEmployee(employee.id, employee.isFavorite)
         }
     }
 }

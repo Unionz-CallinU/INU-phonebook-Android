@@ -24,6 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.room.util.TableInfo
+import com.example.inuphonebook.LocalDB.Employee
+import com.example.inuphonebook.LocalDB.Professor
 import com.example.inuphonebook.Model.Item
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.DividerLineColor
@@ -33,10 +36,30 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun ListItem(
-    item : Item,
+    item : Any,
     onClick : () -> Unit,
     onFavoriteClick : () -> Unit,
 ){
+    val photo = when(item) {
+        is Employee -> (item as Employee).let{item.photo}
+        is Professor -> (item as Professor).let{item.photo}
+        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
+    }
+    val name = when(item){
+        is Employee -> (item as Employee).let{item.name}
+        is Professor -> (item as Professor).let{item.name}
+        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
+    }
+    val phone = when(item){
+        is Employee -> (item as Employee).let{item.phone}
+        is Professor -> (item as Professor).let{item.phone}
+        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
+    }
+    val isFavorite = when(item){
+        is Employee -> (item as Employee).let{item.isFavorite}
+        is Professor -> (item as Professor).let{item.isFavorite}
+        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
+    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -47,6 +70,7 @@ fun ListItem(
             .background(color = White),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+
         Row(
             Modifier
                 .padding(start = 30.dp, end = 30.dp, top = 8.dp)
@@ -55,7 +79,7 @@ fun ListItem(
         ){
             Icon(
                 modifier = Modifier.size(60.dp),
-                painter = painterResource(item.image),
+                painter = painterResource(photo),
                 contentDescription = "List Item"
             )
 
@@ -65,14 +89,14 @@ fun ListItem(
                 Spacer(Modifier.weight(1f))
 
                 Text(
-                    text = item.name,
+                    text = name,
                     fontSize = 15.sp
                 )
 
                 Spacer(Modifier.weight(1f))
 
                 Text(
-                    text = item.phone,
+                    text = phone,
                     fontSize = 13.sp
                 )
 
@@ -88,7 +112,7 @@ fun ListItem(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(R.drawable.tmp_favorite_not),
                     contentDescription = "Is Favorite",
-                    tint = if(item.favorite) FIllFavoriteColor else FillNotFavoriteColor
+                    tint = if(isFavorite) FIllFavoriteColor else FillNotFavoriteColor
                 )
             }
         }

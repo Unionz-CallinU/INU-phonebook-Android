@@ -11,6 +11,7 @@ data class Professor(
     @ColumnInfo val email : String,
     @ColumnInfo val photo : Int,
     @ColumnInfo val lab : String,
+    @ColumnInfo val isFavorite : Boolean,
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo val id : Int
 )

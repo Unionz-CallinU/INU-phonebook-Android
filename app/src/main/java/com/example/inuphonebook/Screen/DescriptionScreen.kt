@@ -28,20 +28,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.inuphonebook.Component.EmployeePage
+import com.example.inuphonebook.Component.ProfessorPage
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.LocalDB.Employee
+import com.example.inuphonebook.LocalDB.Professor
+import com.example.inuphonebook.Model.Item
 import com.example.inuphonebook.Model.ItemViewModel
+import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DescriptionScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
-    //선택된 item
-    val item = itemViewModel.selectedItem.value ?: throw NullPointerException("target is NULL")
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,178 +52,38 @@ fun DescriptionScreen(
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
+            homeClick = {
+                navController.navigate(Screens.SearchScreen.name)
+            },
             favoriteIcon = R.drawable.tmp_favorite,
+            favoriteClick = {
+                when (itemViewModel.selectedItem.value){
+                    is Employee -> {
+                        val employee = itemViewModel.selectedItem.value as Employee
+                        itemViewModel.updateEmployee(employee)
+                    }
+                    is Professor -> {
+                        val professor = itemViewModel.selectedItem.value as Professor
+                        itemViewModel.updateProfessor(professor)
+                    }
+                }
+            }
         )
         Column{
             Spacer(Modifier.height(50.dp))
 
-            Icon(
-                modifier = Modifier.clip(shape = CircleShape),
-                painter = painterResource(item.image),
-                contentDescription = "Icon",
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(top = 25.dp)
-            ){
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "교수명",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = item.name,
-                            fontSize = 20.sp
-                        )
-                    }
+            //선택된 item
+            when (itemViewModel.selectedItem.value){
+                is Employee -> {
+                    val employee = itemViewModel.selectedItem.value as Employee
+                    EmployeePage(employee)
                 }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "전화번호",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = item.phone,
-                            fontSize = 20.sp
-                        )
-                    }
+                is Professor -> {
+                    val professor = itemViewModel.selectedItem.value as Professor
+                    ProfessorPage(professor)
                 }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "주전공",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = "주전공",
-                            fontSize = 20.sp
-                        )
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "담당 과목",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = "item.major",
-                            fontSize = 20.sp
-                        )
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "연구실",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = "item.lab",
-                            fontSize = 20.sp
-                        )
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "이메일",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = "item.email",
-                            fontSize = 20.sp
-                        )
-                    }
-                }
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth().height(25.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Row(
-                        modifier = Modifier.weight(2f)
-                    ){
-                        Text(
-                            text = "홈페이지",
-                            fontSize = 20.sp
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.weight(3f)
-                    ){
-                        Text(
-                            text = "item.homepage",
-                            fontSize = 20.sp
-                        )
-                    }
-                }
+                else -> throw IllegalArgumentException("Type is Error")
             }
-
         }
     }
 }

@@ -65,7 +65,11 @@ fun SearchScreen(
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
-            favoriteIcon = R.drawable.tmp_favorite
+            favoriteIcon = R.drawable.tmp_favorite,
+            favoriteClick = {
+                itemViewModel.getAllEmployee()
+                itemViewModel.getAllProfessor()
+            }
         )
 
         Spacer(Modifier.height(25.dp))

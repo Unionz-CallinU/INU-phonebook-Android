@@ -20,6 +20,9 @@ class RoomRepository(context : Context) {
     fun deleteProfessor(id : Int){
         roomDao.deleteProfessor(id)
     }
+    fun updateProfessor(id : Int, isFavorite: Boolean){
+        roomDao.updateProfessor(id, isFavorite)
+    }
     fun getAllEmployee() : List<Employee>{
         return roomDao.getAllEmployee()
     }
@@ -28,6 +31,9 @@ class RoomRepository(context : Context) {
     }
     fun deleteEmployee(id : Int){
         roomDao.deleteEmployee(id)
+    }
+    fun updateEmployee(id : Int, isFavorite : Boolean){
+        roomDao.updateEmployee(id, isFavorite)
     }
 
     companion object{
