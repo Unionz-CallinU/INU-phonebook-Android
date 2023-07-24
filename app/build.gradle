@@ -61,6 +61,10 @@ dependencies {
     //kotlin extension and coroutine support for room
     implementation 'androidx.room:room-ktx:2.5.0'
 
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
