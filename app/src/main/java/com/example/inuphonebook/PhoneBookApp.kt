@@ -24,6 +24,8 @@ fun PhoneBookApp(
 ){
     INUPhoneBookTheme {
         val navController = rememberNavController()
+        itemViewModel.getFavProfessor()
+        itemViewModel.getFavEmployee()
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name
@@ -34,7 +36,7 @@ fun PhoneBookApp(
                     navController = navController
                 )
             }
-            composable("${Screens.DescriptionScreen.name}/{item}"){
+            composable(Screens.DescriptionScreen.name){
                 DescriptionScreen(
                     itemViewModel = itemViewModel,
                     navController = navController
@@ -44,7 +46,7 @@ fun PhoneBookApp(
                 SearchScreen(
                     itemViewModel = itemViewModel,
                     navController = navController,
-                    backStackEntry.arguments?.getString("searchContent")
+                    _searchContent = backStackEntry.arguments?.getString("searchContent") ?: throw NullPointerException("Search Content is NULL")
                 )
             }
             composable(Screens.FavoriteScreen.name){

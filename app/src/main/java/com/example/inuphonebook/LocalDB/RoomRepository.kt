@@ -11,7 +11,7 @@ class RoomRepository(context : Context) {
         roomDao = roomDB.RoomDao()
     }
 
-    fun getAllProfessor() : List<Professor>{
+    fun getFavProfessors() : List<Professor>{
         return roomDao.getAllProfessor()
     }
     fun insertProfessor(professor : Professor){
@@ -23,7 +23,7 @@ class RoomRepository(context : Context) {
     fun updateProfessor(id : Int, isFavorite: Boolean){
         roomDao.updateProfessor(id, isFavorite)
     }
-    fun getAllEmployee() : List<Employee>{
+    fun getFavEmployee() : List<Employee>{
         return roomDao.getAllEmployee()
     }
     fun insertEmployee(employee : Employee){

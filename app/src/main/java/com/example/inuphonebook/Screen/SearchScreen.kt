@@ -1,6 +1,8 @@
 package com.example.inuphonebook.Screen
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.ListItem
+import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
@@ -44,18 +47,14 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     itemViewModel : ItemViewModel,
     navController : NavController,
-    _searchContent : String?,
+    _searchContent : String,
 ){
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
     val coroutineScope = rememberCoroutineScope()
 
     val employeeDatas = itemViewModel.employeeDatas.observeAsState()
-    val professorList = itemViewModel.professorDatas.observeAsState()
-
-    if (searchContent == null){
-        throw NullPointerException("Error : SearchContent is NULL")
-    }
+    val professorDatas = itemViewModel.professorDatas.observeAsState()
 
     Column(
         modifier = Modifier
@@ -65,17 +64,20 @@ fun SearchScreen(
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
+            homeClick = {
+                navController.navigate(Screens.HomeScreen.name)
+            },
+            homeIconSize = 20.dp,
             favoriteIcon = R.drawable.tmp_favorite,
             favoriteClick = {
-                itemViewModel.getAllEmployee()
-                itemViewModel.getAllProfessor()
+                navController.navigate(Screens.FavoriteScreen.name)
             }
         )
 
         Spacer(Modifier.height(25.dp))
 
         Text(
-            text = searchContent!!,
+            text = searchContent,
             fontSize = 22.sp,
             textAlign = TextAlign.Center
         )
@@ -86,89 +88,102 @@ fun SearchScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 37.5.dp),
-            value = searchContent!!,
+            value = searchContent,
             onValueChange = {content ->
                 searchContent = content
             },
             onKeyboardDone = {
                 coroutineScope.launch{
-                    itemViewModel.search(searchContent!!)
+                    itemViewModel.search(searchContent)
                 }
             },
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
                 coroutineScope.launch{
-                    itemViewModel.search(searchContent!!)
+                    itemViewModel.search(searchContent)
                 }
             }
         )
 
         Spacer(Modifier.height(17.dp))
 
-        //if(학과 사무실 정보의 list.size가 0이 아니라면)
-        if(employeeDatas.value?.size != 0){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(35.dp)
-                    .background(color = FillNotFavoriteColor),
-                verticalAlignment = Alignment.CenterVertically
+        Log.d("BBBBBB", "employeeDatas.size : ${employeeDatas.value?.size}, professorDatas.size : ${professorDatas.value?.size}")
+
+        //if (employeeDatas + professorDatas의 데이터가 비어있으면 로고만 띄워놓기)
+        if (employeeDatas.value?.size == 0 && professorDatas.value?.size == 0){
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ){
-                Spacer(Modifier.width(20.dp))
-                Text(
-                    text = "학과 사무실",
-                    fontSize = 20.sp
+                Logo(
+                    size = 40.dp,
+                    logoIcon = R.drawable.ic_launcher_background
                 )
             }
-        }
-
-        LazyColumn{
-            items(employeeDatas.value!!){employee ->
-                ListItem(
-                    item = employee,
-                    onClick = {
-                        itemViewModel.setSelectedItem(employee)
-                        navController.navigate(Screens.DescriptionScreen.name)
-                    },
-                    onFavoriteClick = {
-                        //LocalDB의 Favorite List를 저장
+        } else {
+            //if(학과 사무실 정보의 list.size가 0이 아니라면)
+            if(employeeDatas.value?.size != 0){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(35.dp)
+                        .background(color = FillNotFavoriteColor),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Spacer(Modifier.width(20.dp))
+                    Text(
+                        text = "학과 사무실",
+                        fontSize = 20.sp
+                    )
+                }
+                LazyColumn{
+                    items(employeeDatas.value!!){employee ->
+                        ListItem(
+                            item = employee,
+                            onClick = {
+                                itemViewModel.setSelectedItem(employee)
+                                navController.navigate(Screens.DescriptionScreen.name)
+                            },
+                            onFavoriteClick = {
+                                //LocalDB의 Favorite List를 저장
+                            }
+                        )
                     }
-                )
+                }
             }
-        }
 
-        Spacer(Modifier.height(15.dp))
+            Spacer(Modifier.height(15.dp))
 
-        //if(교수진 정보의 list.size가 0이 아니라면)
-        if(professorList.value?.size != 0){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(35.dp)
-                    .background(color = FillNotFavoriteColor),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Spacer(Modifier.width(20.dp))
-                Text(
-                    text = "교수",
-                    fontSize = 20.sp
-                )
-            }
-        }
+            //if(교수진 정보의 list.size가 0이 아니라면)
+            if(professorDatas.value?.size != 0){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(35.dp)
+                        .background(color = FillNotFavoriteColor),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Spacer(Modifier.width(20.dp))
+                    Text(
+                        text = "교수",
+                        fontSize = 20.sp
+                    )
+                }
+                LazyColumn{
+                    items(professorDatas.value!!){professor ->
+                        ListItem(
+                            item = professor,
+                            onClick = {
+                                itemViewModel.setSelectedItem(professor)
+                                navController.navigate(Screens.DescriptionScreen.name)
+                            },
+                            onFavoriteClick = {
 
-        LazyColumn{
-            items(professorList.value!!){professor ->
-                ListItem(
-                    item = professor,
-                    onClick = {
-                        itemViewModel.setSelectedItem(professor)
-                        navController.navigate(Screens.DescriptionScreen.name)
-                    },
-                    onFavoriteClick = {
-
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }

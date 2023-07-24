@@ -1,5 +1,7 @@
 package com.example.inuphonebook.Screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +37,6 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController : NavController,
@@ -45,13 +46,21 @@ fun HomeScreen(
     var searchContent by remember{mutableStateOf("")}
     val coroutineScope = rememberCoroutineScope()
 
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
-            favoriteIcon = R.drawable.tmp_favorite
+            homeClick = {
+            },
+            homeIconSize = 20.dp,
+            favoriteIcon = R.drawable.tmp_favorite,
+            favoriteClick = {
+                navController.navigate(Screens.FavoriteScreen.name)
+            }
         )
         Spacer(Modifier.height(30.dp))
 
@@ -72,18 +81,36 @@ fun HomeScreen(
             },
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
-                //itemViewModel에 검색을 시켜 놓기
-                coroutineScope.launch { itemViewModel.search(searchContent) }
-                navController.navigate(
-                    route = "${Screens.SearchScreen.name}/$searchContent",
-                )
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    navController.navigate(
+                        route = "${Screens.SearchScreen.name}/$searchContent",
+                    )
+                }
             },
             placeHolder = "상세 정보를 입력하세요",
             onKeyboardDone = {
-                navController.navigate(Screens.SearchScreen.name)
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    navController.navigate(
+                        route = "${Screens.SearchScreen.name}/$searchContent"
+                    )
+                }
             }
         )
     }
+}
+
+private fun showToast(context : Context, msg : String,){
+    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }
 
 @Preview

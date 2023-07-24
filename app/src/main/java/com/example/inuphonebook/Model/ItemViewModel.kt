@@ -23,67 +23,23 @@ class ItemViewModel(context : Context) : ViewModel() {
     private val roomRepo : RoomRepository = RoomRepository.get(context)
 
     //임시 더미 데이터
-    private val tmpList1 = mutableListOf<Item>(
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "서호준",
-            department = "학과 사무실",
-            phone = "010-6472-3783",
-            favorite = false
-        ),
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "김영희",
-            department = "학과 사무실",
-            phone = "010-1111-1111",
-            favorite = true
-        ),
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "김철수",
-            department = "학과 사무실",
-            phone = "010-2222-2222",
-            favorite = false
-        )
-    )
-    private val tmpList2 = mutableListOf<Item>(
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "최대진",
-            department = "컴퓨터 공학부",
-            phone = "010-3333-3333",
-            favorite = true
-        ),
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "최진석",
-            department = "컴퓨터 공학부",
-            phone = "010-5555-5555",
-            favorite = true
-        ),
-        Item(
-            image = R.drawable.ic_launcher_foreground,
-            name = "김지범",
-            department = "컴퓨터 공학부",
-            phone = "010-4444-4444",
-            favorite = false
-        )
-    )
+    private val tmpList1 = mutableListOf<Employee>()
+    private val tmpList2 = mutableListOf<Professor>()
 
 
     //임원진 리스트
-    private val _employeeDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList1)
+    private val _employeeDatas : MutableLiveData<MutableList<Employee>> = MutableLiveData(tmpList1)
     //교수진 리스트
-    private val _professorDatas : MutableLiveData<MutableList<Item>> = MutableLiveData(tmpList2)
+    private val _professorDatas : MutableLiveData<MutableList<Professor>> = MutableLiveData(tmpList2)
     //즐겨찾기 교수 리스트
     private val _favProfessorDatas : MutableLiveData<List<Professor>> = MutableLiveData<List<Professor>>()
     //즐겨찾기 임원진 리스트
     private val _favEmployeeDatas : MutableLiveData<List<Employee>> = MutableLiveData<List<Employee>>()
 
-    val employeeDatas : LiveData<MutableList<Item>>
+    val employeeDatas : LiveData<MutableList<Employee>>
         get() = _employeeDatas
 
-    val professorDatas : LiveData<MutableList<Item>>
+    val professorDatas : LiveData<MutableList<Professor>>
         get() = _professorDatas
 
     val favProfessorDatas : LiveData<List<Professor>>
@@ -130,9 +86,9 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     /** RoomDB에서 데이터 받아오기 */
     //fav professor list 받아오기
-    fun getAllProfessor(){
+    fun getFavProfessor(){
         viewModelScope.launch(Dispatchers.IO){
-            val tmpList = roomRepo.getAllProfessor()
+            val tmpList = roomRepo.getFavProfessors()
             _favProfessorDatas.postValue(tmpList)
         }
     }
@@ -154,9 +110,9 @@ class ItemViewModel(context : Context) : ViewModel() {
         }
     }
     //fav employee list 받아오기
-    fun getAllEmployee(){
+    fun getFavEmployee(){
         viewModelScope.launch(Dispatchers.IO){
-            val tmpList = roomRepo.getAllEmployee()
+            val tmpList = roomRepo.getFavEmployee()
             _favEmployeeDatas.postValue(tmpList)
         }
     }

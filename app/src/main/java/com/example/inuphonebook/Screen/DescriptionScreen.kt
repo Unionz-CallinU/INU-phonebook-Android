@@ -55,6 +55,7 @@ fun DescriptionScreen(
             homeClick = {
                 navController.navigate(Screens.SearchScreen.name)
             },
+            homeIconSize = 20.dp,
             favoriteIcon = R.drawable.tmp_favorite,
             favoriteClick = {
                 when (itemViewModel.selectedItem.value){
