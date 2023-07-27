@@ -8,6 +8,7 @@
 - fix : 오류 수정
 - docs : 문서 수정
 - refactor : 코드 리팩토링
+- design : 사용자 UI 변경
 - gradle : gradle 환경 수정
 
 ---
