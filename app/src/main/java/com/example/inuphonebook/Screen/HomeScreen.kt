@@ -3,6 +3,7 @@ package com.example.inuphonebook.Screen
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -50,7 +51,7 @@ fun HomeScreen(
 
     Column(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ){
         TopBar(
             homeIcon = R.drawable.tmp_home,
@@ -62,50 +63,52 @@ fun HomeScreen(
                 navController.navigate(Screens.FavoriteScreen.name)
             }
         )
-        Spacer(Modifier.height(30.dp))
-
-        Logo(
-            size = 200.dp,
-            logoIcon = R.drawable.ic_launcher_background
-        )
-
-        Spacer(Modifier.height(55.dp))
-
-        SearchBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 37.5.dp),
-            value = searchContent,
-            onValueChange = {content ->
-                searchContent = content
-            },
-            trailingIcon = R.drawable.search_icon,
-            onTrailingClick = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    navController.navigate(
-                        route = "${Screens.SearchScreen.name}/$searchContent",
-                    )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Logo(
+                size = 100.dp,
+                logoIcon = R.drawable.main_logo
+            )
+            Spacer(Modifier.height(55.dp))
+            SearchBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 37.5.dp),
+                value = searchContent,
+                onValueChange = {content ->
+                    searchContent = content
+                },
+                trailingIcon = R.drawable.search_icon,
+                onTrailingClick = {
+                    if (searchContent == ""){
+                        showToast(
+                            context = context,
+                            msg = "검색 내용을 입력해주세요"
+                        )
+                    } else {
+                        navController.navigate(
+                            route = "${Screens.SearchScreen.name}/$searchContent",
+                        )
+                    }
+                },
+                placeHolder = "상세 정보를 입력하세요",
+                onKeyboardDone = {
+                    if (searchContent == ""){
+                        showToast(
+                            context = context,
+                            msg = "검색 내용을 입력해주세요"
+                        )
+                    } else {
+                        navController.navigate(
+                            route = "${Screens.SearchScreen.name}/$searchContent"
+                        )
+                    }
                 }
-            },
-            placeHolder = "상세 정보를 입력하세요",
-            onKeyboardDone = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    navController.navigate(
-                        route = "${Screens.SearchScreen.name}/$searchContent"
-                    )
-                }
-            }
-        )
+            )
+        }
     }
 }
 

@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
@@ -26,7 +29,8 @@ fun SearchBar(
     placeHolder : String,
     trailingIcon : Int,
     onTrailingClick : () -> Unit,
-    onKeyboardDone : () -> Unit
+    onKeyboardDone : () -> Unit,
+    shape : Shape = RoundedCornerShape(size = 25.dp)
 ){
     CustomEditText(
         modifier = modifier,
@@ -37,7 +41,8 @@ fun SearchBar(
         trailingIcon = trailingIcon,
         placeholder = placeHolder,
         onKeyboardDone = onKeyboardDone,
-        onTrailingClick = onTrailingClick
+        onTrailingClick = onTrailingClick,
+        shape = shape
     )
 }
 
@@ -55,8 +60,8 @@ fun TestSearchBar(){
                 onTrailingClick = {},
                 placeHolder = "상세 정보를 입력하세요",
                 onKeyboardDone = {},
+                shape = RoundedCornerShape(size = 20.dp)
             )
         }
-
     }
 }

@@ -2,6 +2,7 @@ package com.example.inuphonebook.Screen
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,16 +96,20 @@ fun SearchScreen(
                 searchContent = content
             },
             onKeyboardDone = {
+                /*
                 coroutineScope.launch{
                     itemViewModel.search(searchContent)
                 }
+                 */
             },
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
+                /*
                 coroutineScope.launch{
                     itemViewModel.search(searchContent)
                 }
+                 */
             }
         )
 
@@ -113,13 +120,26 @@ fun SearchScreen(
         //if (employeeDatas + professorDatas의 데이터가 비어있으면 로고만 띄워놓기)
         if (employeeDatas.value?.size == 0 && professorDatas.value?.size == 0){
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .padding(bottom = 10.dp),
                 contentAlignment = Alignment.Center
             ){
-                Logo(
-                    size = 40.dp,
-                    logoIcon = R.drawable.ic_launcher_background
-                )
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Logo(
+                        size = 40.dp,
+                        logoIcon = R.drawable.main_logo,
+                        colorFilter = ColorFilter.tint(Color.LightGray)
+                    )
+                    Spacer(Modifier.height(15.dp))
+                    Text(
+                        text = "검색 결과가 없습니다",
+                        fontSize = 14.sp,
+                        color = Color.LightGray
+                    )
+                }
             }
         } else {
             //if(학과 사무실 정보의 list.size가 0이 아니라면)

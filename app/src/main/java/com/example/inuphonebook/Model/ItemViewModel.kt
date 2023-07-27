@@ -32,7 +32,9 @@ class ItemViewModel(context : Context) : ViewModel() {
     //교수진 리스트
     private val _professorDatas : MutableLiveData<MutableList<Professor>> = MutableLiveData(tmpList2)
     //즐겨찾기 교수 리스트
-    private val _favProfessorDatas : MutableLiveData<List<Professor>> = MutableLiveData<List<Professor>>()
+    //private val _favProfessorDatas : MutableLiveData<List<Professor>> = MutableLiveData<List<Professor>>()
+    //test
+    private val _favProfessorDatas : MutableLiveData<List<Professor>> = MutableLiveData<List<Professor>>(listOf(Professor(name = "서호준", phone = "010-6472-3783", email = "seohojon@naver.com", photo = R.drawable.ic_launcher_background, lab = "7호관 414호", isFavorite = true, id = 0)))
     //즐겨찾기 임원진 리스트
     private val _favEmployeeDatas : MutableLiveData<List<Employee>> = MutableLiveData<List<Employee>>()
 
@@ -72,14 +74,14 @@ class ItemViewModel(context : Context) : ViewModel() {
     ){
         coroutineScope{
             launch{
-                val results = mutableListOf<Item>()//서버에서 데이터를 받음
+                val results = mutableListOf<Any>()//서버에서 데이터를 받음
                 submitList(results)
             }
         }
     }
 
     //데이터 갱신
-    private fun submitList(list : MutableList<Item>){
+    private fun submitList(list : MutableList<Any>){
         tmpList1.clear()
         tmpList2.clear()
     }
