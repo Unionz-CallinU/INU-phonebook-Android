@@ -10,12 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.inuphonebook.Model.Item
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.Screen.DescriptionScreen
@@ -30,7 +27,6 @@ fun PhoneBookApp(
 ){
     INUPhoneBookTheme {
         val navController = rememberNavController()
-        itemViewModel.getFavProfessor()
         itemViewModel.getFavEmployee()
         NavHost(
             navController = navController,
@@ -72,7 +68,6 @@ fun TestAppUI(){
         val navController = rememberNavController()
         val itemVM = ItemViewModel(LocalContext.current)
         val itemViewModel = remember{mutableStateOf(itemVM)}
-        itemViewModel.value.getFavProfessor()
         itemViewModel.value.getFavEmployee()
         NavHost(
             navController = navController,

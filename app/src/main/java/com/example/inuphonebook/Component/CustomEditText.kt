@@ -37,7 +37,7 @@ fun CustomEditText(
     textColor : Color,
     keyboardOptions : KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
     placeholder : String = "",
-    trailingIcon : Int,
+    trailingIcon : Int?,
     onTrailingClick : () -> Unit,
     onKeyboardDone : () -> Unit,
     shape : Shape
@@ -62,16 +62,18 @@ fun CustomEditText(
             containerColor = Color.Transparent
         ),
         trailingIcon = {
-            IconButton(
-                onClick = onTrailingClick,
-                modifier = Modifier.size(25.dp),
-                content = {
-                    Icon(
-                        painter = painterResource(trailingIcon),
-                        contentDescription = "Trailing Icon"
-                    )
-                }
-            )
+            if (trailingIcon != null){
+                IconButton(
+                    onClick = onTrailingClick,
+                    modifier = Modifier.size(25.dp),
+                    content = {
+                        Icon(
+                            painter = painterResource(trailingIcon),
+                            contentDescription = "Trailing Icon"
+                        )
+                    }
+                )
+            }
         },
         shape = shape
     )

@@ -24,10 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.util.TableInfo
 import com.example.inuphonebook.LocalDB.Employee
-import com.example.inuphonebook.LocalDB.Professor
-import com.example.inuphonebook.Model.Item
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.DividerLineColor
 import com.example.inuphonebook.ui.theme.FIllFavoriteColor
@@ -36,30 +33,10 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun ListItem(
-    item : Any,
+    employee : Employee,
     onClick : () -> Unit,
     onFavoriteClick : () -> Unit,
 ){
-    val photo = when(item) {
-        is Employee -> (item as Employee).let{item.photo}
-        is Professor -> (item as Professor).let{item.photo}
-        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
-    }
-    val name = when(item){
-        is Employee -> (item as Employee).let{item.name}
-        is Professor -> (item as Professor).let{item.name}
-        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
-    }
-    val phone = when(item){
-        is Employee -> (item as Employee).let{item.phone}
-        is Professor -> (item as Professor).let{item.phone}
-        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
-    }
-    val isFavorite = when(item){
-        is Employee -> (item as Employee).let{item.isFavorite}
-        is Professor -> (item as Professor).let{item.isFavorite}
-        else -> throw IllegalArgumentException("Error : 규정되지 않은 타입")
-    }
     Column(
         Modifier
             .fillMaxWidth()
@@ -70,34 +47,38 @@ fun ListItem(
             .background(color = White),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-
         Row(
             Modifier
-                .padding(start = 30.dp, end = 30.dp, top = 8.dp)
+                .padding(start = 15.dp, end = 15.dp, top = 8.dp)
                 .height(60.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Icon(
-                modifier = Modifier.size(60.dp),
-                painter = painterResource(photo),
-                contentDescription = "List Item"
-            )
-
-            Spacer(Modifier.width(50.dp))
-
             Column{
                 Spacer(Modifier.weight(1f))
 
-                Text(
-                    text = name,
-                    fontSize = 15.sp
-                )
+                Row(
+                    modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = employee.name,
+                        fontSize = 20.sp
+                    )
+
+                    Spacer(Modifier.width(11.dp))
+
+                    Text(
+                        text = employee.college_name,
+                        fontSize = 16.sp
+                    )
+                }
 
                 Spacer(Modifier.weight(1f))
 
                 Text(
-                    text = phone,
-                    fontSize = 13.sp
+                    text = employee.phoneNumber,
+                    fontSize = 20.sp,
+                    letterSpacing = 1.sp
                 )
 
                 Spacer(Modifier.weight(1f))
@@ -112,15 +93,14 @@ fun ListItem(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(R.drawable.tmp_favorite_not),
                     contentDescription = "Is Favorite",
-                    tint = if(isFavorite) FIllFavoriteColor else FillNotFavoriteColor
+                    tint = if(employee.isFavorite) FIllFavoriteColor else FillNotFavoriteColor
                 )
             }
         }
         Spacer(Modifier.height(8.dp))
 
         Divider(
-            modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 30.dp),
+            modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,
             color = DividerLineColor
         )
@@ -134,15 +114,21 @@ fun TestListItem(){
         Box(
             Modifier.fillMaxSize().background(color = White)
         ){
-            val dummyItem = Item(
-                image = R.drawable.ic_launcher_foreground,
+            val dummyItem = Employee(
+                photo = R.drawable.ic_launcher_foreground,
                 name = "서호준",
-                department = "정보통신대학",
-                phone = "010-6472-3783",
-                favorite = true
+                role = "연구생",
+                phoneNumber = "010-6472-3783",
+                isFavorite = true,
+                position = "",
+                id = 0,
+                college_name = "정보통신대학",
+                department_name = "컴퓨터공학부",
+                email = "seohojon@naver.com",
+                category = "기본"
             )
             ListItem(
-                item = dummyItem,
+                employee = dummyItem,
                 onClick = {},
                 onFavoriteClick = {},
             )

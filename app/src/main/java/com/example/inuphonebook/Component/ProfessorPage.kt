@@ -17,11 +17,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.inuphonebook.LocalDB.Professor
+import com.example.inuphonebook.LocalDB.Employee
 
+/** 미사용 resource */
 @Composable
 fun ProfessorPage(
-    professor : Professor
+    professor : Employee
 ){
     Column(
         modifier = Modifier.fillMaxSize()
@@ -80,7 +81,7 @@ fun ProfessorPage(
                     modifier = Modifier.weight(3f)
                 ){
                     Text(
-                        text = professor.phone,
+                        text = professor.phoneNumber,
                         fontSize = 20.sp
                     )
                 }

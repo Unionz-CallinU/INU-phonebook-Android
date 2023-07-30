@@ -1,7 +1,7 @@
 package com.example.inuphonebook.Component
 
+import android.content.ClipData
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,12 +22,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.inuphonebook.Model.Item
+import com.example.inuphonebook.LocalDB.Employee
 
+/** 미사용 resource */
 @Composable
 fun InfoItem(
     modifier : Modifier = Modifier,
-    item : Item,
+    item : Employee,
     imageSize : Dp = 30.dp,
     textSize : TextUnit = 15.sp,
     textColor : Color = Color.Black,
@@ -41,7 +42,7 @@ fun InfoItem(
         Image(
             modifier = Modifier.size(imageSize)
                 .clip(CircleShape),
-            painter = painterResource(item.image),
+            painter = painterResource(item.photo),
             contentDescription = "ID Photo"
         )
     }
@@ -54,13 +55,13 @@ fun InfoItem(
         )
         Spacer(Modifier.height(5.dp))
         Text(
-            text = item.department, //임시
+            text = item.role, //임시
             fontSize = textSize,
             color = textColor
         )
         Spacer(Modifier.height(5.dp))
         Text(
-            text = item.phone,
+            text = item.phoneNumber,
             fontSize = textSize,
             color = textColor
         )

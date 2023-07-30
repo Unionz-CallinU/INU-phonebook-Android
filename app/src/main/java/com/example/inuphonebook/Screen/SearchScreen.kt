@@ -57,7 +57,6 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val employeeDatas = itemViewModel.employeeDatas.observeAsState()
-    val professorDatas = itemViewModel.professorDatas.observeAsState()
 
     Column(
         modifier = Modifier
@@ -70,7 +69,7 @@ fun SearchScreen(
             homeClick = {
                 navController.navigate(Screens.HomeScreen.name)
             },
-            homeIconSize = 20.dp,
+            homeIconSize = 40.dp,
             favoriteIcon = R.drawable.tmp_favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
@@ -115,10 +114,10 @@ fun SearchScreen(
 
         Spacer(Modifier.height(17.dp))
 
-        Log.d("BBBBBB", "employeeDatas.size : ${employeeDatas.value?.size}, professorDatas.size : ${professorDatas.value?.size}")
+        Log.d("BBBBBB", "employeeDatas.size : ${employeeDatas.value?.size}")
 
-        //if (employeeDatas + professorDatas의 데이터가 비어있으면 로고만 띄워놓기)
-        if (employeeDatas.value?.size == 0 && professorDatas.value?.size == 0){
+        //if (employeeDatas의 데이터가 비어있으면 로고만 띄워놓기)
+        if (employeeDatas.value?.size == 0){
             Box(
                 modifier = Modifier.fillMaxSize()
                     .padding(bottom = 10.dp),
@@ -142,67 +141,31 @@ fun SearchScreen(
                 }
             }
         } else {
-            //if(학과 사무실 정보의 list.size가 0이 아니라면)
-            if(employeeDatas.value?.size != 0){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(35.dp)
-                        .background(color = FillNotFavoriteColor),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Spacer(Modifier.width(20.dp))
-                    Text(
-                        text = "학과 사무실",
-                        fontSize = 20.sp
-                    )
-                }
-                LazyColumn{
-                    items(employeeDatas.value!!){employee ->
-                        ListItem(
-                            item = employee,
-                            onClick = {
-                                itemViewModel.setSelectedItem(employee)
-                                navController.navigate(Screens.DescriptionScreen.name)
-                            },
-                            onFavoriteClick = {
-                                //LocalDB의 Favorite List를 저장
-                            }
-                        )
-                    }
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(35.dp)
+                    .background(color = FillNotFavoriteColor),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Spacer(Modifier.width(20.dp))
+                Text(
+                    text = "학과 사무실",
+                    fontSize = 20.sp
+                )
             }
-
-            Spacer(Modifier.height(15.dp))
-
-            //if(교수진 정보의 list.size가 0이 아니라면)
-            if(professorDatas.value?.size != 0){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(35.dp)
-                        .background(color = FillNotFavoriteColor),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Spacer(Modifier.width(20.dp))
-                    Text(
-                        text = "교수",
-                        fontSize = 20.sp
+            LazyColumn{
+                items(employeeDatas.value!!){employee ->
+                    ListItem(
+                        employee = employee,
+                        onClick = {
+                            itemViewModel.setSelectedItem(employee)
+                            navController.navigate(Screens.DescriptionScreen.name)
+                        },
+                        onFavoriteClick = {
+                            //LocalDB의 Favorite List를 저장
+                        }
                     )
-                }
-                LazyColumn{
-                    items(professorDatas.value!!){professor ->
-                        ListItem(
-                            item = professor,
-                            onClick = {
-                                itemViewModel.setSelectedItem(professor)
-                                navController.navigate(Screens.DescriptionScreen.name)
-                            },
-                            onFavoriteClick = {
-
-                            }
-                        )
-                    }
                 }
             }
         }

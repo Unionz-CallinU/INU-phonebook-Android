@@ -57,7 +57,7 @@ fun HomeScreen(
             homeIcon = R.drawable.tmp_home,
             homeClick = {
             },
-            homeIconSize = 20.dp,
+            homeIconSize = 40.dp,
             favoriteIcon = R.drawable.tmp_favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
