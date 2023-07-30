@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.Screen.DescriptionScreen
+import com.example.inuphonebook.Screen.EditCategoryScreen
 import com.example.inuphonebook.Screen.FavoriteScreen
 import com.example.inuphonebook.Screen.HomeScreen
 import com.example.inuphonebook.Screen.SearchScreen
@@ -27,7 +28,8 @@ fun PhoneBookApp(
 ){
     INUPhoneBookTheme {
         val navController = rememberNavController()
-        itemViewModel.getFavEmployee()
+        itemViewModel.fetchFavEmployee()
+        itemViewModel.fetchAllCategory()
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name
@@ -57,6 +59,11 @@ fun PhoneBookApp(
                     navController = navController
                 )
             }
+            composable(Screens.EditCategoryScreen.name){
+                EditCategoryScreen(
+                    itemViewModel = itemViewModel
+                )
+            }
         }
     }
 }
@@ -68,7 +75,7 @@ fun TestAppUI(){
         val navController = rememberNavController()
         val itemVM = ItemViewModel(LocalContext.current)
         val itemViewModel = remember{mutableStateOf(itemVM)}
-        itemViewModel.value.getFavEmployee()
+        itemViewModel.value.fetchFavEmployee()
         NavHost(
             navController = navController,
             startDestination = Screens.HomeScreen.name

@@ -1,11 +1,13 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,28 +29,27 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun CustomAddCategoryDialog(
+    modifier : Modifier = Modifier,
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
     title : String = "title",
     cancelMsg : String = "cancelMsg",
     okMsg : String = "okMsg",
+    onOkClick : () -> Unit = {},
+    value : String = "",
+    onChangeValue : (String) -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
     ){
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White),
+            modifier = modifier.background(color = Color.White)
+                .padding(10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Text(
-                text = title,
-                fontSize = 20.sp
-            )
-            Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(10.dp))
 
             CustomEditText(
                 fontSize = 16.sp,
@@ -56,7 +57,10 @@ fun CustomAddCategoryDialog(
                 trailingIcon = null,
                 onTrailingClick = {},
                 onKeyboardDone = {},
-                shape = RoundedCornerShape(size = 20.dp)
+                shape = RoundedCornerShape(size = 20.dp),
+                placeholder = title,
+                value = value,
+                onValueChange = onChangeValue
             )
 
             Spacer(Modifier.height(10.dp))
@@ -67,13 +71,19 @@ fun CustomAddCategoryDialog(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .clickable{
+                            onDismissRequest()
+                        },
                     textAlign = TextAlign.Center,
                     text = cancelMsg,
                     fontSize = 20.sp
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .clickable{
+                            onOkClick()
+                        },
                     textAlign = TextAlign.Center,
                     text = okMsg,
                     fontSize = 20.sp
@@ -93,6 +103,7 @@ fun TestAddDialog(){
             CustomAddCategoryDialog(
                 onDismissRequest = {},
                 properties = DialogProperties(),
+                onChangeValue = {}
             )
         }
     }

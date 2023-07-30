@@ -2,7 +2,6 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
-import java.util.Properties
 
 @Composable
-fun CustomInputDialog(
+fun CustomSelectDialog(
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
     categoryList : List<String>,
@@ -99,7 +97,7 @@ fun TestCustomInputDialog(){
                 .height(165.dp)
                 .background(color = Color.White),
         ){
-            CustomInputDialog(
+            CustomSelectDialog(
                 categoryList = listOf("기본"),
                 onDismissRequest = {},
             )

@@ -10,7 +10,7 @@ class RoomRepository(context : Context) {
         roomDB = RoomDB.getInstance(context)
         roomDao = roomDB.RoomDao()
     }
-    fun getFavEmployee() : List<Employee>{
+    fun getFavEmployee() : MutableList<Employee>{
         return roomDao.getAllEmployee()
     }
     fun insertEmployee(employee : Employee){
@@ -21,6 +21,18 @@ class RoomRepository(context : Context) {
     }
     fun updateEmployee(id : Int, isFavorite : Boolean){
         roomDao.updateEmployee(id, isFavorite)
+    }
+
+    fun getAllCategory() : MutableList<FavCategory> {
+        return roomDao.getAllCategory()
+    }
+
+    fun insertCategory(category : FavCategory){
+        roomDao.insertCategory(category)
+    }
+
+    fun deleteCategory(id : Int){
+        roomDao.deleteCategory(id)
     }
 
     companion object{

@@ -1,5 +1,6 @@
 package com.example.inuphonebook.Screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,9 +45,11 @@ fun FavoriteScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
+    val TAG = "FavoriteScreen"
+
     //localDB내 favorite 리스트
     val favoriteEmployees = itemViewModel.favEmployeeDatas.observeAsState()
-    val categoryList = listOf("기본")
+    val categoryList = itemViewModel.categoryList.observeAsState()
 
     Column(
         modifier = Modifier
@@ -66,7 +69,9 @@ fun FavoriteScreen(
             verticalAlignment = Alignment.CenterVertically
         ){
             IconButton(
-                onClick = {}
+                onClick = {
+                    navController.navigate(Screens.EditCategoryScreen.name)
+                }
             ){
                 Icon(
                     painter = painterResource(R.drawable.favorite_edit_btn),
@@ -75,8 +80,9 @@ fun FavoriteScreen(
             }
             Spacer(Modifier.width(15.dp))
         }
+        Log.d(TAG, "favoriteEmployee : ${favoriteEmployees.value} \n categoryList : ${categoryList.value}")
         //if (favorite List가 존재하지 않는다면)
-        if (favoriteEmployees.value == null){
+        if (favoriteEmployees.value!!.isEmpty()){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,9 +108,11 @@ fun FavoriteScreen(
                 }
             }
         } else {
+            Log.d(TAG,"else 문")
             Spacer(Modifier.height(17.dp))
             //if(학과 사무실 정보의 list.size가 0이 아니라면)
-            categoryList.forEach{category ->
+            categoryList.value?.forEach{category ->
+                Log.d(TAG, "category = ${category}")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,13 +122,13 @@ fun FavoriteScreen(
                 ){
                     Spacer(Modifier.width(20.dp))
                     Text(
-                        text = category,
+                        text = category.category,
                         fontSize = 20.sp
                     )
                 }
                 LazyColumn{
                     items(favoriteEmployees.value!!){employee ->
-                        if (employee.category == category){
+                        if (employee.category == category.category){
                             ListItem(
                                 employee = employee,
                                 onClick = {

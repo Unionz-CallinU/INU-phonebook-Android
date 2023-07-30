@@ -32,22 +32,60 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.inuphonebook.Component.CustomAddCategoryDialog
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.LocalDB.FavCategory
+import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
-fun EditCategoryScreen(){
+fun EditCategoryScreen(
+    itemViewModel : ItemViewModel
+){
     val categoryList = listOf("기본") //itemViewModel의 Category List를 받아옴
+
+    var showDialog by remember{mutableStateOf(false)}
+
+    val configuration = LocalConfiguration.current
+
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
+    var newCategory by remember{mutableStateOf("")}
+
+    if (showDialog){
+        CustomAddCategoryDialog(
+            modifier = Modifier.width(screenWidth / 10 * 8)
+                .height(screenHeight/5),
+            onDismissRequest = {},
+            title = "카테고리 이름을 정해주세요",
+            cancelMsg = "취소",
+            okMsg = "확인",
+            onOkClick = {
+                val categoryItem = FavCategory(
+                    category = newCategory
+                )
+                itemViewModel.insertCategory(categoryItem)
+                itemViewModel.fetchAllCategory()
+            },
+            value = newCategory,
+            onChangeValue = {
+                newCategory = it
+            }
+        )
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ){
+
         TopBar(
             homeIcon = R.drawable.tmp_home,
             homeIconSize = 40.dp,
@@ -62,7 +100,9 @@ fun EditCategoryScreen(){
             horizontalArrangement = Arrangement.End
         ){
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = {
+                    showDialog = !showDialog
+                }
             ) {
                 Icon(
                     painter = painterResource(R.drawable.plus_btn),
@@ -103,7 +143,8 @@ fun EditCategoryScreen(){
                         })
                     {
                         Icon(
-                            modifier = Modifier.clip(shape = CircleShape),                            painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
+                            modifier = Modifier.clip(shape = CircleShape),
+                            painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
                             contentDescription = "Check Box",
                             tint = Color.Unspecified
                         )
@@ -131,7 +172,9 @@ fun TestEditCategoryScreen(){
                 .fillMaxSize()
                 .background(color = Color.White)
         ){
-            EditCategoryScreen()
+            EditCategoryScreen(
+                itemViewModel = ItemViewModel(LocalContext.current)
+            )
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,71 +45,89 @@ fun HomeScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
-    //검색 내용
-    var searchContent by remember{mutableStateOf("")}
-    val coroutineScope = rememberCoroutineScope()
+    val connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    val context = LocalContext.current
+    //와이파이 연결 확인
+    val networkCapabilities = connectivityManager.activeNetwork?.let{
+        connectivityManager.getNetworkCapabilities(it)
+    }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ){
-        TopBar(
-            homeIcon = R.drawable.tmp_home,
-            homeClick = {
-            },
-            homeIconSize = 40.dp,
-            favoriteIcon = R.drawable.tmp_favorite,
-            favoriteClick = {
-                navController.navigate(Screens.FavoriteScreen.name)
-            }
-        )
+    val isWifeConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+
+    //Wifi에 연결이 되어있을 시
+    if (isWifeConnected){
+        //검색 내용
+        var searchContent by remember{mutableStateOf("")}
+        val coroutineScope = rememberCoroutineScope()
+
+        val context = LocalContext.current
+
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ){
-            Logo(
-                size = 100.dp,
-                logoIcon = R.drawable.main_logo
-            )
-            Spacer(Modifier.height(55.dp))
-            SearchBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 37.5.dp),
-                value = searchContent,
-                onValueChange = {content ->
-                    searchContent = content
+            TopBar(
+                homeIcon = R.drawable.tmp_home,
+                homeClick = {
                 },
-                trailingIcon = R.drawable.search_icon,
-                onTrailingClick = {
-                    if (searchContent == ""){
-                        showToast(
-                            context = context,
-                            msg = "검색 내용을 입력해주세요"
-                        )
-                    } else {
-                        navController.navigate(
-                            route = "${Screens.SearchScreen.name}/$searchContent",
-                        )
-                    }
-                },
-                placeHolder = "상세 정보를 입력하세요",
-                onKeyboardDone = {
-                    if (searchContent == ""){
-                        showToast(
-                            context = context,
-                            msg = "검색 내용을 입력해주세요"
-                        )
-                    } else {
-                        navController.navigate(
-                            route = "${Screens.SearchScreen.name}/$searchContent"
-                        )
-                    }
+                homeIconSize = 40.dp,
+                favoriteIcon = R.drawable.tmp_favorite,
+                favoriteClick = {
+                    navController.navigate(Screens.FavoriteScreen.name)
                 }
             )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Logo(
+                    size = 100.dp,
+                    logoIcon = R.drawable.main_logo
+                )
+                Spacer(Modifier.height(55.dp))
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 37.5.dp),
+                    value = searchContent,
+                    onValueChange = {content ->
+                        searchContent = content
+                    },
+                    trailingIcon = R.drawable.search_icon,
+                    onTrailingClick = {
+                        if (searchContent == ""){
+                            showToast(
+                                context = context,
+                                msg = "검색 내용을 입력해주세요"
+                            )
+                        } else {
+                            navController.navigate(
+                                route = "${Screens.SearchScreen.name}/$searchContent",
+                            )
+                        }
+                    },
+                    placeHolder = "상세 정보를 입력하세요",
+                    onKeyboardDone = {
+                        if (searchContent == ""){
+                            showToast(
+                                context = context,
+                                msg = "검색 내용을 입력해주세요"
+                            )
+                        } else {
+                            navController.navigate(
+                                route = "${Screens.SearchScreen.name}/$searchContent"
+                            )
+                        }
+                    }
+                )
+            }
+        }
+    }
+    //Wifi 미 연결 시
+    else {
+        Box(modifier = Modifier.fillMaxSize()){
+            SplashScreen()
         }
     }
 }
