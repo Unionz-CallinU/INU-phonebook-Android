@@ -20,4 +20,7 @@
 - 서버와 통신할 Retrofit 구성
 - Data의 형식을 정해야 함
 
+#### issue
+- Local DB에 "기본" category를 defualt로 지정해야 하지만 앱을 처음 시작하는 것이 아니면 중복 실행이 일어나지 않도록 해야함
+
 ---
