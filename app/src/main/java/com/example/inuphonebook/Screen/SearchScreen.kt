@@ -38,6 +38,7 @@ import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
@@ -164,6 +165,7 @@ fun SearchScreen(
                         },
                         onFavoriteClick = {
                             //LocalDB의 Favorite List를 저장
+                            itemViewModel.insertEmployee(employee)
                         }
                     )
                 }

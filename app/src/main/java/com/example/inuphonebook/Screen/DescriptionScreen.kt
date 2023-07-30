@@ -46,8 +46,8 @@ fun DescriptionScreen(
             homeIconSize = 40.dp,
             favoriteIcon = R.drawable.tmp_favorite,
             favoriteClick = {
-//                val employee = itemViewModel.selectedItem.value as Employee
-//                itemViewModel.updateEmployee(employee)
+                val employee = itemViewModel.selectedItem.value ?: throw NullPointerException("selectItem is NULL")
+                itemViewModel.updateEmployee(employee)
             }
         )
         Column(

@@ -1,5 +1,6 @@
 package com.example.inuphonebook.Screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +25,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,22 +53,26 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 fun EditCategoryScreen(
     itemViewModel : ItemViewModel
 ){
-    val categoryList = listOf("기본") //itemViewModel의 Category List를 받아옴
+    val TAG = "EditCategoryScreen"
 
-    var showDialog by remember{mutableStateOf(false)}
+    val categoryList = itemViewModel.categoryList.observeAsState()
+
+    var showDialog by remember{mutableStateOf(false)} //dialog의 상태 조절
 
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
-    var newCategory by remember{mutableStateOf("")}
+    var newCategory by remember{mutableStateOf("")} //category 입력
 
     if (showDialog){
         CustomAddCategoryDialog(
             modifier = Modifier.width(screenWidth / 10 * 8)
                 .height(screenHeight/5),
-            onDismissRequest = {},
+            onDismissRequest = {
+                showDialog = !showDialog
+            },
             title = "카테고리 이름을 정해주세요",
             cancelMsg = "취소",
             okMsg = "확인",
@@ -82,84 +89,85 @@ fun EditCategoryScreen(
             }
         )
     }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ){
-
-        TopBar(
-            homeIcon = R.drawable.tmp_home,
-            homeIconSize = 40.dp,
-            favoriteIcon = null,
-            title = "즐겨찾기 편집"
-        )
-        Spacer(Modifier.height(40.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 20.dp),
-            horizontalArrangement = Arrangement.End
+    if (categoryList.value != null){
+        Column(
+            modifier = Modifier.fillMaxSize()
         ){
-            IconButton(
-                onClick = {
-                    showDialog = !showDialog
-                }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.plus_btn),
-                    contentDescription = "Add Category"
-                )
-            }
-            Spacer(Modifier.width(5.dp))
-            IconButton(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.minus_btn),
-                    contentDescription = "Delete Category"
-                )
-            }
-        }
-        Spacer(Modifier.height(10.dp))
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(25.dp),
-            verticalArrangement = Arrangement.spacedBy(
-                space = 5.dp,
-                alignment = Alignment.CenterVertically
+            TopBar(
+                homeIcon = R.drawable.tmp_home,
+                homeIconSize = 40.dp,
+                favoriteIcon = null,
+                title = "즐겨찾기 편집"
             )
-        ){
-            items(categoryList) {category ->
-                var isSelected by remember{mutableStateOf(true)}
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .size(25.dp)
-                        .background(color = FillNotFavoriteColor)
-                ){
-                    IconButton(
-                        onClick = {
-                            isSelected = !isSelected
-                        })
-                    {
-                        Icon(
-                            modifier = Modifier.clip(shape = CircleShape),
-                            painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
-                            contentDescription = "Check Box",
-                            tint = Color.Unspecified
-                        )
+            Spacer(Modifier.height(40.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 20.dp),
+                horizontalArrangement = Arrangement.End
+            ){
+                IconButton(
+                    onClick = {
+                        showDialog = !showDialog
                     }
-                    Spacer(Modifier.width(10.dp))
-                    Text(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        text = category,
-                        fontSize = 20.sp,
-                        color = Color.Blue,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.plus_btn),
+                        contentDescription = "Add Category"
+                    )
+                }
+                Spacer(Modifier.width(5.dp))
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.minus_btn),
+                        contentDescription = "Delete Category"
                     )
                 }
             }
+            Spacer(Modifier.height(10.dp))
+            Log.d(TAG,"categoryList : ${categoryList.value}")
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(space = 5.dp)
+            ){
+                items(categoryList.value!!) {category ->
+                    var isSelected by remember{mutableStateOf(false)}
+                    Log.d(TAG,"category : ${category}")
+                    Row(
+                        modifier = Modifier
+                            .height(25.dp)
+                            .fillMaxWidth()
+                            .background(color = FillNotFavoriteColor)
+                    ){
+                        IconButton(
+                            onClick = {
+                                isSelected = !isSelected
+                            })
+                        {
+                            Icon(
+                                modifier = Modifier.clip(shape = CircleShape),
+                                painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
+                                contentDescription = "Check Box",
+                                tint = Color.Unspecified
+                            )
+                        }
+                        Spacer(Modifier.width(10.dp))
+                        Text(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            text = category.category,
+                            fontSize = 20.sp,
+                            color = Color.Blue,
+                        )
+                    }
+                }
+            }
         }
+    } else {
+        throw NullPointerException("Error : categoryList.value is NULL")
     }
 }
 

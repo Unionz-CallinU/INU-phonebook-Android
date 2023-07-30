@@ -35,4 +35,8 @@ interface RoomDao {
     //카테고리 삭제
     @Query("DELETE FROM FavCategory WHERE id = (:id)")
     fun deleteCategory(id : Int)
+
+    //카테고리 이름으로 불러오기
+    @Query("SELECT * FROM FavCategory WHERE category = (:category)")
+    fun getCategoryByName(category : String) : FavCategory?
 }

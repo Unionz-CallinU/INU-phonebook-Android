@@ -83,6 +83,7 @@ fun CustomAddCategoryDialog(
                     modifier = Modifier.weight(1f)
                         .clickable{
                             onOkClick()
+                            onDismissRequest()
                         },
                     textAlign = TextAlign.Center,
                     text = okMsg,

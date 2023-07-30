@@ -35,6 +35,10 @@ class RoomRepository(context : Context) {
         roomDao.deleteCategory(id)
     }
 
+    fun getCategoryByName(category : String) : FavCategory?{
+        return roomDao.getCategoryByName(category)
+    }
+
     companion object{
         private var INSTANCE : RoomRepository ?= null
 

@@ -14,8 +14,10 @@ import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.LocalDB.RoomRepository
 import com.example.inuphonebook.R
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ItemViewModel(context : Context) : ViewModel() {
     val TAG = "ItemViewModel"
@@ -57,7 +59,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     suspend fun search(
         content : String
     ){
-        coroutineScope{
+        viewModelScope.launch(Dispatchers.IO){
             launch{
                 val results = mutableListOf<Employee>()//서버에서 데이터를 받음
                 submitList(results)
@@ -109,6 +111,17 @@ class ItemViewModel(context : Context) : ViewModel() {
     fun updateEmployee(employee: Employee){
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.updateEmployee(employee.id, employee.isFavorite)
+        }
+    }
+
+    //즐겨찾기 category에 '기본'이 없다면 추가
+    fun insertBasicCategoryIsNull(){
+        viewModelScope.launch(Dispatchers.IO){
+            val basic = roomRepo.getCategoryByName("기본")
+            if (basic == null){
+                roomRepo.insertCategory(FavCategory("기본"))
+                fetchAllCategory()
+            }
         }
     }
 
