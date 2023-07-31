@@ -3,6 +3,7 @@ package com.example.inuphonebook.Screen
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -66,10 +67,16 @@ fun EditCategoryScreen(
 
     var newCategory by remember{mutableStateOf("")} //category 입력
 
+    val checkList = mutableListOf<FavCategory>()
+
+    //test
+    var isDelete by remember{mutableStateOf(false)}
+
     if (showDialog){
         CustomAddCategoryDialog(
-            modifier = Modifier.width(screenWidth / 10 * 8)
-                .height(screenHeight/5),
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 5),
             onDismissRequest = {
                 showDialog = !showDialog
             },
@@ -118,7 +125,11 @@ fun EditCategoryScreen(
                 }
                 Spacer(Modifier.width(5.dp))
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        deleteCategory(itemViewModel, checkList)
+                        itemViewModel.fetchAllCategory()
+                        isDelete = true
+                    }
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.minus_btn),
@@ -127,7 +138,6 @@ fun EditCategoryScreen(
                 }
             }
             Spacer(Modifier.height(10.dp))
-            Log.d(TAG,"categoryList : ${categoryList.value}")
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -135,7 +145,14 @@ fun EditCategoryScreen(
             ){
                 items(categoryList.value!!) {category ->
                     var isSelected by remember{mutableStateOf(false)}
-                    Log.d(TAG,"category : ${category}")
+
+                    if (isDelete){
+                        isSelected = false
+                        if (category == categoryList.value!!.last()){
+                            isDelete = false
+                        }
+                    }
+
                     Row(
                         modifier = Modifier
                             .height(25.dp)
@@ -145,8 +162,15 @@ fun EditCategoryScreen(
                         IconButton(
                             onClick = {
                                 isSelected = !isSelected
+                                if (isSelected){
+                                    checkList.add(category)
+                                } else {
+                                    checkList.remove(category)
+                                }
+                                Log.d(TAG,"checkList : ${checkList}")
                             })
                         {
+                            Log.d(TAG, "${category}의 isSelected : ${isSelected}")
                             Icon(
                                 modifier = Modifier.clip(shape = CircleShape),
                                 painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
@@ -169,6 +193,13 @@ fun EditCategoryScreen(
     } else {
         throw NullPointerException("Error : categoryList.value is NULL")
     }
+}
+
+private fun deleteCategory(itemViewModel : ItemViewModel, list : MutableList<FavCategory>){
+    list.forEach{
+        itemViewModel.deleteCategory(it.id)
+    }
+    list.clear()
 }
 
 @Preview
