@@ -61,7 +61,8 @@ fun PhoneBookApp(
             }
             composable(Screens.EditCategoryScreen.name){
                 EditCategoryScreen(
-                    itemViewModel = itemViewModel
+                    itemViewModel = itemViewModel,
+                    navController = navController
                 )
             }
         }

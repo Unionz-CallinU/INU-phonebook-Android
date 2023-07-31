@@ -42,6 +42,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CustomAddCategoryDialog
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.FavCategory
@@ -52,7 +54,8 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun EditCategoryScreen(
-    itemViewModel : ItemViewModel
+    itemViewModel : ItemViewModel,
+    navController : NavController
 ){
     val TAG = "EditCategoryScreen"
 
@@ -69,7 +72,7 @@ fun EditCategoryScreen(
 
     val checkList = mutableListOf<FavCategory>()
 
-    //test
+    //차선책 필요 (현재 삭제했는지 여부 확인해서 삭제헀으면 모든 상태를 false로 돌리는 중)
     var isDelete by remember{mutableStateOf(false)}
 
     if (showDialog){
@@ -101,7 +104,8 @@ fun EditCategoryScreen(
             modifier = Modifier.fillMaxSize()
         ){
             TopBar(
-                homeIcon = R.drawable.tmp_home,
+                homeIcon = R.drawable.back_btn,
+                homeClick = {navController.navigateUp()},
                 homeIconSize = 40.dp,
                 favoriteIcon = null,
                 title = "즐겨찾기 편집"
@@ -212,7 +216,8 @@ fun TestEditCategoryScreen(){
                 .background(color = Color.White)
         ){
             EditCategoryScreen(
-                itemViewModel = ItemViewModel(LocalContext.current)
+                itemViewModel = ItemViewModel(LocalContext.current),
+                navController = rememberNavController()
             )
         }
     }

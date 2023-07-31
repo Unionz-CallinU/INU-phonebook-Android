@@ -58,9 +58,12 @@ fun FavoriteScreen(
     ){
         TopBar(
             title = "즐겨찾기 목록",
-            homeIcon = R.drawable.tmp_home,
+            homeIcon = R.drawable.back_btn,
             homeIconSize = 40.dp,
-            favoriteIcon = null
+            favoriteIcon = null,
+            homeClick = {
+                navController.navigateUp()
+            }
         )
         Spacer(Modifier.height(10.dp))
         Row(

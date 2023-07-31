@@ -20,8 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.ImagePainter.State.Empty.painter
+import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
+import java.net.URL
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun EmployeePage(employee : Employee){
     Column(
@@ -31,7 +36,7 @@ fun EmployeePage(employee : Employee){
     ){
         Icon(
             modifier = Modifier.size(100.dp).clip(shape = CircleShape),
-            painter = painterResource(employee.photo),
+            painter = rememberImagePainter(data = employee.photo),
             contentDescription = "Icon",
         )
         Column(

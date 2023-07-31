@@ -1,15 +1,21 @@
 package com.example.inuphonebook.Retrofit
 
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeListRespDto
+import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
+import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespDetailBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface PhoneBookInterface {
-    @GET("department/{departmentId}/professor/{professorId}")
-    fun getDescription(@Path("departmentId") departmentId : Long, @Path("professorId") professorId : Long) : Call<EmployeeRespBody>
-    
-    @GET("search/{keyword}")
-    fun search(@Path("keyword") keyword : String) //아직 받는 형식 미정
+    //직원 리스트 조회
+    @POST("/employee")
+    fun getDescription(@Body employeeReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
+
+    //직원 상세정보 조회
+    @GET("/employee/{id}")
+    fun search(@Path("id") id : Long) : Call<EmployeeRespDetailBody>
 }

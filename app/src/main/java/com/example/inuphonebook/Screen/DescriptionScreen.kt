@@ -39,9 +39,9 @@ fun DescriptionScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
-            homeIcon = R.drawable.tmp_home,
+            homeIcon = R.drawable.back_btn,
             homeClick = {
-                navController.navigate(Screens.SearchScreen.name)
+                navController.navigateUp()
             },
             homeIconSize = 40.dp,
             favoriteIcon = R.drawable.tmp_favorite,
@@ -83,7 +83,7 @@ fun TestDescriptionScreen(){
                 position = "학부 연구생",
                 phoneNumber = "010-6472-3783",
                 isFavorite = true,
-                photo = R.drawable.splash_logo,
+                photo = "",
                 id = 0,
                 department_name = "컴퓨터 공학부",
                 college_name = "정보통신대학",
