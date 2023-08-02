@@ -13,9 +13,9 @@ import retrofit2.http.Path
 interface PhoneBookInterface {
     //직원 리스트 조회
     @POST("/employee")
-    fun getDescription(@Body employeeReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
+    fun search(@Body employeeReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
 
     //직원 상세정보 조회
     @GET("/employee/{id}")
-    fun search(@Path("id") id : Long) : Call<EmployeeRespDetailBody>
+    fun getDescription(@Path("id") id : Long) : Call<EmployeeRespDetailBody>
 }

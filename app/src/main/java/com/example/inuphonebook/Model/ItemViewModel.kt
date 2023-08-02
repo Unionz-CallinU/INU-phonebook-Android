@@ -84,7 +84,7 @@ class ItemViewModel(context : Context) : ViewModel() {
                 position = "학부 연구생",
                 phoneNumber = "010-6472-3783",
                 isFavorite = true,
-                photo = R.drawable.splash_logo,
+                photo = "",
                 id = 0,
                 department_name = "컴퓨터 공학부",
                 college_name = "정보통신대학",
