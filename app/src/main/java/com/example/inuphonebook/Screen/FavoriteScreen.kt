@@ -39,7 +39,6 @@ import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
-/** category 별로 미리 데이터를 분려해서 가져올지 아니면 지금처럼 forEach를 이용해서 순차적으로 데이터를 넣는 방식을 사용할지? */
 @Composable
 fun FavoriteScreen(
     navController : NavController,

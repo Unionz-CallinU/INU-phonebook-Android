@@ -16,15 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
-import java.net.URL
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable

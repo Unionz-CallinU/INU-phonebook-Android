@@ -20,11 +20,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CustomSpinner
 import com.example.inuphonebook.Component.EmployeePage
-import com.example.inuphonebook.Component.ProfessorPage
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
-import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
@@ -80,7 +78,6 @@ fun TestDescriptionScreen(){
             val employee = Employee(
                 name = "서호준",
                 role = "학생",
-                position = "학부 연구생",
                 phoneNumber = "010-6472-3783",
                 isFavorite = true,
                 photo = "",

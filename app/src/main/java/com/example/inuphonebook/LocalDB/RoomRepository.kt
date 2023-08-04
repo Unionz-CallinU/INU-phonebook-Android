@@ -16,10 +16,10 @@ class RoomRepository(context : Context) {
     fun insertEmployee(employee : Employee){
         roomDao.insertEmployee(employee)
     }
-    fun deleteEmployee(id : Int){
+    fun deleteEmployee(id : Long){
         roomDao.deleteEmployee(id)
     }
-    fun updateEmployee(id : Int, isFavorite : Boolean){
+    fun updateEmployee(id : Long, isFavorite : Boolean){
         roomDao.updateEmployee(id, isFavorite)
     }
 

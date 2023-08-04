@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 
 @Dao
 interface RoomDao {
@@ -14,7 +13,7 @@ interface RoomDao {
 
     //즐겨찾기 삭제
     @Query("DELETE FROM employee WHERE id = (:id)")
-    fun deleteEmployee(id : Int)
+    fun deleteEmployee(id : Long)
 
     //즐겨찾기 추가
     @Insert(onConflict = OnConflictStrategy.NONE)
@@ -22,7 +21,7 @@ interface RoomDao {
 
     //즐겨찾기 수정
     @Query("UPDATE employee SET isFavorite = (:isFavorite) WHERE id = (:id)")
-    fun updateEmployee(id : Int, isFavorite : Boolean)
+    fun updateEmployee(id : Long, isFavorite : Boolean)
 
     //즐겨찾기 카테고리 리스트
     @Query("SELECT * FROM FavCategory")

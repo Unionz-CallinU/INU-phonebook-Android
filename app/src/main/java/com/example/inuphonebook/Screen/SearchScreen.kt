@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
-import android.util.Log
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +38,11 @@ import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
-import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
-import com.example.inuphonebook.ui.theme.DividerLineColor
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
@@ -53,9 +50,9 @@ fun SearchScreen(
     navController : NavController,
     _searchContent : String,
 ){
+    val context = LocalContext.current
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
-    val coroutineScope = rememberCoroutineScope()
 
     val employeeDatas = itemViewModel.employeeDatas.observeAsState()
 
@@ -96,26 +93,36 @@ fun SearchScreen(
                 searchContent = content
             },
             onKeyboardDone = {
-                /*
-                coroutineScope.launch{
-                    itemViewModel.search(searchContent)
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    val resultMsg = itemViewModel.search(searchContent)
+                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+                        showToast(context, resultMsg)
+                    }
                 }
-                 */
             },
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
-                /*
-                coroutineScope.launch{
-                    itemViewModel.search(searchContent)
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    val resultMsg = itemViewModel.search(searchContent)
+                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+                        showToast(context, resultMsg)
+                    }
                 }
-                 */
             }
         )
 
         Spacer(Modifier.height(17.dp))
-
-        Log.d("BBBBBB", "employeeDatas.size : ${employeeDatas.value?.size}")
 
         //if (employeeDatas의 데이터가 비어있으면 로고만 띄워놓기)
         if (employeeDatas.value?.size == 0){
@@ -172,6 +179,10 @@ fun SearchScreen(
             }
         }
     }
+}
+
+private fun showToast(context : Context, msg : String,){
+    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }
 
 @Composable

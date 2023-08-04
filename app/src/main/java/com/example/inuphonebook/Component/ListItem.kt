@@ -120,7 +120,6 @@ fun TestListItem(){
                 role = "연구생",
                 phoneNumber = "010-6472-3783",
                 isFavorite = true,
-                position = "",
                 id = 0,
                 college_name = "정보통신대학",
                 department_name = "컴퓨터공학부",

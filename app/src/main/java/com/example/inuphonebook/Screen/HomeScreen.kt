@@ -5,7 +5,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,21 +32,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
-import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
-import com.example.inuphonebook.Retrofit.RetrofitClient
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @Composable
 fun HomeScreen(
@@ -91,9 +80,6 @@ fun HomeScreen(
     if (isWifeConnected){
         //검색 내용
         var searchContent by remember{mutableStateOf("")}
-        val coroutineScope = rememberCoroutineScope()
-
-        val context = LocalContext.current
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -135,9 +121,14 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-                            navController.navigate(
-                                route = "${Screens.SearchScreen.name}/$searchContent",
-                            )
+                            val resultMsg = itemViewModel.search(searchContent)
+                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                                navController.navigate(
+                                    route = "${Screens.SearchScreen.name}/$searchContent"
+                                )
+                            } else {
+                                showToast(context, resultMsg)
+                            }
                         }
                     },
                     placeHolder = "상세 정보를 입력하세요",
@@ -148,9 +139,14 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-                            navController.navigate(
-                                route = "${Screens.SearchScreen.name}/$searchContent"
-                            )
+                            val resultMsg = itemViewModel.search(searchContent)
+                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                                navController.navigate(
+                                    route = "${Screens.SearchScreen.name}/$searchContent"
+                                )
+                            } else {
+                                showToast(context, resultMsg)
+                            }
                         }
                     }
                 )
