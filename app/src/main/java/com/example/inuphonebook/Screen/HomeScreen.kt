@@ -73,11 +73,13 @@ fun HomeScreen(
         connectivityManager.getNetworkCapabilities(it)
     }
 
-    val isWifeConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+    val isWifiConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+    val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
+    val isConnected = isWifiConnected || isCellularConnected
 
 
     //Wifi에 연결이 되어있을 시
-    if (isWifeConnected){
+    if (isConnected){
         //검색 내용
         var searchContent by remember{mutableStateOf("")}
 
@@ -121,14 +123,14 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-                            val resultMsg = itemViewModel.search(searchContent)
-                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+//                            val resultMsg = itemViewModel.search(searchContent)
+//                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
                                 navController.navigate(
                                     route = "${Screens.SearchScreen.name}/$searchContent"
                                 )
-                            } else {
-                                showToast(context, resultMsg)
-                            }
+//                            } else {
+//                                showToast(context, resultMsg)
+//                            }
                         }
                     },
                     placeHolder = "상세 정보를 입력하세요",
@@ -139,21 +141,21 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-                            val resultMsg = itemViewModel.search(searchContent)
-                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+//                            val resultMsg = itemViewModel.search(searchContent)
+//                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
                                 navController.navigate(
                                     route = "${Screens.SearchScreen.name}/$searchContent"
                                 )
-                            } else {
-                                showToast(context, resultMsg)
-                            }
+//                            } else {
+//                                showToast(context, resultMsg)
+//                            }
                         }
                     }
                 )
             }
         }
     }
-    //Wifi 미 연결 시
+//    Wifi 미 연결 시
     else {
         Box(modifier = Modifier.fillMaxSize()){
             SplashScreen(

@@ -1,5 +1,13 @@
 package com.example.inuphonebook.Component
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,14 +34,28 @@ import com.example.inuphonebook.LocalDB.Employee
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun EmployeePage(employee : Employee){
+fun EmployeePage(
+    employee : Employee,
+    context : Context
+){
+    //전화 걸기 계약
+    val dialLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if (it.resultCode == Activity.RESULT_OK || it.resultCode == Activity.RESULT_CANCELED){
+            showToast(context, "전화 종료")
+        } else {
+            showToast(context, "전화 연결 오류")
+        }
+    }
+    
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
         Icon(
-            modifier = Modifier.size(100.dp).clip(shape = CircleShape),
+            modifier = Modifier
+                .size(100.dp)
+                .clip(shape = CircleShape),
             painter = rememberImagePainter(data = employee.photo),
             contentDescription = "Icon",
         )
@@ -152,6 +175,10 @@ fun EmployeePage(employee : Employee){
                     modifier = Modifier.weight(3f)
                 ){
                     Text(
+                        modifier = Modifier.clickable{
+                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
+                            dialLauncher.launch(dialIntent)
+                        },
                         text = employee.phoneNumber,
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600)
@@ -185,4 +212,8 @@ fun EmployeePage(employee : Employee){
             }
         }
     }
+}
+
+private fun showToast(context : Context, msg : String,){
+    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }

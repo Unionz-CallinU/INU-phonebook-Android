@@ -93,32 +93,32 @@ fun SearchScreen(
                 searchContent = content
             },
             onKeyboardDone = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    val resultMsg = itemViewModel.search(searchContent)
-                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-                        showToast(context, resultMsg)
-                    }
-                }
+//                if (searchContent == ""){
+//                    showToast(
+//                        context = context,
+//                        msg = "검색 내용을 입력해주세요"
+//                    )
+//                } else {
+//                    val resultMsg = itemViewModel.search(searchContent)
+//                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+//                        showToast(context, resultMsg)
+//                    }
+//                }
             },
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    val resultMsg = itemViewModel.search(searchContent)
-                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-                        showToast(context, resultMsg)
-                    }
-                }
+//                if (searchContent == ""){
+//                    showToast(
+//                        context = context,
+//                        msg = "검색 내용을 입력해주세요"
+//                    )
+//                } else {
+//                    val resultMsg = itemViewModel.search(searchContent)
+//                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+//                        showToast(context, resultMsg)
+//                    }
+//                }
             }
         )
 

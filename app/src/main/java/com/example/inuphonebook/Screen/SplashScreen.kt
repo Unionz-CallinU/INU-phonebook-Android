@@ -45,6 +45,7 @@ fun SplashScreen(
             playWhenReady = true
             prepare()
             volume = 0f
+            repeatMode = ExoPlayer.REPEAT_MODE_OFF
         }
     }
 
@@ -67,7 +68,7 @@ fun SplashScreen(
             itemViewModel.fetchFavEmployee()
             itemViewModel.fetchAllCategory()
 
-            delay(1600)
+            delay(2000)
 
             navController.navigate(Screens.HomeScreen.name)
         }
