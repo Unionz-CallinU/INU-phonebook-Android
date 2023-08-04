@@ -1,9 +1,12 @@
 package com.example.inuphonebook.Screen
 
+import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,10 +17,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +43,10 @@ import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.Retrofit.RetrofitClient
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,7 +56,28 @@ fun HomeScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
-    val connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val context = LocalContext.current
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val coroutineScope = rememberCoroutineScope()
+
+    var backPressed by remember{mutableStateOf(false)}
+
+    //뒤로가기 앱 종료
+    BackHandler {
+
+        //뒤로가기 두 번에 종료
+        if (backPressed){
+            (context as? Activity)?.finish()
+        } else {
+            backPressed = true
+            showToast(context,"한 번 더 누르면 앱이 종료됩니다.")
+
+            coroutineScope.launch(Dispatchers.Main){
+                delay(2000)
+                backPressed = false
+            }
+        }
+    }
 
     //와이파이 연결 확인
     val networkCapabilities = connectivityManager.activeNetwork?.let{
@@ -55,6 +85,7 @@ fun HomeScreen(
     }
 
     val isWifeConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+
 
     //Wifi에 연결이 되어있을 시
     if (isWifeConnected){
@@ -129,7 +160,10 @@ fun HomeScreen(
     //Wifi 미 연결 시
     else {
         Box(modifier = Modifier.fillMaxSize()){
-            SplashScreen()
+            SplashScreen(
+                itemViewModel = itemViewModel,
+                navController = navController
+            )
         }
     }
 }

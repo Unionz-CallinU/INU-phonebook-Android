@@ -20,6 +20,7 @@ import com.example.inuphonebook.Screen.EditCategoryScreen
 import com.example.inuphonebook.Screen.FavoriteScreen
 import com.example.inuphonebook.Screen.HomeScreen
 import com.example.inuphonebook.Screen.SearchScreen
+import com.example.inuphonebook.Screen.SplashScreen
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -28,12 +29,16 @@ fun PhoneBookApp(
 ){
     INUPhoneBookTheme {
         val navController = rememberNavController()
-        itemViewModel.fetchFavEmployee()
-        itemViewModel.fetchAllCategory()
         NavHost(
             navController = navController,
-            startDestination = Screens.HomeScreen.name
+            startDestination = Screens.SplashScreen.name
         ){
+            composable(Screens.SplashScreen.name){
+                SplashScreen(
+                    itemViewModel = itemViewModel,
+                    navController = navController
+                )
+            }
             composable(Screens.HomeScreen.name){
                 HomeScreen(
                     itemViewModel = itemViewModel,

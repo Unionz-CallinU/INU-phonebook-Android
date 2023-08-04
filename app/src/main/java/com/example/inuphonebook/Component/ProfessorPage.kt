@@ -17,9 +17,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
 
 /** 미사용 resource */
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun ProfessorPage(
     professor : Employee
@@ -30,7 +33,7 @@ fun ProfessorPage(
 
         Icon(
             modifier = Modifier.clip(shape = CircleShape),
-            painter = painterResource(professor.photo),
+            painter = rememberImagePainter(data = professor.photo),
             contentDescription = "Icon",
         )
         Column(

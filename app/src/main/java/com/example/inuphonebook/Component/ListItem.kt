@@ -115,7 +115,7 @@ fun TestListItem(){
             Modifier.fillMaxSize().background(color = White)
         ){
             val dummyItem = Employee(
-                photo = R.drawable.ic_launcher_foreground,
+                photo = "",
                 name = "서호준",
                 role = "연구생",
                 phoneNumber = "010-6472-3783",

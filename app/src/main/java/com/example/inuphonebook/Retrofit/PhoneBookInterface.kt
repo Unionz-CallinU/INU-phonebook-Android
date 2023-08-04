@@ -1,6 +1,5 @@
 package com.example.inuphonebook.Retrofit
 
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeListRespDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespDetailBody

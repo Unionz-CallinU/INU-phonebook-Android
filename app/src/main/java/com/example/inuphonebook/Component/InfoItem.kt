@@ -22,9 +22,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
 
 /** 미사용 resource */
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun InfoItem(
     modifier : Modifier = Modifier,
@@ -42,7 +45,7 @@ fun InfoItem(
         Image(
             modifier = Modifier.size(imageSize)
                 .clip(CircleShape),
-            painter = painterResource(item.photo),
+            painter = rememberImagePainter(data = item.photo),
             contentDescription = "ID Photo"
         )
     }
