@@ -204,6 +204,12 @@ fun EmployeePage(
                     modifier = Modifier.weight(3f)
                 ){
                     Text(
+                        modifier = Modifier.clickable{
+                            val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
+                                data = Uri.parse("mailto:${employee.email}")
+                            }
+                            context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
+                        },
                         text = employee.email,
                         fontSize = 16.sp,
                         fontWeight = FontWeight(600)
