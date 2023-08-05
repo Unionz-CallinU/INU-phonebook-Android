@@ -148,6 +148,14 @@ class ItemViewModel(context : Context) : ViewModel() {
         }
     }
 
+    //employee의 category 수정
+    fun updateEmployeeCategory(employee : Employee, category : String){
+        viewModelScope.launch(Dispatchers.IO){
+            roomRepo.updateEmployeeCategory(employee.id, category)
+        }
+        _selectedItem.value = employee
+    }
+
     //즐겨찾기 category에 '기본'이 없다면 추가
     fun insertBasicCategoryIsNull(){
         viewModelScope.launch(Dispatchers.IO){

@@ -38,4 +38,8 @@ interface RoomDao {
     //카테고리 이름으로 불러오기
     @Query("SELECT * FROM FavCategory WHERE category = (:category)")
     fun getCategoryByName(category : String) : FavCategory?
+
+    //Employee 카테고리 업데이트
+    @Query("UPDATE Employee SET category = (:category) WHERE id = (:id)")
+    fun updateEmployeeCategory(id : Long, category : String)
 }

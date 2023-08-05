@@ -39,6 +39,10 @@ class RoomRepository(context : Context) {
         return roomDao.getCategoryByName(category)
     }
 
+    fun updateEmployeeCategory(id : Long, category : String){
+        roomDao.updateEmployeeCategory(id, category)
+    }
+
     companion object{
         private var INSTANCE : RoomRepository ?= null
 

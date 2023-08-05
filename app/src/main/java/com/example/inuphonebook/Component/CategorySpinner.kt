@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,59 +33,67 @@ import com.example.inuphonebook.ui.theme.BlueGray
 @Composable
 fun CategorySpinner(
     modifier : Modifier = Modifier,
-    categoryList : MutableList<FavCategory>
+    categoryList : MutableList<FavCategory>,
+    changeItem : (String) -> Unit,
+    selectedCategory : String
 ){
-    var selectedItem by remember{ mutableStateOf(categoryList[0]) }//itemList의 선택 값 기억
     var isOpen by remember{ mutableStateOf(false) } //spinner의 상태
 
-    Box(
+    Column(
         modifier = modifier.fillMaxWidth()
-            .background(color = BlueGray),
+            .background(color = BlueGray)
     ){
-        Column{
-            Row(
-                modifier = Modifier.padding(start = 30.dp, end = 15.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = selectedItem.category,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(Modifier.width(5.dp))
-                IconButton(
-                    modifier = Modifier.size(10.dp),
-                    //spinner open
-                    onClick = {
-                        isOpen = !isOpen
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.spinner_dropdown_btn),
-                        contentDescription = "Spinner Button"
-                    )
-                }
-            }
-            DropdownMenu(
-                expanded = isOpen,
-                onDismissRequest = {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .clickable{
+                    isOpen = !isOpen
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                modifier = Modifier.weight(1f),
+                text = selectedCategory,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.width(5.dp))
+            IconButton(
+                modifier = Modifier.size(10.dp),
+                //spinner open
+                onClick = {
                     isOpen = !isOpen
                 }
-            ){
-                categoryList.forEach{item ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedItem = item
-                            isOpen = !isOpen
-                        },
-                        text = {
-                            Text(
-                                text = item.category
-                            )
-                        }
-                    )
-                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.spinner_dropdown_btn),
+                    contentDescription = "Spinner Button"
+                )
+            }
+        }
+        DropdownMenu(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            expanded = isOpen,
+            onDismissRequest = {
+                isOpen = !isOpen
+            }
+        ){
+            categoryList.forEach{item ->
+                DropdownMenuItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        changeItem(item.category)
+                        isOpen = !isOpen
+                    },
+                    text = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = item.category,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                )
             }
         }
     }
