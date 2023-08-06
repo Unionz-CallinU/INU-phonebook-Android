@@ -82,7 +82,6 @@ fun FavoriteScreen(
             }
             Spacer(Modifier.width(15.dp))
         }
-        Log.d(TAG, "favoriteEmployee : ${favoriteEmployees.value} \n categoryList : ${categoryList.value}")
         //if (favorite List가 존재하지 않는다면)
         if (favoriteEmployees.value!!.isEmpty()){
             Box(
@@ -110,11 +109,9 @@ fun FavoriteScreen(
                 }
             }
         } else {
-            Log.d(TAG,"else 문")
             Spacer(Modifier.height(17.dp))
             //if(학과 사무실 정보의 list.size가 0이 아니라면)
             categoryList.value?.forEach{category ->
-                Log.d(TAG, "category = ${category}")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

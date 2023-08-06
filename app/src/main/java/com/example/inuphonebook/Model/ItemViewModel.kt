@@ -112,20 +112,6 @@ class ItemViewModel(context : Context) : ViewModel() {
     fun fetchFavEmployee(){
         viewModelScope.launch(Dispatchers.IO){
             val tmpList = roomRepo.getFavEmployee()
-            //test
-            tmpList.add(Employee(
-                name = "서호준",
-                role = "학생",
-                phoneNumber = "010-6472-3783",
-                isFavorite = true,
-                photo = "",
-                id = 0,
-                department_name = "컴퓨터 공학부",
-                college_name = "정보통신대학",
-                email = "seohojon@naver.com",
-                category = "기본"
-            ))
-            Log.d(TAG, "tmpList = ${tmpList}")
             _favEmployeeDatas.postValue(tmpList)
         }
     }

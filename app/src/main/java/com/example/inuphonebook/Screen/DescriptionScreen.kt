@@ -90,10 +90,9 @@ fun DescriptionScreen(
             )
         }
         LaunchedEffect(selectedCategory){
-            coroutineScope.launch(Dispatchers.Main){
-                Log.d("ItemViewModel","Before Update : ${employee}, selectedCategory : ${selectedCategory}")
+            coroutineScope.launch(Dispatchers.IO){
                 itemViewModel.updateEmployeeCategory(employee,selectedCategory!!)
-                Log.d("ItemViewModel","After Updating : ${employee}")
+                itemViewModel.fetchFavEmployee()
             }
         }
     }

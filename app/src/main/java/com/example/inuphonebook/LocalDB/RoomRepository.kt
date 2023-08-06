@@ -1,6 +1,7 @@
 package com.example.inuphonebook.LocalDB
 
 import android.content.Context
+import android.util.Log
 
 class RoomRepository(context : Context) {
     private var roomDB : RoomDB

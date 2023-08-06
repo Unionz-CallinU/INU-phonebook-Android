@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Screen.SplashScreen
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
@@ -30,6 +31,22 @@ class MainActivity : ComponentActivity() {
                 val itemViewModel = ItemViewModel(LocalContext.current)
                 //RoomDB category에 "기본"의 유무를 확인하고 없으면 추가
                 itemViewModel.insertBasicCategoryIsNull()
+
+                //test
+//                itemViewModel.insertEmployee(
+//                    Employee(
+//                        name = "서호준",
+//                        role = "학생",
+//                        phoneNumber = "010-6472-3783",
+//                        isFavorite = true,
+//                        photo = "",
+//                        id = 0,
+//                        department_name = "컴퓨터 공학부",
+//                        college_name = "정보통신대학",
+//                        email = "seohojon@naver.com",
+//                        category = "기본"
+//                    )
+//                )
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
