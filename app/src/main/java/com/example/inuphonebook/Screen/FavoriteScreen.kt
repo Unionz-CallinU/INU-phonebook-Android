@@ -135,7 +135,11 @@ fun FavoriteScreen(
                                     navController.navigate(Screens.DescriptionScreen.name)
                                 },
                                 onFavoriteClick = {
-                                    //LocalDB의 Favorite List를 저장
+                                    //isFavorite == true >> 삭제
+                                    if (employee.isFavorite){
+                                        itemViewModel.deleteEmployee(employee.id)
+                                    }
+                                    itemViewModel.fetchFavEmployee()
                                 }
                             )
                         }
