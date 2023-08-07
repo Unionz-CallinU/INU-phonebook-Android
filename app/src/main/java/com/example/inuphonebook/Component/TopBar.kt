@@ -63,6 +63,7 @@ fun TopBar(
                     onClick = favoriteClick
                 ){
                     Icon(
+                        modifier = Modifier.size(22.dp),
                         painter = painterResource(favoriteIcon),
                         contentDescription = "actionIcon",
                         tint = if(isFavorite) Color.Yellow else Color.Unspecified

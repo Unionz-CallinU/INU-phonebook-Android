@@ -77,7 +77,6 @@ fun HomeScreen(
     val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
     val isConnected = isWifiConnected || isCellularConnected
 
-
     //Wifi에 연결이 되어있을 시
     if (isConnected){
         //검색 내용
@@ -88,29 +87,34 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ){
             TopBar(
-                homeIcon = R.drawable.tmp_home,
+                homeIcon = R.drawable.home,
                 homeClick = {
                 },
-                homeIconSize = 40.dp,
-                favoriteIcon = R.drawable.tmp_favorite,
+                homeIconSize = 24.dp,
+                favoriteIcon = R.drawable.favorite,
                 favoriteClick = {
                     navController.navigate(Screens.FavoriteScreen.name)
                 }
             )
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
+
+                Spacer(Modifier.height(145.dp))
+
                 Logo(
-                    size = 100.dp,
+                    height = 100.dp,
+                    width = 76.dp,
                     logoIcon = R.drawable.main_logo
                 )
-                Spacer(Modifier.height(55.dp))
+
+                Spacer(Modifier.height(35.dp))
+
                 SearchBar(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 37.5.dp),
+                        .padding(horizontal = 40.dp),
                     value = searchContent,
                     onValueChange = {content ->
                         searchContent = content

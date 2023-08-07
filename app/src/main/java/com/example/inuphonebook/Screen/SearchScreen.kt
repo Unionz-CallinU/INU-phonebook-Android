@@ -63,12 +63,12 @@ fun SearchScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
-            homeIcon = R.drawable.tmp_home,
+            homeIcon = R.drawable.home,
             homeClick = {
                 navController.navigate(Screens.HomeScreen.name)
             },
             homeIconSize = 40.dp,
-            favoriteIcon = R.drawable.tmp_favorite,
+            favoriteIcon = R.drawable.favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
             }
@@ -136,7 +136,8 @@ fun SearchScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Logo(
-                        size = 40.dp,
+                        height = 100.dp,
+                        width = 76.dp,
                         logoIcon = R.drawable.main_logo,
                         colorFilter = ColorFilter.tint(Color.LightGray)
                     )

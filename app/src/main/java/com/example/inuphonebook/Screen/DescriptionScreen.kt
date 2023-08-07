@@ -62,7 +62,7 @@ fun DescriptionScreen(
                 navController.navigateUp()
             },
             homeIconSize = 40.dp,
-            favoriteIcon = R.drawable.tmp_favorite,
+            favoriteIcon = R.drawable.favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
             }

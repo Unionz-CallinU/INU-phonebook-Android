@@ -96,7 +96,8 @@ fun FavoriteScreen(
                     verticalArrangement = Arrangement.Center
                 ){
                     Logo(
-                        size = 50.dp,
+                        height = 100.dp,
+                        width = 76.dp,
                         logoIcon = R.drawable.main_logo,
                         colorFilter = ColorFilter.tint(Color.LightGray)
                     )
@@ -125,6 +126,7 @@ fun FavoriteScreen(
                         fontSize = 20.sp
                     )
                 }
+                Spacer(Modifier.height(5.dp))
                 LazyColumn{
                     items(favoriteEmployees.value!!){employee ->
                         if (employee.category == category.category){

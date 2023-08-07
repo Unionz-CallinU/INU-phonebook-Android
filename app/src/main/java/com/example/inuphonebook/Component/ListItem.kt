@@ -21,15 +21,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.DividerLineColor
-import com.example.inuphonebook.ui.theme.FIllFavoriteColor
-import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
+import com.example.inuphonebook.ui.theme.Gray1
+import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import com.example.inuphonebook.ui.theme.Yellow
 
 @Composable
 fun ListItem(
@@ -62,14 +66,20 @@ fun ListItem(
                 ){
                     Text(
                         text = employee.name,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        color = Black,
+                        letterSpacing = 1.sp
                     )
 
                     Spacer(Modifier.width(11.dp))
 
                     Text(
                         text = employee.college_name,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        color = Gray3,
+                        letterSpacing = 0.5.sp
                     )
                 }
 
@@ -78,6 +88,8 @@ fun ListItem(
                 Text(
                     text = employee.phoneNumber,
                     fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = Black,
                     letterSpacing = 1.sp
                 )
 
@@ -93,7 +105,7 @@ fun ListItem(
                     modifier = Modifier.size(32.dp),
                     painter = painterResource(R.drawable.tmp_favorite_not),
                     contentDescription = "Is Favorite",
-                    tint = if(employee.isFavorite) FIllFavoriteColor else FillNotFavoriteColor
+                    tint = if(employee.isFavorite) Yellow else Gray1
                 )
             }
         }
