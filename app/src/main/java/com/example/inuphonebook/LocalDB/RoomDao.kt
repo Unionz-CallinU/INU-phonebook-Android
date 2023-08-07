@@ -28,7 +28,7 @@ interface RoomDao {
     fun getAllCategory() : MutableList<FavCategory>
 
     //카테고리 추가
-    @Insert(onConflict = OnConflictStrategy.NONE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCategory(category : FavCategory)
 
     //카테고리 삭제

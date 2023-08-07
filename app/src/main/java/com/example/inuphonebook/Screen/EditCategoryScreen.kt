@@ -82,7 +82,6 @@ fun EditCategoryScreen(
                     category = newCategory
                 )
                 itemViewModel.insertCategory(categoryItem)
-                itemViewModel.fetchAllCategory()
             },
             value = newCategory,
             onChangeValue = {
@@ -96,7 +95,9 @@ fun EditCategoryScreen(
         ){
             TopBar(
                 homeIcon = R.drawable.back_btn,
-                homeClick = {navController.navigateUp()},
+                homeClick = {
+                    navController.navigateUp()
+                },
                 homeIconSize = 40.dp,
                 favoriteIcon = null,
                 title = "즐겨찾기 편집"
@@ -122,7 +123,6 @@ fun EditCategoryScreen(
                 IconButton(
                     onClick = {
                         deleteCategory(itemViewModel, checkList)
-                        itemViewModel.fetchAllCategory()
                         isDelete = true
                     }
                 ) {
@@ -138,6 +138,9 @@ fun EditCategoryScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(space = 5.dp)
             ){
+                itemViewModel.fetchAllCategory()
+                Log.d(TAG,"현재 categoryList : ${categoryList}")
+
                 items(categoryList.value!!) {category ->
                     var isSelected by remember{mutableStateOf(false)}
 
@@ -162,10 +165,8 @@ fun EditCategoryScreen(
                                 } else {
                                     checkList.remove(category)
                                 }
-                                Log.d(TAG,"checkList : ${checkList}")
                             })
                         {
-                            Log.d(TAG, "${category}의 isSelected : ${isSelected}")
                             Icon(
                                 modifier = Modifier.clip(shape = CircleShape),
                                 painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
