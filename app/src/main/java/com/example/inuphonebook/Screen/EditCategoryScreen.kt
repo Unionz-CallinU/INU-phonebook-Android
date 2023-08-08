@@ -76,6 +76,7 @@ fun EditCategoryScreen(
                 .height(screenHeight / 5),
             onDismissRequest = {
                 showDialog = !showDialog
+                newCategory = ""
             },
             title = "카테고리 이름을 정해주세요",
             okMsg = "추가",
@@ -84,6 +85,7 @@ fun EditCategoryScreen(
                     category = newCategory
                 )
                 itemViewModel.insertCategory(categoryItem)
+                itemViewModel.fetchAllCategory()
             },
             value = newCategory,
             onChangeValue = {
@@ -125,6 +127,7 @@ fun EditCategoryScreen(
                 IconButton(
                     onClick = {
                         deleteCategory(itemViewModel, checkList)
+                        itemViewModel.fetchAllCategory()
                         isDelete = true
                     }
                 ) {
@@ -140,9 +143,7 @@ fun EditCategoryScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(space = 5.dp)
             ){
-                itemViewModel.fetchAllCategory()
-                Log.d(TAG,"현재 categoryList : ${categoryList}")
-
+                Log.d(TAG,"현재 Category List : ${categoryList}")
                 items(categoryList.value!!) {category ->
                     var isSelected by remember{mutableStateOf(false)}
 
@@ -168,8 +169,8 @@ fun EditCategoryScreen(
                                 } else {
                                     checkList.remove(category)
                                 }
-                            })
-                        {
+                            }
+                        ){
                             Icon(
                                 modifier = Modifier.clip(shape = CircleShape),
                                 painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),

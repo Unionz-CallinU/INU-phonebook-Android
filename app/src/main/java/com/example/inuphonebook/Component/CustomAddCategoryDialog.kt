@@ -79,7 +79,7 @@ fun CustomAddCategoryDialog(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
                         onAddClick()
-                        onDismissRequest
+                        onDismissRequest()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Blue
