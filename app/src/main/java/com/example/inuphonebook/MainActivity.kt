@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 //                        role = "학생",
 //                        phoneNumber = "010-6472-3783",
 //                        isFavorite = true,
-//                        photo = "",
+//                        photo = null,
 //                        id = 0,
 //                        department_name = "컴퓨터 공학부",
 //                        college_name = "정보통신대학",

@@ -33,7 +33,20 @@ class ItemViewModel(context : Context) : ViewModel() {
         get() = _categoryList
 
     //임시 더미 데이터
-    private val employeeList = mutableListOf<Employee>()
+    private val employeeList = mutableListOf<Employee>(
+        Employee(
+            name = "서호준",
+            role = "학생",
+            phoneNumber = "010-6472-3783",
+            isFavorite = false,
+            photo = null,
+            id = 1,
+            department_name = "컴퓨터 공학부",
+            college_name = "정보통신대학",
+            email = "seohojon@naver.com",
+            category = "기본"
+        )
+    )
 
     //임원진 리스트
     private val _employeeDatas : MutableLiveData<MutableList<Employee>> = MutableLiveData(employeeList)
@@ -118,6 +131,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     //fav employee list에 값 추가
     fun insertEmployee(employee : Employee){
         viewModelScope.launch(Dispatchers.IO){
+            roomRepo.updateEmployee(employee.id, true)
             roomRepo.insertEmployee(employee)
         }
     }
@@ -178,20 +192,22 @@ class ItemViewModel(context : Context) : ViewModel() {
     //받은 데이터를 정리해서 observed되는 리스트에 setting
     fun setResult(result : List<EmployeeDetailRespDto>){
         val tmpList = mutableListOf<Employee>()
-        result.forEach{
-            val employee = Employee(
+        result.forEach{employee ->
+            val isFavorite = favEmployeeDatas.value?.any { it.id == employee.id} ?: throw NullPointerException("FavEmployeeDatas is NULL")
+
+            val newEmployee = Employee(
                 category = null,
-                name = it.name,
-                role = it.role,
-                phoneNumber = it.phoneNumber,
-                isFavorite = false,
-                photo = it.photo,
-                email = it.email,
-                college_name = it.college,
-                department_name = it.department,
-                id = it.id
+                name = employee.name,
+                role = employee.role,
+                phoneNumber = employee.phoneNumber,
+                isFavorite = isFavorite,
+                photo = employee.photo,
+                email = employee.email,
+                college_name = employee.college,
+                department_name = employee.department,
+                id = employee.id
             )
-            tmpList.add(employee)
+            tmpList.add(newEmployee)
         }
         submitList(tmpList)
     }

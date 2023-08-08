@@ -11,7 +11,7 @@ data class Employee(
     @ColumnInfo val role : String,
     @ColumnInfo val phoneNumber : String,
     @ColumnInfo val isFavorite : Boolean,
-    @ColumnInfo val photo : String,
+    @ColumnInfo val photo : String?,
     @ColumnInfo val email : String,
     @ColumnInfo val college_name : String,
     @ColumnInfo val department_name : String,

@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,23 +16,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.inuphonebook.LocalDB.FavCategory
+import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun CustomSelectDialog(
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
-    categoryList : List<String>,
+    categoryList : MutableList<FavCategory>,
     title : String = "title",
     message : String = "msg",
     cancelMsg : String = "cancelMsg",
     okMsg : String = "okMsg",
+    onOkClick : () -> Unit = {},
 ){
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -47,12 +54,18 @@ fun CustomSelectDialog(
             Spacer(Modifier.height(10.dp))
             Text(
                 text = title,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                color = Black,
+                letterSpacing = 1.sp
             )
             Spacer(Modifier.height(5.dp))
             Text(
                 text = message,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                color = Black,
+                letterSpacing = 1.sp
             )
             Spacer(Modifier.height(10.dp))
             Row(
@@ -71,16 +84,28 @@ fun CustomSelectDialog(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .clickable{
+                            onDismissRequest()
+                        },
                     textAlign = TextAlign.Center,
                     text = cancelMsg,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = Black,
+                    letterSpacing = 1.sp
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .clickable{
+                            onOkClick()
+                        },
                     textAlign = TextAlign.Center,
                     text = okMsg,
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = Black,
+                    letterSpacing = 1.sp
                 )
             }
         }
@@ -98,7 +123,7 @@ fun TestCustomInputDialog(){
                 .background(color = Color.White),
         ){
             CustomSelectDialog(
-                categoryList = listOf("기본"),
+                categoryList = mutableListOf(),
                 onDismissRequest = {},
             )
         }

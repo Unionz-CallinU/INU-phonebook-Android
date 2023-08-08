@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-
 @Dao
 interface RoomDao {
     //즐겨찾기 list 받기
@@ -27,6 +26,7 @@ interface RoomDao {
     @Query("SELECT * FROM FavCategory")
     fun getAllCategory() : MutableList<FavCategory>
 
+
     //카테고리 추가
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertCategory(category : FavCategory)
@@ -43,3 +43,4 @@ interface RoomDao {
     @Query("UPDATE Employee SET category = (:category) WHERE id = (:id)")
     fun updateEmployeeCategory(id : Long, category : String)
 }
+

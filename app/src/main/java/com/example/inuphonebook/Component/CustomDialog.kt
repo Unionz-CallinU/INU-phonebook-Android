@@ -17,22 +17,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import com.example.inuphonebook.ui.theme.White
 
 @Composable
 fun CustomAlertDialog(
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
-    mainMsg : String = "",
+    highlightText : String = "",
+    baseText : String = "",
     okMsg : String = "",
     onOkClick : () -> Unit,
 ){
+    val text = buildAnnotatedString {
+        withStyle(style = SpanStyle(fontSize = 20.sp)){
+            append(highlightText)
+        }
+        withStyle(style = SpanStyle(fontSize = 14.sp)){
+            append(baseText)
+        }
+    }
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties
@@ -46,9 +65,11 @@ fun CustomAlertDialog(
             Spacer(Modifier.height(30.dp))
 
             Text(
-                text = mainMsg,
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center
+                text = text,
+                textAlign = TextAlign.Center,
+                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                color = Black,
+                letterSpacing = 1.sp
             )
 
             Spacer(Modifier.height(20.dp))
@@ -60,13 +81,16 @@ fun CustomAlertDialog(
                     .clickable{
                         onOkClick()
                     }
-                    .background(color = Color.Blue)
+                    .background(color = Blue)
             ){
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     text = okMsg,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     textAlign = TextAlign.Center,
-                    color = Color.White
+                    color = White,
+                    letterSpacing = 1.sp
                 )
             }
         }
@@ -82,7 +106,8 @@ fun TestDialog(){
         ){
             CustomAlertDialog(
                 onDismissRequest = {},
-                mainMsg = "***님이 \n 즐겨찾기 목록에 추가되었습니다",
+                highlightText = "***님이",
+                baseText = "\n 즐겨찾기 목록에 추가되었습니다",
                 okMsg = "확인",
                 onOkClick = {}
             )

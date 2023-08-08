@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
@@ -35,7 +36,7 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 @Composable
 fun CustomSpinner(
     modifier : Modifier = Modifier,
-    itemList : List<String> = listOf("기본"),
+    itemList : List<FavCategory> = listOf(),
 ){
     var selectedItem by remember{mutableStateOf(itemList[0])}//itemList의 선택 값 기억
     var isOpen by remember{mutableStateOf(false)} //spinner의 상태
@@ -51,7 +52,7 @@ fun CustomSpinner(
             ){
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = selectedItem,
+                    text = selectedItem.category,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center
                 )
@@ -83,7 +84,7 @@ fun CustomSpinner(
                         },
                         text = {
                             Text(
-                                text = item
+                                text = item.category
                             )
                         }
                     )

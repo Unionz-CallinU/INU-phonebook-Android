@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +38,7 @@ import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
@@ -123,7 +126,10 @@ fun FavoriteScreen(
                     Spacer(Modifier.width(20.dp))
                     Text(
                         text = category.category,
-                        fontSize = 20.sp
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        color = Blue,
+                        letterSpacing = 1.sp
                     )
                 }
                 Spacer(Modifier.height(5.dp))
@@ -137,7 +143,6 @@ fun FavoriteScreen(
                                     navController.navigate(Screens.DescriptionScreen.name)
                                 },
                                 onFavoriteClick = {
-                                    //isFavorite == true >> 삭제
                                     if (employee.isFavorite){
                                         itemViewModel.deleteEmployee(employee.id)
                                     }

@@ -24,12 +24,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,9 +78,8 @@ fun EditCategoryScreen(
                 showDialog = !showDialog
             },
             title = "카테고리 이름을 정해주세요",
-            cancelMsg = "취소",
-            okMsg = "확인",
-            onOkClick = {
+            okMsg = "추가",
+            onAddClick = {
                 val categoryItem = FavCategory(
                     category = newCategory
                 )
@@ -153,9 +155,10 @@ fun EditCategoryScreen(
 
                     Row(
                         modifier = Modifier
-                            .height(25.dp)
+                            .height(35.dp)
                             .fillMaxWidth()
-                            .background(color = FillNotFavoriteColor)
+                            .background(color = FillNotFavoriteColor),
+                        verticalAlignment = Alignment.CenterVertically
                     ){
                         IconButton(
                             onClick = {
@@ -177,10 +180,12 @@ fun EditCategoryScreen(
                         Spacer(Modifier.width(10.dp))
                         Text(
                             modifier = Modifier
-                                .fillMaxSize(),
+                                .fillMaxWidth(),
                             text = category.category,
                             fontSize = 20.sp,
                             color = Color.Blue,
+                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                            letterSpacing = 1.sp
                         )
                     }
                 }

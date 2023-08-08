@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,17 +25,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CategorySpinner
+import com.example.inuphonebook.Component.CustomAddCategoryDialog
+import com.example.inuphonebook.Component.CustomAlertDialog
+import com.example.inuphonebook.Component.CustomSelectDialog
 import com.example.inuphonebook.Component.EmployeePage
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,6 +60,40 @@ fun DescriptionScreen(
 
     var selectedCategory by remember{mutableStateOf(employee.category)}
 
+    var showDialog by remember{mutableStateOf(false)}
+    var showCheckDialog by remember{mutableStateOf(false)}
+
+    if (showDialog){
+        CustomSelectDialog(
+            onDismissRequest = {
+                showDialog = false
+            },
+            categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL"),
+            title = "즐겨찾기",
+            message = "즐겨찾기목록에 추가하시겠습니까?",
+            cancelMsg = "취소",
+            okMsg = "확인",
+            onOkClick = {
+                showCheckDialog = true
+                showDialog = false
+            },
+        )
+    }
+
+    if (showCheckDialog){
+        CustomAlertDialog(
+            onDismissRequest = {
+                showCheckDialog = false
+            },
+            highlightText = "${employee.name}님이 ",
+            baseText = "\n 즐겨찾기에 추가 되었습니다",
+            okMsg = "확인",
+            onOkClick = {
+                showCheckDialog = false
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -62,9 +105,14 @@ fun DescriptionScreen(
                 navController.navigateUp()
             },
             homeIconSize = 40.dp,
-            favoriteIcon = R.drawable.favorite,
+            favoriteIcon = if(employee.isFavorite) R.drawable.minus_btn else R.drawable.plus_btn,
             favoriteClick = {
-                navController.navigate(Screens.FavoriteScreen.name)
+                if (employee.isFavorite) {
+                    itemViewModel.deleteEmployee(employee.id)
+                    showDialog = true
+                } else  {
+                    itemViewModel.insertEmployee(employee)
+                }
             }
         )
         Column(
@@ -73,6 +121,7 @@ fun DescriptionScreen(
                 .padding(start = 20.dp, end = 20.dp, top = 10.dp),
             verticalArrangement = Arrangement.Center
         ){
+            itemViewModel.fetchFavEmployee()
             if (employee.isFavorite){
                 CategorySpinner(
                     modifier = Modifier.fillMaxWidth(), //itemViewModel에서 가져온 category

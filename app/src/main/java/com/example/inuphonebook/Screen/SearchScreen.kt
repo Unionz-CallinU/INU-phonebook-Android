@@ -150,20 +150,9 @@ fun SearchScreen(
                 }
             }
         } else {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(35.dp)
-                    .background(color = FillNotFavoriteColor),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Spacer(Modifier.width(20.dp))
-                Text(
-                    text = "학과 사무실",
-                    fontSize = 20.sp
-                )
-            }
+            Spacer(Modifier.width(20.dp))
             LazyColumn{
+                itemViewModel.fetchFavEmployee()
                 items(employeeDatas.value!!){employee ->
                     ListItem(
                         employee = employee,
@@ -172,8 +161,11 @@ fun SearchScreen(
                             navController.navigate(Screens.DescriptionScreen.name)
                         },
                         onFavoriteClick = {
-                            //LocalDB의 Favorite List를 저장
-                            itemViewModel.insertEmployee(employee)
+                            if (employee.isFavorite){
+                                itemViewModel.deleteEmployee(employee.id)
+                            } else {
+                                itemViewModel.insertEmployee(employee)
+                            }
                         }
                     )
                 }
