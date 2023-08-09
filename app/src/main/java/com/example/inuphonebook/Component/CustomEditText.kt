@@ -49,11 +49,7 @@ fun CustomEditText(
     shape : Shape
 ){
     Box(
-        modifier = modifier
-            .background(
-                color = BlueGray,
-                shape = shape
-            ),
+        modifier = modifier,
     ){
         OutlinedTextField(
             value = value,

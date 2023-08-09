@@ -36,6 +36,7 @@ import com.example.inuphonebook.ui.theme.White
 
 @Composable
 fun CustomAlertDialog(
+    modifier : Modifier = Modifier,
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
     highlightText : String = "",

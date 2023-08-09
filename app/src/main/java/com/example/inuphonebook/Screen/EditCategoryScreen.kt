@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CustomAddCategoryDialog
+import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.Model.ItemViewModel
@@ -56,6 +57,7 @@ fun EditCategoryScreen(
     val categoryList = itemViewModel.categoryList.observeAsState()
 
     var showDialog by remember{mutableStateOf(false)} //dialog의 상태 조절
+    var showCheckDialog by remember{mutableStateOf(false)}
 
     val configuration = LocalConfiguration.current
 
@@ -76,7 +78,6 @@ fun EditCategoryScreen(
                 .height(screenHeight / 5),
             onDismissRequest = {
                 showDialog = !showDialog
-                newCategory = ""
             },
             title = "카테고리 이름을 정해주세요",
             okMsg = "추가",
@@ -86,6 +87,7 @@ fun EditCategoryScreen(
                 )
                 itemViewModel.insertCategory(categoryItem)
                 itemViewModel.fetchAllCategory()
+                showCheckDialog = true
             },
             value = newCategory,
             onChangeValue = {
@@ -93,6 +95,22 @@ fun EditCategoryScreen(
             }
         )
     }
+
+    if (showCheckDialog){
+        CustomCheckDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 4),
+            onDismissRequest = {
+                newCategory = ""
+                showCheckDialog = false
+            },
+            newCategory = newCategory,
+            msg = "카테고리가 추가 되었습니다.",
+            okMsg = "확인"
+        )
+    }
+
     if (categoryList.value != null){
         Column(
             modifier = Modifier.fillMaxSize()
@@ -141,7 +159,7 @@ fun EditCategoryScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(space = 5.dp)
+                verticalArrangement = Arrangement.spacedBy(space = 6.dp)
             ){
                 Log.d(TAG,"현재 Category List : ${categoryList}")
                 items(categoryList.value!!) {category ->

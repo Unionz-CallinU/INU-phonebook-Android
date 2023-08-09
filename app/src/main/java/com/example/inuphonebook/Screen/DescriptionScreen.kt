@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -53,6 +55,11 @@ fun DescriptionScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
+    val configuration = LocalConfiguration.current
+
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
     val coroutineScope = rememberCoroutineScope()
 
     val categoryList = itemViewModel.categoryList.observeAsState()
@@ -64,20 +71,40 @@ fun DescriptionScreen(
     var showCheckDialog by remember{mutableStateOf(false)}
 
     if (showDialog){
-        CustomSelectDialog(
-            onDismissRequest = {
-                showDialog = false
-            },
-            categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL"),
-            title = "즐겨찾기",
-            message = "즐겨찾기목록에 추가하시겠습니까?",
-            cancelMsg = "취소",
-            okMsg = "확인",
-            onOkClick = {
-                showCheckDialog = true
-                showDialog = false
-            },
-        )
+        if (employee.isFavorite){
+            CustomSelectDialog(
+                onDismissRequest = {
+                    showDialog = false
+                },
+                categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL"),
+                title = "즐겨찾기",
+                message = "즐겨찾기목록에 추가하시겠습니까?",
+                cancelMsg = "취소",
+                okMsg = "확인",
+                onOkClick = {
+                    itemViewModel.insertEmployee(employee)
+                    showCheckDialog = true
+                    showDialog = false
+                },
+            )
+        } else {
+            CustomAlertDialog(
+                modifier = Modifier
+                    .width(screenWidth / 10 * 8)
+                    .height(screenHeight / 5),
+                onDismissRequest = {
+                    showDialog = false
+                },
+                highlightText = "${employee.name}",
+                baseText = "님이\n즐겨찾기목록에서 삭제 되었습니다.",
+                okMsg = "확인",
+                onOkClick = {
+                    itemViewModel.deleteEmployee(employee.id)
+                    showDialog = false
+                }
+            )
+        }
+        itemViewModel.fetchFavEmployee()
     }
 
     if (showCheckDialog){
@@ -99,6 +126,7 @@ fun DescriptionScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+        itemViewModel.fetchFavEmployee()
         TopBar(
             homeIcon = R.drawable.back_btn,
             homeClick = {
@@ -107,12 +135,7 @@ fun DescriptionScreen(
             homeIconSize = 40.dp,
             favoriteIcon = if(employee.isFavorite) R.drawable.minus_btn else R.drawable.plus_btn,
             favoriteClick = {
-                if (employee.isFavorite) {
-                    itemViewModel.deleteEmployee(employee.id)
-                    showDialog = true
-                } else  {
-                    itemViewModel.insertEmployee(employee)
-                }
+                showDialog = true
             }
         )
         Column(

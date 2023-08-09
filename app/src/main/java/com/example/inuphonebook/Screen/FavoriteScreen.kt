@@ -19,10 +19,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -32,9 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.inuphonebook.Component.CustomAlertDialog
+import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
@@ -49,9 +57,36 @@ fun FavoriteScreen(
 ){
     val TAG = "FavoriteScreen"
 
+    val configuration = LocalConfiguration.current
+
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
     //localDB내 favorite 리스트
     val favoriteEmployees = itemViewModel.favEmployeeDatas.observeAsState()
     val categoryList = itemViewModel.categoryList.observeAsState()
+
+    var showCheckDialog by remember{mutableStateOf(false)}
+
+    var selectedItem by remember{mutableStateOf<Employee?>(null)}
+
+    if (showCheckDialog){
+        CustomAlertDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 5),
+            highlightText = "${selectedItem!!.name}",
+            baseText = "님이\n즐겨찾기목록에서 삭제 되었습니다.",
+            okMsg = "확인",
+            onDismissRequest = {
+                showCheckDialog = false
+                itemViewModel.fetchFavEmployee()
+            },
+            onOkClick = {
+                showCheckDialog = false
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -143,10 +178,12 @@ fun FavoriteScreen(
                                     navController.navigate(Screens.DescriptionScreen.name)
                                 },
                                 onFavoriteClick = {
+                                    selectedItem = employee
                                     if (employee.isFavorite){
                                         itemViewModel.deleteEmployee(employee.id)
                                     }
                                     itemViewModel.fetchFavEmployee()
+                                    showCheckDialog = true
                                 }
                             )
                         }

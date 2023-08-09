@@ -31,7 +31,8 @@ fun SearchBar(
     shape : Shape = RoundedCornerShape(size = 25.dp)
 ){
     CustomEditText(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = BlueGray),
         fontSize = fontSize,
         textColor = textColor,
         value = value,
