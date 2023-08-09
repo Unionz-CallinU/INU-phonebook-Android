@@ -32,7 +32,10 @@ fun SearchBar(
 ){
     CustomEditText(
         modifier = modifier
-            .background(color = BlueGray),
+            .background(
+                color = BlueGray,
+                shape = shape
+            ),
         fontSize = fontSize,
         textColor = textColor,
         value = value,

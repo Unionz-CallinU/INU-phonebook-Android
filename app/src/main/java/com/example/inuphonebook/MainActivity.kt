@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
                 //RoomDB category에 "기본"의 유무를 확인하고 없으면 추가
                 itemViewModel.insertBasicCategoryIsNull()
 
-                //test
+                itemViewModel.deleteEmployee(1)
+//                test
 //                itemViewModel.insertEmployee(
 //                    Employee(
 //                        name = "서호준",

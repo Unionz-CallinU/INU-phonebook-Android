@@ -131,8 +131,9 @@ class ItemViewModel(context : Context) : ViewModel() {
     //fav employee list에 값 추가
     fun insertEmployee(employee : Employee){
         viewModelScope.launch(Dispatchers.IO){
-            roomRepo.updateEmployee(employee.id, true)
             roomRepo.insertEmployee(employee)
+            roomRepo.updateEmployee(employee.id, true)
+            _selectedItem.value = employee
         }
     }
     //fav employee 삭제

@@ -50,31 +50,32 @@ fun CustomCheckDialog(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Spacer(Modifier.height(25.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth().weight(2f)
+            ){
+                Spacer(Modifier.weight(1f))
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = newCategory,
-                fontSize = 20.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = Black,
-                textAlign = TextAlign.Center,
-                letterSpacing = 1.sp
-            )
-
-            Spacer(Modifier.height(5.dp))
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = msg,
-                fontSize = 14.sp,
-                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = Black,
-                textAlign = TextAlign.Center,
-                letterSpacing = 1.sp
-            )
-
-            Spacer(Modifier.height(17.dp))
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = newCategory,
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = Black,
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 1.sp
+                )
+                Spacer(Modifier.height(5.dp))
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = msg,
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = Black,
+                    textAlign = TextAlign.Center,
+                    letterSpacing = 1.sp
+                )
+                Spacer(Modifier.weight(1f))
+            }
 
             Row(
                 modifier = Modifier

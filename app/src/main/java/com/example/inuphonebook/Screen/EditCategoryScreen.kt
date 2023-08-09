@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -68,32 +69,54 @@ fun EditCategoryScreen(
 
     val checkList = mutableListOf<FavCategory>()
 
+    var type by remember{mutableStateOf("")}
+
     //차선책 필요 (현재 삭제했는지 여부 확인해서 삭제헀으면 모든 상태를 false로 돌리는 중)
     var isDelete by remember{mutableStateOf(false)}
 
     if (showDialog){
-        CustomAddCategoryDialog(
-            modifier = Modifier
-                .width(screenWidth / 10 * 8)
-                .height(screenHeight / 5),
-            onDismissRequest = {
-                showDialog = !showDialog
-            },
-            title = "카테고리 이름을 정해주세요",
-            okMsg = "추가",
-            onAddClick = {
-                val categoryItem = FavCategory(
-                    category = newCategory
+        when (type){
+            "Add" -> {
+                CustomAddCategoryDialog(
+                    modifier = Modifier
+                        .width(screenWidth / 10 * 8)
+                        .height(screenHeight / 5),
+                    onDismissRequest = {
+                        showDialog = !showDialog
+                    },
+                    title = "카테고리 이름을 정해주세요",
+                    okMsg = "추가",
+                    onAddClick = {
+                        val categoryItem = FavCategory(
+                            category = newCategory
+                        )
+                        itemViewModel.insertCategory(categoryItem)
+                        showCheckDialog = true
+                    },
+                    value = newCategory,
+                    onChangeValue = {
+                        newCategory = it
+                    }
                 )
-                itemViewModel.insertCategory(categoryItem)
-                itemViewModel.fetchAllCategory()
-                showCheckDialog = true
-            },
-            value = newCategory,
-            onChangeValue = {
-                newCategory = it
             }
-        )
+            "Delete" -> {
+                CustomCheckDialog(
+                    modifier = Modifier
+                        .width(screenWidth / 10 * 8)
+                        .height(screenHeight / 4),
+                    onDismissRequest = {
+                        showDialog = false
+                    },
+                    newCategory = newCategory,
+                    msg = "카테고리가 삭제 되었습니다.",
+                    okMsg = "확인"
+                )
+            }
+            else -> {
+                throw IllegalArgumentException("Error : 올바르지 않은 Type")
+            }
+        }
+
     }
 
     if (showCheckDialog){
@@ -128,12 +151,14 @@ fun EditCategoryScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 20.dp),
+                    .padding(end = 30.dp),
                 horizontalArrangement = Arrangement.End
             ){
                 IconButton(
+                    modifier = Modifier.size(24.dp),
                     onClick = {
                         showDialog = !showDialog
+                        type = "Add"
                     }
                 ) {
                     Icon(
@@ -141,11 +166,13 @@ fun EditCategoryScreen(
                         contentDescription = "Add Category"
                     )
                 }
-                Spacer(Modifier.width(5.dp))
+                Spacer(Modifier.width(10.dp))
                 IconButton(
+                    modifier = Modifier.size(24.dp),
                     onClick = {
                         deleteCategory(itemViewModel, checkList)
-                        itemViewModel.fetchAllCategory()
+                        type = "Delete"
+                        showDialog = true
                         isDelete = true
                     }
                 ) {
@@ -161,7 +188,7 @@ fun EditCategoryScreen(
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(space = 6.dp)
             ){
-                Log.d(TAG,"현재 Category List : ${categoryList}")
+                itemViewModel.fetchAllCategory()
                 items(categoryList.value!!) {category ->
                     var isSelected by remember{mutableStateOf(false)}
 

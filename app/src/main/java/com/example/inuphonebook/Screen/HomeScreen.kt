@@ -161,12 +161,7 @@ fun HomeScreen(
     }
 //    Wifi 미 연결 시
     else {
-        Box(modifier = Modifier.fillMaxSize()){
-            SplashScreen(
-                itemViewModel = itemViewModel,
-                navController = navController
-            )
-        }
+        navController.navigate(Screens.HomeScreen.name)
     }
 }
 

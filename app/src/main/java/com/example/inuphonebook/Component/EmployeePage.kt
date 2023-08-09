@@ -100,19 +100,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "교수명",
+//                        fontSize = 24.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Black,
+//                        letterSpacing = 1.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "교수명",
-                        fontSize = 24.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
-                        letterSpacing = 1.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         text = employee.name,
@@ -129,19 +130,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "소속",
+//                        fontSize = 16.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Gray3,
+//                        letterSpacing = 0.5.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "소속",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         text = employee.college_name,
@@ -158,19 +160,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "세부 소속",
+//                        fontSize = 16.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Gray3,
+//                        letterSpacing = 0.5.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "세부 소속",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         text = employee.department_name,
@@ -187,19 +190,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "직위",
+//                        fontSize = 16.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Gray3,
+//                        letterSpacing = 0.5.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "직위",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         text = employee.role,
@@ -216,19 +220,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "전화번호",
+//                        fontSize = 18.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Black,
+//                        letterSpacing = 1.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "전화번호",
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
-                        letterSpacing = 1.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         modifier = Modifier.clickable{
@@ -249,19 +254,20 @@ fun EmployeePage(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ){
+//                Row(
+//                    modifier = Modifier.weight(2f)
+//                ){
+//                    Text(
+//                        text = "이메일",
+//                        fontSize = 18.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = Black,
+//                        letterSpacing = 1.sp
+//                    )
+//                }
                 Row(
-                    modifier = Modifier.weight(2f)
-                ){
-                    Text(
-                        text = "이메일",
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
-                        letterSpacing = 1.sp
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3f),
+                    horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
                         modifier = Modifier.clickable{

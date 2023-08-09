@@ -58,9 +58,8 @@ fun CustomAlertDialog(
         properties = properties
     ){
         Column(
-            modifier = Modifier
-                .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
-                .fillMaxSize(),
+            modifier = modifier
+                .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Spacer(Modifier.height(30.dp))
@@ -83,6 +82,7 @@ fun CustomAlertDialog(
                         onOkClick()
                     }
                     .background(color = Blue)
+                    .weight(1f)
             ){
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(1f),

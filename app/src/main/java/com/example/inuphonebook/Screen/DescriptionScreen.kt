@@ -71,8 +71,11 @@ fun DescriptionScreen(
     var showCheckDialog by remember{mutableStateOf(false)}
 
     if (showDialog){
-        if (employee.isFavorite){
+        if (!employee.isFavorite){
             CustomSelectDialog(
+                modifier = Modifier
+                    .width(screenWidth / 10 * 8)
+                    .height(screenHeight / 5),
                 onDismissRequest = {
                     showDialog = false
                 },
@@ -86,6 +89,7 @@ fun DescriptionScreen(
                     showCheckDialog = true
                     showDialog = false
                 },
+                width = screenWidth / 10 * 8,
             )
         } else {
             CustomAlertDialog(
@@ -95,7 +99,7 @@ fun DescriptionScreen(
                 onDismissRequest = {
                     showDialog = false
                 },
-                highlightText = "${employee.name}",
+                highlightText = employee.name,
                 baseText = "님이\n즐겨찾기목록에서 삭제 되었습니다.",
                 okMsg = "확인",
                 onOkClick = {
@@ -104,16 +108,18 @@ fun DescriptionScreen(
                 }
             )
         }
-        itemViewModel.fetchFavEmployee()
     }
 
     if (showCheckDialog){
         CustomAlertDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 5),
             onDismissRequest = {
                 showCheckDialog = false
             },
-            highlightText = "${employee.name}님이 ",
-            baseText = "\n 즐겨찾기에 추가 되었습니다",
+            highlightText = employee.name,
+            baseText = "님이\n즐겨찾기에 추가 되었습니다",
             okMsg = "확인",
             onOkClick = {
                 showCheckDialog = false
@@ -126,7 +132,8 @@ fun DescriptionScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        itemViewModel.fetchFavEmployee()
+        Log.d("DescriptionScreen","selectecItem : ${employee}")
+        Log.d("DescriptionScreen","all items : ${itemViewModel.favEmployeeDatas.value}")
         TopBar(
             homeIcon = R.drawable.back_btn,
             homeClick = {
@@ -139,12 +146,8 @@ fun DescriptionScreen(
             }
         )
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 20.dp, end = 20.dp, top = 10.dp),
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxSize()
         ){
-            itemViewModel.fetchFavEmployee()
             if (employee.isFavorite){
                 CategorySpinner(
                     modifier = Modifier.fillMaxWidth(), //itemViewModel에서 가져온 category
@@ -155,11 +158,20 @@ fun DescriptionScreen(
                     selectedCategory = selectedCategory ?: "기본"
                 )
             }
-            Spacer(Modifier.height(40.dp))
-            EmployeePage(
-                employee = employee,
-                context = LocalContext.current
-            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 20.dp, end = 20.dp, top = 10.dp),
+                verticalArrangement = Arrangement.Center
+            ){
+                Spacer(Modifier.height(40.dp))
+                EmployeePage(
+                    employee = employee,
+                    context = LocalContext.current
+                )
+            }
+
         }
         LaunchedEffect(selectedCategory){
             coroutineScope.launch(Dispatchers.IO){

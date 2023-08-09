@@ -81,7 +81,7 @@ fun CustomAddCategoryDialog(
                         fontSize = 16.sp,
                         color = Black,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        letterSpacing = 1.sp
+                        letterSpacing = 1.sp,
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
@@ -90,7 +90,7 @@ fun CustomAddCategoryDialog(
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 value = value,
-                onValueChange = onChangeValue,
+                onValueChange = onChangeValue
             )
 
             Spacer(Modifier.height(10.dp))
@@ -112,6 +112,7 @@ fun CustomAddCategoryDialog(
                     color = White,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     letterSpacing = 1.sp,
+                    textAlign = TextAlign.Center
                 )
             }
         }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -31,6 +32,7 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun CustomSelectDialog(
+    modifier : Modifier = Modifier,
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
     categoryList : MutableList<FavCategory>,
@@ -39,14 +41,14 @@ fun CustomSelectDialog(
     cancelMsg : String = "cancelMsg",
     okMsg : String = "okMsg",
     onOkClick : () -> Unit = {},
+    width : Dp,
 ){
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
     ){
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier
                 .background(color = Color.White),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -73,7 +75,8 @@ fun CustomSelectDialog(
             ){
                 CustomSpinner(
                     modifier = Modifier.padding(horizontal = 20.dp),
-                    itemList = categoryList
+                    itemList = categoryList,
+                    width = width - 60.dp
                 )
             }
             Spacer(Modifier.height(10.dp))
@@ -125,6 +128,7 @@ fun TestCustomInputDialog(){
             CustomSelectDialog(
                 categoryList = mutableListOf(),
                 onDismissRequest = {},
+                width = 300.dp
             )
         }
     }
