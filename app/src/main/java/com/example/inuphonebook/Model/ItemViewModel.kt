@@ -133,7 +133,6 @@ class ItemViewModel(context : Context) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.insertEmployee(employee)
             roomRepo.updateEmployee(employee.id, true)
-            _selectedItem.value = employee
         }
     }
     //fav employee 삭제

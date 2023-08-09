@@ -170,10 +170,13 @@ fun EditCategoryScreen(
                 IconButton(
                     modifier = Modifier.size(24.dp),
                     onClick = {
-                        deleteCategory(itemViewModel, checkList)
-                        type = "Delete"
-                        showDialog = true
-                        isDelete = true
+                        //선택된 항목이 없이 삭제를 눌렀을 경우 다이얼로그를 띄우지 않음
+                        if (checkList.size != 0){
+                            deleteCategory(itemViewModel, checkList)
+                            type = "Delete"
+                            showDialog = true
+                            isDelete = true
+                        }
                     }
                 ) {
                     Icon(

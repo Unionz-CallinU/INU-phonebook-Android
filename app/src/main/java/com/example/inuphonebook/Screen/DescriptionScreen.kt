@@ -63,7 +63,7 @@ fun DescriptionScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val categoryList = itemViewModel.categoryList.observeAsState()
-    val employee = itemViewModel.selectedItem.value ?: throw NullPointerException("Error : Selected Employee is NULL")
+    val employee by remember{mutableStateOf(itemViewModel.selectedItem.value ?: throw NullPointerException("Error : Selected Employee is NULL"))}
 
     var selectedCategory by remember{mutableStateOf(employee.category)}
 
