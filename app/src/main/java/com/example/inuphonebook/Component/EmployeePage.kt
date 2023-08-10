@@ -63,7 +63,7 @@ fun EmployeePage(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-        if (employee.photo == null){
+        if (employee.photo == null || employee.photo == ""){
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -271,10 +271,14 @@ fun EmployeePage(
                 ){
                     Text(
                         modifier = Modifier.clickable{
-                            val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
-                                data = Uri.parse("mailto:${employee.email}")
+                            if (employee.email != "-"){
+                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
+                                    data = Uri.parse("mailto:${employee.email}")
+                                }
+                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
+                            } else {
+                                showToast(context,"등록된 email이 없습니다.")
                             }
-                            context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
                         },
                         text = employee.email,
                         fontSize = 18.sp,

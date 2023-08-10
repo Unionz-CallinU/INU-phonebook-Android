@@ -55,6 +55,8 @@ fun DescriptionScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
+    val TAG = "DescriptionScreen"
+
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
@@ -85,7 +87,8 @@ fun DescriptionScreen(
                 cancelMsg = "취소",
                 okMsg = "확인",
                 onOkClick = {
-                    itemViewModel.insertEmployee(employee)
+                    itemViewModel.insertEmployee(employee, selectedCategory ?: "기본")
+                    employee.isFavorite = true
                     showCheckDialog = true
                     showDialog = false
                 },
@@ -104,6 +107,7 @@ fun DescriptionScreen(
                 okMsg = "확인",
                 onOkClick = {
                     itemViewModel.deleteEmployee(employee.id)
+                    employee.isFavorite = false
                     showDialog = false
                 }
             )
@@ -174,9 +178,11 @@ fun DescriptionScreen(
 
         }
         LaunchedEffect(selectedCategory){
-            coroutineScope.launch(Dispatchers.IO){
-                itemViewModel.updateEmployeeCategory(employee,selectedCategory!!)
-                itemViewModel.fetchFavEmployee()
+            if (selectedCategory != null){
+                coroutineScope.launch(Dispatchers.IO){
+                    itemViewModel.updateEmployeeCategory(employee,selectedCategory!!)
+                    itemViewModel.fetchFavEmployee()
+                }
             }
         }
     }

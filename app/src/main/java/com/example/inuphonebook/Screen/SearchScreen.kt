@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +45,9 @@ import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SearchScreen(
@@ -50,11 +55,14 @@ fun SearchScreen(
     navController : NavController,
     _searchContent : String,
 ){
+    val TAG = "SearchScreen"
     val context = LocalContext.current
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
 
     val employeeDatas = itemViewModel.employeeDatas.observeAsState()
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -93,32 +101,41 @@ fun SearchScreen(
                 searchContent = content
             },
             onKeyboardDone = {
-//                if (searchContent == ""){
-//                    showToast(
-//                        context = context,
-//                        msg = "검색 내용을 입력해주세요"
-//                    )
-//                } else {
-//                    val resultMsg = itemViewModel.search(searchContent)
-//                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-//                        showToast(context, resultMsg)
-//                    }
-//                }
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    coroutineScope.launch(Dispatchers.IO){
+                        val resultMsg = itemViewModel.search(searchContent).await()
+                        withContext(Dispatchers.Main){
+                            if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+                                showToast(context, resultMsg)
+                            }
+                        }
+                    }
+                }
             },
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search_icon,
             onTrailingClick = {
-//                if (searchContent == ""){
-//                    showToast(
-//                        context = context,
-//                        msg = "검색 내용을 입력해주세요"
-//                    )
-//                } else {
-//                    val resultMsg = itemViewModel.search(searchContent)
-//                    if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-//                        showToast(context, resultMsg)
-//                    }
-//                }
+                if (searchContent == ""){
+                    showToast(
+                        context = context,
+                        msg = "검색 내용을 입력해주세요"
+                    )
+                } else {
+                    coroutineScope.launch(Dispatchers.IO){
+                        val resultMsg = itemViewModel.search(searchContent).await()
+                        withContext(Dispatchers.Main){
+                            if (resultMsg != "Success" && resultMsg != "Result is NULL"){
+                                showToast(context, resultMsg)
+                            }
+                        }
+                    }
+
+                }
             }
         )
 
@@ -158,13 +175,16 @@ fun SearchScreen(
                         employee = employee,
                         onClick = {
                             itemViewModel.setSelectedItem(employee)
+                            Log.d(TAG,"selectedItem : ${employee}")
+                            Log.d(TAG,"selectedItem in ViewModel : ${itemViewModel.selectedItem}")
                             navController.navigate(Screens.DescriptionScreen.name)
                         },
                         onFavoriteClick = {
                             if (employee.isFavorite){
                                 itemViewModel.deleteEmployee(employee.id)
                             } else {
-                                itemViewModel.insertEmployee(employee)
+                                //카테고리 선택 dialog를 띄울 것 인지?
+                                itemViewModel.insertEmployee(employee,"기본")
                             }
                         }
                     )

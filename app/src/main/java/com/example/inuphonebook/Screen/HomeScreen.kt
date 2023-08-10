@@ -39,6 +39,7 @@ import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeScreen(
@@ -127,14 +128,18 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-//                            val resultMsg = itemViewModel.search(searchContent)
-//                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
-                                navController.navigate(
-                                    route = "${Screens.SearchScreen.name}/$searchContent"
-                                )
-//                            } else {
-//                                showToast(context, resultMsg)
-//                            }
+                            coroutineScope.launch(Dispatchers.IO){
+                                val resultMsg = itemViewModel.search(searchContent).await()
+                                withContext(Dispatchers.Main){
+                                    if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                                        navController.navigate(
+                                            route = "${Screens.SearchScreen.name}/$searchContent"
+                                        )
+                                    } else {
+                                        showToast(context, resultMsg)
+                                    }
+                                }
+                            }
                         }
                     },
                     placeHolder = "상세 정보를 입력하세요",
@@ -145,14 +150,18 @@ fun HomeScreen(
                                 msg = "검색 내용을 입력해주세요"
                             )
                         } else {
-//                            val resultMsg = itemViewModel.search(searchContent)
-//                            if (resultMsg == "Success" || resultMsg == "Result is NULL"){
-                                navController.navigate(
-                                    route = "${Screens.SearchScreen.name}/$searchContent"
-                                )
-//                            } else {
-//                                showToast(context, resultMsg)
-//                            }
+                            coroutineScope.launch(Dispatchers.IO){
+                                val resultMsg = itemViewModel.search(searchContent).await()
+                                withContext(Dispatchers.Main){
+                                    if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                                        navController.navigate(
+                                            route = "${Screens.SearchScreen.name}/$searchContent"
+                                        )
+                                    } else {
+                                        showToast(context, resultMsg)
+                                    }
+                                }
+                            }
                         }
                     }
                 )

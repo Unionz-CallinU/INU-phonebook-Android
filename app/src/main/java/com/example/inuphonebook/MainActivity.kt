@@ -32,22 +32,6 @@ class MainActivity : ComponentActivity() {
                 //RoomDB category에 "기본"의 유무를 확인하고 없으면 추가
                 itemViewModel.insertBasicCategoryIsNull()
 
-                itemViewModel.deleteEmployee(1)
-//                test
-//                itemViewModel.insertEmployee(
-//                    Employee(
-//                        name = "서호준",
-//                        role = "학생",
-//                        phoneNumber = "010-6472-3783",
-//                        isFavorite = true,
-//                        photo = null,
-//                        id = 0,
-//                        department_name = "컴퓨터 공학부",
-//                        college_name = "정보통신대학",
-//                        email = "seohojon@naver.com",
-//                        category = "기본"
-//                    )
-//                )
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

@@ -67,10 +67,12 @@ fun FavoriteScreen(
     val categoryList = itemViewModel.categoryList.observeAsState()
 
     var showCheckDialog by remember{mutableStateOf(false)}
+    var type by remember{mutableStateOf("")}
 
     var selectedItem by remember{mutableStateOf<Employee?>(null)}
 
     if (showCheckDialog){
+        if (type == "Delete")
         CustomAlertDialog(
             modifier = Modifier
                 .width(screenWidth / 10 * 8)
@@ -80,12 +82,29 @@ fun FavoriteScreen(
             okMsg = "확인",
             onDismissRequest = {
                 showCheckDialog = false
-                itemViewModel.fetchFavEmployee()
             },
             onOkClick = {
                 showCheckDialog = false
             }
-        )
+        ) else if (type == "Add"){
+            CustomAlertDialog(
+                modifier = Modifier
+                    .width(screenWidth / 10 * 8)
+                    .height(screenHeight / 5),
+                highlightText = "${selectedItem!!.name}",
+                baseText = "님이\n즐겨찾기목록에 추가 되었습니다.",
+                okMsg = "확인",
+                onDismissRequest = {
+                    showCheckDialog = false
+                },
+                onOkClick = {
+                    showCheckDialog = false
+                }
+            )
+        } else {
+            throw IllegalArgumentException("Error : Type is NOT ALLOWED")
+        }
+        itemViewModel.fetchFavEmployee()
     }
 
     Column(
@@ -181,8 +200,13 @@ fun FavoriteScreen(
                                     selectedItem = employee
                                     if (employee.isFavorite){
                                         itemViewModel.deleteEmployee(employee.id)
+                                        employee.isFavorite = false
+                                        type = "Delete"
+                                    } else {
+                                        itemViewModel.insertEmployee(employee, "기본")
+                                        employee.isFavorite = true
+                                        type = "Add"
                                     }
-                                    itemViewModel.fetchFavEmployee()
                                     showCheckDialog = true
                                 }
                             )

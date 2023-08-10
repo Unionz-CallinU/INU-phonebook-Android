@@ -13,13 +13,12 @@ import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.LocalDB.RoomRepository
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeDetailRespDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import com.example.inuphonebook.Retrofit.RetrofitClient
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.awaitResponse
 
 class ItemViewModel(context : Context) : ViewModel() {
     val TAG = "ItemViewModel"
@@ -33,20 +32,7 @@ class ItemViewModel(context : Context) : ViewModel() {
         get() = _categoryList
 
     //임시 더미 데이터
-    private val employeeList = mutableListOf<Employee>(
-        Employee(
-            name = "서호준",
-            role = "학생",
-            phoneNumber = "010-6472-3783",
-            isFavorite = false,
-            photo = null,
-            id = 1,
-            department_name = "컴퓨터 공학부",
-            college_name = "정보통신대학",
-            email = "seohojon@naver.com",
-            category = "기본"
-        )
-    )
+    private val employeeList = mutableListOf<Employee>()
 
     //임원진 리스트
     private val _employeeDatas : MutableLiveData<MutableList<Employee>> = MutableLiveData(employeeList)
@@ -60,8 +46,6 @@ class ItemViewModel(context : Context) : ViewModel() {
     val favEmployeeDatas : LiveData<MutableList<Employee>>
         get() = _favEmployeeDatas
 
-
-    //실험용 dummy test 기본을 NULL로 주고 데이터를 받자
     private val _selectedItem = mutableStateOf<Employee?>(null)
     val selectedItem : State<Employee?> get() = _selectedItem
 
@@ -71,25 +55,24 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //검색
-    fun search(content : String) : String{
-        var resultMsg = ""
-        val employeeReqDto = EmployeeReqDto(content)
-        val call = RetrofitClient.getPhoneBookInterface().search(employeeReqDto)
-        call.enqueue(object : Callback<EmployeeRespBody>{
-            override fun onResponse(
-                call: Call<EmployeeRespBody>,
-                response: Response<EmployeeRespBody>,
-            ) {
-                val httpStatusCode = response.code()
-                when (httpStatusCode){
+    suspend fun search(content : String) : Deferred<String> =
+        viewModelScope.async(Dispatchers.IO){
+            var resultMsg = ""
+            val employeeReqDto = EmployeeReqDto(content)
+            val call = RetrofitClient.getPhoneBookInterface().search(employeeReqDto)
+
+            try {
+                val response = call.awaitResponse()
+                when (response.code()){
                     //응답 성공
                     200 -> {
                         val responseParameter = response.body() ?: throw NullPointerException("Search Content is NULL")
                         //조회 성공
                         if (responseParameter.code == 1){
                             resultMsg = "Success"
+                            Log.d(TAG,"resultMsg in Coroutine = ${resultMsg}")
                             setResult(responseParameter.data)
-                        } 
+                        }
                         //조회 실패
                         else {
                             resultMsg = responseParameter.msg
@@ -105,15 +88,13 @@ class ItemViewModel(context : Context) : ViewModel() {
                         resultMsg = "Result is NULL"
                     }
                 }
-            }
-
-            override fun onFailure(call: Call<EmployeeRespBody>, t: Throwable) {
+            } catch (t : Throwable){
                 //연결 실패 시 처리할 event
                 throw IllegalArgumentException("Error : ${t.message}")
             }
-        })
-        return resultMsg
-    }
+            Log.d(TAG,"resultMsg : ${resultMsg}")
+            return@async resultMsg
+        }
 
     //데이터 갱신
     private fun submitList(list : MutableList<Employee>){
@@ -129,9 +110,10 @@ class ItemViewModel(context : Context) : ViewModel() {
         }
     }
     //fav employee list에 값 추가
-    fun insertEmployee(employee : Employee){
+    fun insertEmployee(employee : Employee, category : String){
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.insertEmployee(employee)
+            roomRepo.updateEmployeeCategory(employee.id, category)
             roomRepo.updateEmployee(employee.id, true)
         }
     }
@@ -192,20 +174,23 @@ class ItemViewModel(context : Context) : ViewModel() {
     //받은 데이터를 정리해서 observed되는 리스트에 setting
     fun setResult(result : List<EmployeeDetailRespDto>){
         val tmpList = mutableListOf<Employee>()
+        Log.d(TAG,"result = ${result}")
         result.forEach{employee ->
-            val isFavorite = favEmployeeDatas.value?.any { it.id == employee.id} ?: throw NullPointerException("FavEmployeeDatas is NULL")
+            //test용 >> Json이 1L과 같은 형식으로 오고 있음
+            val newId = (employee.id).substring(0..0).toLong()
+            val isFavorite = favEmployeeDatas.value?.any { it.id == newId} ?: throw NullPointerException("FavEmployeeDatas is NULL")
 
             val newEmployee = Employee(
                 category = null,
                 name = employee.name,
-                role = employee.role,
+                role = employee.role ?: "-",
                 phoneNumber = employee.phoneNumber,
                 isFavorite = isFavorite,
-                photo = employee.photo,
-                email = employee.email,
+                photo = "",
+                email = employee.email ?: "-",
                 college_name = employee.college,
-                department_name = employee.department,
-                id = employee.id
+                department_name = employee.department ?: "-",
+                id = newId
             )
             tmpList.add(newEmployee)
         }
