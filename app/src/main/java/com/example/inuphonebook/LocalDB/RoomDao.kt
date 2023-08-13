@@ -22,6 +22,10 @@ interface RoomDao {
     @Query("UPDATE employee SET isFavorite = (:isFavorite) WHERE id = (:id)")
     fun updateEmployee(id : Long, isFavorite : Boolean)
 
+    //즐겨찾기 데이터 받아오기
+    @Query("SELECT * FROM Employee WHERE id = (:id)")
+    fun getEmployeeById(id : Long) : Employee
+
     //즐겨찾기 카테고리 리스트
     @Query("SELECT * FROM FavCategory")
     fun getAllCategory() : MutableList<FavCategory>

@@ -1,5 +1,6 @@
 package com.example.inuphonebook
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,10 +46,11 @@ fun PhoneBookApp(
                     navController = navController
                 )
             }
-            composable(Screens.DescriptionScreen.name){
+            composable("${Screens.DescriptionScreen.name}/{id}"){backStackEntry ->
                 DescriptionScreen(
                     itemViewModel = itemViewModel,
-                    navController = navController
+                    navController = navController,
+                    _id = backStackEntry.arguments?.getString("id") ?: throw NullPointerException("Id is NULL")
                 )
             }
             composable("${Screens.SearchScreen.name}/{searchContent}"){backStackEntry ->
@@ -70,54 +72,6 @@ fun PhoneBookApp(
                     navController = navController
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestAppUI(){
-    INUPhoneBookTheme {
-        val navController = rememberNavController()
-        val itemVM = ItemViewModel(LocalContext.current)
-        val itemViewModel = remember{mutableStateOf(itemVM)}
-        itemViewModel.value.fetchFavEmployee()
-        NavHost(
-            navController = navController,
-            startDestination = Screens.HomeScreen.name
-        ){
-            composable(Screens.HomeScreen.name){
-                HomeScreen(
-                    itemViewModel = itemViewModel.value,
-                    navController = navController
-                )
-            }
-            composable(Screens.DescriptionScreen.name){
-                DescriptionScreen(
-                    itemViewModel = itemViewModel.value,
-                    navController = navController
-                )
-            }
-            composable("${Screens.SearchScreen.name}/{searchContent}"){backStackEntry ->
-                SearchScreen(
-                    itemViewModel = itemViewModel.value,
-                    navController = navController,
-                    _searchContent = backStackEntry.arguments?.getString("searchContent") ?: throw NullPointerException("Search Content is NULL")
-                )
-            }
-            composable(Screens.FavoriteScreen.name){
-                FavoriteScreen(
-                    itemViewModel = itemViewModel.value,
-                    navController = navController
-                )
-            }
-        }
-        Box(
-            modifier = Modifier.fillMaxSize().background(color = Color.White)
-        ){
-            PhoneBookApp(
-                itemViewModel = itemViewModel.value
-            )
         }
     }
 }

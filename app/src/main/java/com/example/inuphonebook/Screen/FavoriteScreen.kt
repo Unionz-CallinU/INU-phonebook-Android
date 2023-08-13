@@ -57,6 +57,7 @@ fun FavoriteScreen(
 ){
     val TAG = "FavoriteScreen"
 
+    //local 화면 크기
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
@@ -66,9 +67,12 @@ fun FavoriteScreen(
     val favoriteEmployees = itemViewModel.favEmployeeDatas.observeAsState()
     val categoryList = itemViewModel.categoryList.observeAsState()
 
+    //dialog의 상태
     var showCheckDialog by remember{mutableStateOf(false)}
+    //띄울 dialog의 타입
     var type by remember{mutableStateOf("")}
 
+    //선택된 item
     var selectedItem by remember{mutableStateOf<Employee?>(null)}
 
     if (showCheckDialog){
@@ -193,8 +197,9 @@ fun FavoriteScreen(
                             ListItem(
                                 employee = employee,
                                 onClick = {
-                                    itemViewModel.setSelectedItem(employee)
-                                    navController.navigate(Screens.DescriptionScreen.name)
+                                    navController.navigate(
+                                        route = "${Screens.DescriptionScreen.name}/${employee.id}"
+                                    )
                                 },
                                 onFavoriteClick = {
                                     selectedItem = employee

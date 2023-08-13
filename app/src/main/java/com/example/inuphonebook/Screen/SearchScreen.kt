@@ -144,7 +144,8 @@ fun SearchScreen(
         //if (employeeDatas의 데이터가 비어있으면 로고만 띄워놓기)
         if (employeeDatas.value?.size == 0){
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .padding(bottom = 10.dp),
                 contentAlignment = Alignment.Center
             ){
@@ -174,10 +175,10 @@ fun SearchScreen(
                     ListItem(
                         employee = employee,
                         onClick = {
-                            itemViewModel.setSelectedItem(employee)
                             Log.d(TAG,"selectedItem : ${employee}")
-                            Log.d(TAG,"selectedItem in ViewModel : ${itemViewModel.selectedItem}")
-                            navController.navigate(Screens.DescriptionScreen.name)
+                            navController.navigate(
+                                route = "${Screens.DescriptionScreen.name}/${employee.id}"
+                            )
                         },
                         onFavoriteClick = {
                             if (employee.isFavorite){

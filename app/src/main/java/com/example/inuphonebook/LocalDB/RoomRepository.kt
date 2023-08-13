@@ -2,6 +2,7 @@ package com.example.inuphonebook.LocalDB
 
 import android.content.Context
 import android.util.Log
+import kotlinx.coroutines.coroutineScope
 
 class RoomRepository(context : Context) {
     private var roomDB : RoomDB
@@ -22,6 +23,10 @@ class RoomRepository(context : Context) {
     }
     fun updateEmployee(id : Long, isFavorite : Boolean){
         roomDao.updateEmployee(id, isFavorite)
+    }
+
+    fun getEmployeeById(id : Long) : Employee{
+        return roomDao.getEmployeeById(id)
     }
 
     fun getAllCategory() : MutableList<FavCategory> {

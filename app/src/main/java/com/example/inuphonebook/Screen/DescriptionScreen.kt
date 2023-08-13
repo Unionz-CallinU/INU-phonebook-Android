@@ -53,23 +53,33 @@ import kotlinx.coroutines.launch
 @Composable
 fun DescriptionScreen(
     navController : NavController,
-    itemViewModel: ItemViewModel
+    itemViewModel: ItemViewModel,
+    _id : String
 ){
     val TAG = "DescriptionScreen"
 
+    //화면 설정
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
+    //coroutineScope 정의
     val coroutineScope = rememberCoroutineScope()
 
+    //현재 categoryList
     val categoryList = itemViewModel.categoryList.observeAsState()
-    val employee by remember{mutableStateOf(itemViewModel.selectedItem.value ?: throw NullPointerException("Error : Selected Employee is NULL"))}
+    
+    //선택된 employee
+    val id = _id.toLong()
+    val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL in ${TAG}")
 
-    var selectedCategory by remember{mutableStateOf(employee.category)}
+    //선택된 category
+    var selectedCategory by remember{mutableStateOf<String?>(null)}
 
+    //dialog의 상태
     var showDialog by remember{mutableStateOf(false)}
+    //check dialog의 상태
     var showCheckDialog by remember{mutableStateOf(false)}
 
     if (showDialog){
@@ -199,23 +209,11 @@ fun TestDescriptionScreen(){
                 .fillMaxSize()
                 .background(color = Color.White)
         ){
-            val employee = Employee(
-                name = "서호준",
-                role = "학생",
-                phoneNumber = "010-6472-3783",
-                isFavorite = true,
-                photo = "",
-                id = 0,
-                department_name = "컴퓨터 공학부",
-                college_name = "정보통신대학",
-                email = "seohojon@naver.com",
-                category = "기본"
-            )
             val itemViewModel = ItemViewModel(LocalContext.current)
-            itemViewModel.setSelectedItem(employee)
             DescriptionScreen(
                 navController = rememberNavController(),
-                itemViewModel = itemViewModel
+                itemViewModel = itemViewModel,
+                _id = "0"
             )
         }
     }

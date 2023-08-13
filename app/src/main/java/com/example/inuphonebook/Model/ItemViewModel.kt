@@ -2,6 +2,7 @@ package com.example.inuphonebook.Model
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -45,14 +46,6 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     val favEmployeeDatas : LiveData<MutableList<Employee>>
         get() = _favEmployeeDatas
-
-    private val _selectedItem = mutableStateOf<Employee?>(null)
-    val selectedItem : State<Employee?> get() = _selectedItem
-
-    //선택된 item을 지정하여 description 시 이용
-    fun setSelectedItem(employee : Employee){
-        _selectedItem.value = employee
-    }
 
     //검색
     suspend fun search(content : String) : Deferred<String> =
@@ -135,7 +128,18 @@ class ItemViewModel(context : Context) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.updateEmployeeCategory(employee.id, category)
         }
-        _selectedItem.value = employee
+    }
+
+    //employee id 검색
+    fun getEmployeeById(id : Long) : Employee? {
+        Log.d(TAG,"id = ${id}")
+        employeeDatas.value?.forEach{
+            Log.d(TAG,"fav employee = ${it}")
+            if (it.id == id){
+                return it
+            }
+        }
+        return null
     }
 
     //즐겨찾기 category에 '기본'이 없다면 추가

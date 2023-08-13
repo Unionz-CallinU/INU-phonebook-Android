@@ -54,7 +54,6 @@ fun HomeScreen(
 
     //뒤로가기 앱 종료
     BackHandler {
-
         //뒤로가기 두 번에 종료
         if (backPressed){
             (context as? Activity)?.finish()
@@ -133,7 +132,7 @@ fun HomeScreen(
                                 withContext(Dispatchers.Main){
                                     if (resultMsg == "Success" || resultMsg == "Result is NULL"){
                                         navController.navigate(
-                                            route = "${Screens.SearchScreen.name}/$searchContent"
+                                            route = "${Screens.SearchScreen.name}/${searchContent}"
                                         )
                                     } else {
                                         showToast(context, resultMsg)
@@ -155,7 +154,7 @@ fun HomeScreen(
                                 withContext(Dispatchers.Main){
                                     if (resultMsg == "Success" || resultMsg == "Result is NULL"){
                                         navController.navigate(
-                                            route = "${Screens.SearchScreen.name}/$searchContent"
+                                            route = "${Screens.SearchScreen.name}/${searchContent}"
                                         )
                                     } else {
                                         showToast(context, resultMsg)
