@@ -108,8 +108,10 @@ fun SearchScreen(
                     )
                 } else {
                     coroutineScope.launch(Dispatchers.IO){
+                        /** 여기서 async를 사용해서 await()하다보니 속도가 좀 걸리는 듯? >> 구조를 Flow 구조로 바꿔보기 */
                         val resultMsg = itemViewModel.search(searchContent).await()
                         withContext(Dispatchers.Main){
+                            /** contextSwitching을 사용하지 않고 showToast 대신 AlertDialog를 사용해도 될 것 같음 */
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
                             }
@@ -129,6 +131,7 @@ fun SearchScreen(
                     coroutineScope.launch(Dispatchers.IO){
                         val resultMsg = itemViewModel.search(searchContent).await()
                         withContext(Dispatchers.Main){
+                            /** 여기도 마찬가지 */
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
                             }

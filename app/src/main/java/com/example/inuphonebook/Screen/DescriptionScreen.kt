@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,25 +26,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CategorySpinner
-import com.example.inuphonebook.Component.CustomAddCategoryDialog
 import com.example.inuphonebook.Component.CustomAlertDialog
 import com.example.inuphonebook.Component.CustomSelectDialog
 import com.example.inuphonebook.Component.EmployeePage
 import com.example.inuphonebook.Component.TopBar
-import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
-import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
-import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,7 +82,7 @@ fun DescriptionScreen(
                 onDismissRequest = {
                     showDialog = false
                 },
-                categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL"),
+                categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL in ${TAG}"),
                 title = "즐겨찾기",
                 message = "즐겨찾기목록에 추가하시겠습니까?",
                 cancelMsg = "취소",
@@ -146,8 +137,6 @@ fun DescriptionScreen(
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Log.d("DescriptionScreen","selectecItem : ${employee}")
-        Log.d("DescriptionScreen","all items : ${itemViewModel.favEmployeeDatas.value}")
         TopBar(
             homeIcon = R.drawable.back_btn,
             homeClick = {
@@ -165,7 +154,7 @@ fun DescriptionScreen(
             if (employee.isFavorite){
                 CategorySpinner(
                     modifier = Modifier.fillMaxWidth(), //itemViewModel에서 가져온 category
-                    categoryList = categoryList.value ?: throw NullPointerException("CategoryList is NULL"),
+                    categoryList = categoryList.value ?: throw NullPointerException("CategoryList is NULL in ${TAG}"),
                     changeItem = {
                         selectedCategory = it
                     },

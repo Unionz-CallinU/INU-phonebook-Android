@@ -63,7 +63,6 @@ class ItemViewModel(context : Context) : ViewModel() {
                         //조회 성공
                         if (responseParameter.code == 1){
                             resultMsg = "Success"
-                            Log.d(TAG,"resultMsg in Coroutine = ${resultMsg}")
                             setResult(responseParameter.data)
                         }
                         //조회 실패
