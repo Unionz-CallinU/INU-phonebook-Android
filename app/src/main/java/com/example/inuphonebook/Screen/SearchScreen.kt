@@ -18,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.inuphonebook.Component.CustomAlertDialog
+import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
@@ -57,12 +62,50 @@ fun SearchScreen(
 ){
     val TAG = "SearchScreen"
     val context = LocalContext.current
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
 
     val employeeDatas = itemViewModel.employeeDatas.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    var type by remember{mutableStateOf("")}
+    var showDialog by remember{mutableStateOf(false)}
+
+    if (showDialog){
+        when (type) {
+            "delete" -> {
+                CustomCheckDialog(
+                    modifier = Modifier
+                        .width(screenWidth / 10 * 8)
+                        .height(screenHeight / 4),
+                    onDismissRequest = {
+                        showDialog = false
+                    },
+                    newCategory = "즐겨찾기 삭제 되었습니다.",
+                    msg = "",
+                    okMsg = "확인"
+                )
+            }
+            "insert" -> {
+                CustomCheckDialog(
+                    modifier = Modifier
+                        .width(screenWidth / 10 * 8)
+                        .height(screenHeight / 4),
+                    onDismissRequest = {
+                        showDialog = false
+                    },
+                    newCategory = "즐겨찾기 추가 되었습니다.",
+                    msg = "",
+                    okMsg = "확인"
+                )
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -173,12 +216,10 @@ fun SearchScreen(
         } else {
             Spacer(Modifier.width(20.dp))
             LazyColumn{
-                itemViewModel.fetchFavEmployee()
                 items(employeeDatas.value!!){employee ->
                     ListItem(
                         employee = employee,
                         onClick = {
-                            Log.d(TAG,"selectedItem : ${employee}")
                             navController.navigate(
                                 route = "${Screens.DescriptionScreen.name}/${employee.id}"
                             )
@@ -186,10 +227,13 @@ fun SearchScreen(
                         onFavoriteClick = {
                             if (employee.isFavorite){
                                 itemViewModel.deleteEmployee(employee.id)
+                                type = "delete"
                             } else {
-                                //카테고리 선택 dialog를 띄울 것 인지?
                                 itemViewModel.insertEmployee(employee,"기본")
+                                type = "insert"
                             }
+                            employee.isFavorite = !employee.isFavorite
+                            showDialog = true
                         }
                     )
                 }

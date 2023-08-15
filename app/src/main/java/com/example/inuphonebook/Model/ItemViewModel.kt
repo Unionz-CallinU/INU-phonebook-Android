@@ -107,12 +107,14 @@ class ItemViewModel(context : Context) : ViewModel() {
             roomRepo.insertEmployee(employee)
             roomRepo.updateEmployeeCategory(employee.id, category)
             roomRepo.updateEmployee(employee.id, true)
+            fetchFavEmployee()
         }
     }
     //fav employee 삭제
     fun deleteEmployee(id : Long){
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.deleteEmployee(id)
+            fetchFavEmployee()
         }
     }
     //fav employee 수정

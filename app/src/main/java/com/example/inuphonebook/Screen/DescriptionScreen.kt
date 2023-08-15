@@ -66,7 +66,7 @@ fun DescriptionScreen(
     val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL in ${TAG}")
 
     //선택된 category
-    var selectedCategory by remember{mutableStateOf<String?>(null)}
+    var selectedCategory by remember{mutableStateOf("기본")}
 
     //dialog의 상태
     var showDialog by remember{mutableStateOf(false)}
@@ -152,13 +152,14 @@ fun DescriptionScreen(
             modifier = Modifier.fillMaxSize()
         ){
             if (employee.isFavorite){
+                Log.d(TAG,"selectedCategroy : ${selectedCategory}")
                 CategorySpinner(
                     modifier = Modifier.fillMaxWidth(), //itemViewModel에서 가져온 category
                     categoryList = categoryList.value ?: throw NullPointerException("CategoryList is NULL in ${TAG}"),
                     changeItem = {
                         selectedCategory = it
                     },
-                    selectedCategory = selectedCategory ?: "기본"
+                    selectedCategory = selectedCategory
                 )
             }
 
@@ -177,11 +178,9 @@ fun DescriptionScreen(
 
         }
         LaunchedEffect(selectedCategory){
-            if (selectedCategory != null){
-                coroutineScope.launch(Dispatchers.IO){
-                    itemViewModel.updateEmployeeCategory(employee,selectedCategory!!)
-                    itemViewModel.fetchFavEmployee()
-                }
+            coroutineScope.launch(Dispatchers.IO){
+                itemViewModel.updateEmployeeCategory(employee,selectedCategory)
+                itemViewModel.fetchFavEmployee()
             }
         }
     }
