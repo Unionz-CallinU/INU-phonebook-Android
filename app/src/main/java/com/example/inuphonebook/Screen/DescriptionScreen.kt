@@ -66,7 +66,7 @@ fun DescriptionScreen(
     val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL in ${TAG}")
 
     //선택된 category
-    var selectedCategory by remember{mutableStateOf("기본")}
+    var selectedCategory by remember{mutableStateOf(employee.category ?: "기본")}
 
     //dialog의 상태
     var showDialog by remember{mutableStateOf(false)}
@@ -88,7 +88,7 @@ fun DescriptionScreen(
                 cancelMsg = "취소",
                 okMsg = "확인",
                 onOkClick = {
-                    itemViewModel.insertEmployee(employee, selectedCategory ?: "기본")
+                    itemViewModel.insertEmployee(employee, selectedCategory)
                     employee.isFavorite = true
                     showCheckDialog = true
                     showDialog = false

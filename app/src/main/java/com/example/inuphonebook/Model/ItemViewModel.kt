@@ -133,7 +133,11 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     //employee id 검색
     fun getEmployeeById(id : Long) : Employee? {
-        Log.d(TAG,"id = ${id}")
+        favEmployeeDatas.value?.forEach{
+            if (it.id == id){
+                return it
+            }
+        }
         employeeDatas.value?.forEach{
             Log.d(TAG,"fav employee = ${it}")
             if (it.id == id){
