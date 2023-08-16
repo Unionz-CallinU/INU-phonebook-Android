@@ -31,7 +31,6 @@ fun TopBar(
     modifier : Modifier = Modifier,
     title : String = "",
     homeIcon : Int,
-    homeIconSize : Dp,
     homeClick : () -> Unit = {},
     isFavorite : Boolean = false,
     favoriteIcon : Int?,
@@ -52,10 +51,10 @@ fun TopBar(
                 )
             }
         },
-        modifier = modifier.padding(horizontal = 10.dp),
+        modifier = modifier.padding(horizontal = 20.dp),
         navigationIcon = {
             IconButton(
-                modifier = Modifier.size(homeIconSize),
+                modifier = Modifier.size(24.dp),
                 onClick = homeClick
             ){
                 Icon(
@@ -67,24 +66,18 @@ fun TopBar(
         actions = {
             if (favoriteIcon != null){
                 IconButton(
+                    modifier = Modifier.size(24.dp),
                     onClick = favoriteClick
                 ){
                     Icon(
-                        modifier = Modifier.size(24.dp),
                         painter = painterResource(favoriteIcon),
                         contentDescription = "actionIcon",
                         tint = if(isFavorite) Color.Yellow else Color.Unspecified
                     )
                 }
             } else {
-                Spacer(Modifier.width(homeIconSize))
+                Spacer(Modifier.width(24.dp))
             }
         }
     )
-}
-
-@Preview
-@Composable
-fun TestTopAppBar(){
-
 }

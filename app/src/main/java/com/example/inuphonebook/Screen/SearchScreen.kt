@@ -33,6 +33,8 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +50,7 @@ import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
@@ -118,7 +121,6 @@ fun SearchScreen(
             homeClick = {
                 navController.navigate(Screens.HomeScreen.name)
             },
-            homeIconSize = 40.dp,
             favoriteIcon = R.drawable.favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
@@ -130,10 +132,13 @@ fun SearchScreen(
         Text(
             text = searchContent,
             fontSize = 22.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+            color = Black,
+            letterSpacing = 2.sp
         )
 
-        Spacer(Modifier.height(17.dp))
+        Spacer(Modifier.height(25.dp))
 
         SearchBar(
             modifier = Modifier
@@ -151,10 +156,8 @@ fun SearchScreen(
                     )
                 } else {
                     coroutineScope.launch(Dispatchers.IO){
-                        /** 여기서 async를 사용해서 await()하다보니 속도가 좀 걸리는 듯? >> 구조를 Flow 구조로 바꿔보기 */
                         val resultMsg = itemViewModel.search(searchContent).await()
                         withContext(Dispatchers.Main){
-                            /** contextSwitching을 사용하지 않고 showToast 대신 AlertDialog를 사용해도 될 것 같음 */
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
                             }
@@ -174,18 +177,16 @@ fun SearchScreen(
                     coroutineScope.launch(Dispatchers.IO){
                         val resultMsg = itemViewModel.search(searchContent).await()
                         withContext(Dispatchers.Main){
-                            /** 여기도 마찬가지 */
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
                             }
                         }
                     }
-
                 }
             }
         )
 
-        Spacer(Modifier.height(17.dp))
+        Spacer(Modifier.height(80.dp))
 
         //if (employeeDatas의 데이터가 비어있으면 로고만 띄워놓기)
         if (employeeDatas.value?.size == 0){
@@ -214,7 +215,6 @@ fun SearchScreen(
                 }
             }
         } else {
-            Spacer(Modifier.width(20.dp))
             LazyColumn{
                 items(employeeDatas.value!!){employee ->
                     ListItem(
@@ -225,12 +225,12 @@ fun SearchScreen(
                             )
                         },
                         onFavoriteClick = {
-                            if (employee.isFavorite){
+                            type = if (employee.isFavorite){
                                 itemViewModel.deleteEmployee(employee.id)
-                                type = "delete"
+                                "delete"
                             } else {
                                 itemViewModel.insertEmployee(employee,"기본")
-                                type = "insert"
+                                "insert"
                             }
                             employee.isFavorite = !employee.isFavorite
                             showDialog = true

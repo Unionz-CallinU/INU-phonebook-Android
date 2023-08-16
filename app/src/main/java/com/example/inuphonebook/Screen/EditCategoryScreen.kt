@@ -143,7 +143,6 @@ fun EditCategoryScreen(
                 homeClick = {
                     navController.navigateUp()
                 },
-                homeIconSize = 40.dp,
                 favoriteIcon = null,
                 title = "즐겨찾기 편집"
             )

@@ -90,7 +90,6 @@ fun HomeScreen(
                 homeIcon = R.drawable.home,
                 homeClick = {
                 },
-                homeIconSize = 24.dp,
                 favoriteIcon = R.drawable.favorite,
                 favoriteClick = {
                     navController.navigate(Screens.FavoriteScreen.name)
@@ -109,7 +108,7 @@ fun HomeScreen(
                     logoIcon = R.drawable.main_logo
                 )
 
-                Spacer(Modifier.height(35.dp))
+                Spacer(Modifier.height(45.dp))
 
                 SearchBar(
                     modifier = Modifier

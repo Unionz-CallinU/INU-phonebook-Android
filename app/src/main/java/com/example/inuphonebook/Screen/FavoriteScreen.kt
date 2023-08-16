@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -119,19 +120,20 @@ fun FavoriteScreen(
         TopBar(
             title = "즐겨찾기 목록",
             homeIcon = R.drawable.back_btn,
-            homeIconSize = 40.dp,
             favoriteIcon = null,
             homeClick = {
                 navController.navigateUp()
             }
         )
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(53.dp))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .height(25.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ){
             IconButton(
+                modifier = Modifier.size(25.dp),
                 onClick = {
                     navController.navigate(Screens.EditCategoryScreen.name)
                 }
@@ -141,7 +143,7 @@ fun FavoriteScreen(
                     contentDescription = "Favorite Edit"
                 )
             }
-            Spacer(Modifier.width(15.dp))
+            Spacer(Modifier.width(20.dp))
         }
         //if (favorite List가 존재하지 않는다면)
         if (favoriteEmployees.value!!.isEmpty()){
@@ -159,19 +161,19 @@ fun FavoriteScreen(
                     Logo(
                         height = 100.dp,
                         width = 76.dp,
-                        logoIcon = R.drawable.main_logo,
-                        colorFilter = ColorFilter.tint(Color.LightGray)
+                        logoIcon = R.drawable.non_color_logo,
+                        colorFilter = null
                     )
-                    Spacer(Modifier.height(55.dp))
+                    Spacer(Modifier.height(52.dp))
                     Text(
-                        text = "즐겨찾기 목록에 추가된 연락처가 없습니다",
+                        text = "즐겨찾기 목록에 추가된\n연락처가 없습니다",
                         fontSize = 14.sp,
                         color = Color.LightGray
                     )
                 }
             }
         } else {
-            Spacer(Modifier.height(17.dp))
+            Spacer(Modifier.height(14.dp))
             //if(학과 사무실 정보의 list.size가 0이 아니라면)
             categoryList.value?.forEach{category ->
                 Row(

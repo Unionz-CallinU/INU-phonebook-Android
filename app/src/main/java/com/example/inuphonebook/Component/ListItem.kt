@@ -53,7 +53,7 @@ fun ListItem(
     ){
         Row(
             Modifier
-                .padding(start = 15.dp, end = 15.dp, top = 8.dp)
+                .padding(start = 20.dp, end = 20.dp, top = 8.dp)
                 .height(60.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -102,8 +102,8 @@ fun ListItem(
                 onClick = onFavoriteClick
             ) {
                 Icon(
-                    modifier = Modifier.size(32.dp),
-                    painter = painterResource(R.drawable.tmp_favorite_not),
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(R.drawable.filled_star),
                     contentDescription = "Is Favorite",
                     tint = if(employee.isFavorite) Yellow else Gray1
                 )

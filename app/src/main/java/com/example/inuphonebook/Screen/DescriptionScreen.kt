@@ -142,7 +142,6 @@ fun DescriptionScreen(
             homeClick = {
                 navController.navigateUp()
             },
-            homeIconSize = 40.dp,
             favoriteIcon = if(employee.isFavorite) R.drawable.minus_btn else R.drawable.plus_btn,
             favoriteClick = {
                 showDialog = true
@@ -169,7 +168,7 @@ fun DescriptionScreen(
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp),
                 verticalArrangement = Arrangement.Center
             ){
-                Spacer(Modifier.height(40.dp))
+                Spacer(Modifier.height(30.dp))
                 EmployeePage(
                     employee = employee,
                     context = LocalContext.current
