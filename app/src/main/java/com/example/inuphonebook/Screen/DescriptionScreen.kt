@@ -54,7 +54,7 @@ fun DescriptionScreen(
     
     //현재 employee
     val id = _id.toLong() //현재는 String으로 받기에 Long형으로 받는다면 바로 받아오면 될 듯
-    val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL in ${TAG}")
+    val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL on ${TAG}")
 
     //현재 category
     var selectedCategory by remember{mutableStateOf(employee.category ?: "기본")}
@@ -74,7 +74,7 @@ fun DescriptionScreen(
                 onDismissRequest = {
                     showDialog = false
                 },
-                categoryList = categories.value ?: throw NullPointerException("Error : categoryList is NULL in ${TAG}"),
+                categoryList = categories.value ?: throw NullPointerException("Error : categoryList is NULL on ${TAG}"),
                 title = "즐겨찾기",
                 message = "즐겨찾기목록에 추가하시겠습니까?",
                 cancelMsg = "취소",
@@ -147,7 +147,7 @@ fun DescriptionScreen(
             if (employee.isFavorite){
                 CategorySpinner(
                     modifier = Modifier.fillMaxWidth(),
-                    categoryList = categories.value ?: throw NullPointerException("CategoryList is NULL in ${TAG}"),
+                    categoryList = categories.value ?: throw NullPointerException("Error : CategoryList is NULL on ${TAG}"),
                     changeItem = {
                         selectedCategory = it
                     },

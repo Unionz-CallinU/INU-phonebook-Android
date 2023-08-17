@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,9 +22,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.inuphonebook.Component.CustomAlertDialog
+import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
@@ -39,16 +44,70 @@ fun HomeScreen(
     navController : NavController,
     itemViewModel: ItemViewModel
 ){
+    val TAG = "HomeScreen"
+
+    //화면
     val context = LocalContext.current
 
-    //네트워크 연결 관리자
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
 
     val coroutineScope = rememberCoroutineScope()
 
     //backPressed 상태
     var backPressed by remember{mutableStateOf(false)}
 
+    //네트워크 연결 관리자
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    //와이파이 or 데이터 연결 확인
+    val networkCapabilities = connectivityManager.activeNetwork?.let{
+        connectivityManager.getNetworkCapabilities(it)
+    }
+
+    val isWifiConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+    val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
+    val isConnected = isWifiConnected || isCellularConnected
+
+    //네트워크 오류 dialog 상태
+    var showNetworkErrorDialog by remember{mutableStateOf(false)}
+
+    //검색 내용
+    var searchContent by remember{mutableStateOf("")}
+
+    //검색 event
+    val searchEvent : () -> Unit = {
+        //인터넷 연결
+        if (isConnected){
+            if (searchContent == ""){
+                showToast(
+                    context = context,
+                    msg = "검색 내용을 입력해주세요"
+                )
+            } else {
+                coroutineScope.launch(Dispatchers.IO){
+                    val resultMsg = itemViewModel.search(searchContent).await()
+                    Log.d(TAG,"before navigate = ${System.currentTimeMillis()}")
+                    Log.d(TAG,"result message : ${resultMsg}")
+                    withContext(Dispatchers.Main){
+                        if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                            navController.navigate(
+                                route = "${Screens.SearchScreen.name}/${searchContent}"
+                            )
+                        } else {
+                            showToast(context, resultMsg)
+                        }
+                    }
+                }
+            }
+        }
+        //미 연결 시
+        else {
+            showNetworkErrorDialog = true
+        }
+    }
+    
     //뒤로가기 앱 종료
     BackHandler {
         //뒤로가기 두 번에 종료
@@ -65,107 +124,65 @@ fun HomeScreen(
         }
     }
 
-    //와이파이 or 데이터 연결 확인
-    val networkCapabilities = connectivityManager.activeNetwork?.let{
-        connectivityManager.getNetworkCapabilities(it)
+    //네트워크 오류 dialog + Home 화면으로 돌아감
+    if (showNetworkErrorDialog) {
+        val onDismissRequest = {
+            showNetworkErrorDialog = false
+            navController.navigate(Screens.HomeScreen.name)
+        }
+        CustomCheckDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 4),
+            onDismissRequest = onDismissRequest,
+            newCategory = "경고!",
+            msg = "네트워크 연결이 불안정합니다.\n확인하고 다시 실행시켜 주세요",
+            okMsg = "확인",
+        )
     }
 
-    val isWifiConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
-    val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
-    val isConnected = isWifiConnected || isCellularConnected
-
-    //연결이 되어있을 경우
-    if (isConnected){
-        //검색 내용
-        var searchContent by remember{mutableStateOf("")}
-
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        TopBar(
+            homeIcon = R.drawable.home,
+            homeClick = {
+            },
+            favoriteIcon = R.drawable.favorite,
+            favoriteClick = {
+                navController.navigate(Screens.FavoriteScreen.name)
+            }
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
-            TopBar(
-                homeIcon = R.drawable.home,
-                homeClick = {
-                },
-                favoriteIcon = R.drawable.favorite,
-                favoriteClick = {
-                    navController.navigate(Screens.FavoriteScreen.name)
-                }
+
+            Spacer(Modifier.height(145.dp))
+
+            Logo(
+                height = 100.dp,
+                width = 76.dp,
+                logoIcon = R.drawable.main_logo
             )
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
 
-                Spacer(Modifier.height(145.dp))
+            Spacer(Modifier.height(45.dp))
 
-                Logo(
-                    height = 100.dp,
-                    width = 76.dp,
-                    logoIcon = R.drawable.main_logo
-                )
-
-                Spacer(Modifier.height(45.dp))
-
-                SearchBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 40.dp),
-                    value = searchContent,
-                    onValueChange = {content ->
-                        searchContent = content
-                    },
-                    trailingIcon = R.drawable.search_icon,
-                    onTrailingClick = {
-                        if (searchContent == ""){
-                            showToast(
-                                context = context,
-                                msg = "검색 내용을 입력해주세요"
-                            )
-                        } else {
-                            coroutineScope.launch(Dispatchers.IO){
-                                val resultMsg = itemViewModel.search(searchContent).await()
-                                withContext(Dispatchers.Main){
-                                    if (resultMsg == "Success" || resultMsg == "Result is NULL"){
-                                        navController.navigate(
-                                            route = "${Screens.SearchScreen.name}/${searchContent}"
-                                        )
-                                    } else {
-                                        showToast(context, resultMsg)
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    placeHolder = "상세 정보를 입력하세요",
-                    onKeyboardDone = {
-                        if (searchContent == ""){
-                            showToast(
-                                context = context,
-                                msg = "검색 내용을 입력해주세요"
-                            )
-                        } else {
-                            coroutineScope.launch(Dispatchers.IO){
-                                val resultMsg = itemViewModel.search(searchContent).await()
-                                withContext(Dispatchers.Main){
-                                    if (resultMsg == "Success" || resultMsg == "Result is NULL"){
-                                        navController.navigate(
-                                            route = "${Screens.SearchScreen.name}/${searchContent}"
-                                        )
-                                    } else {
-                                        showToast(context, resultMsg)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                )
-            }
+            SearchBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp),
+                value = searchContent,
+                onValueChange = {content ->
+                    searchContent = content
+                },
+                trailingIcon = R.drawable.search_icon,
+                onTrailingClick = searchEvent,
+                placeHolder = "상세 정보를 입력하세요",
+                onKeyboardDone = searchEvent
+            )
         }
-    }
-    //미 연결 시
-    else {
-        navController.navigate(Screens.SplashScreen.name)
     }
 }
 

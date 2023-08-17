@@ -1,6 +1,9 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.inuphonebook.Component.CustomAlertDialog
 import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
@@ -69,7 +73,7 @@ fun SearchScreen(
     var searchContent by remember{mutableStateOf(_searchContent)}
 
     //즐겨찾기 데이터
-    val employees = itemViewModel.employeeDatas.observeAsState()
+    val employees = itemViewModel.employees.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -78,6 +82,7 @@ fun SearchScreen(
     //dialog 상태
     var showDialog by remember{mutableStateOf(false)}
 
+    //즐겨찾기 삭제 혹은 추가 dialog
     if (showDialog){
         when (eventType) {
             "delete" -> {
@@ -109,6 +114,7 @@ fun SearchScreen(
         }
     }
 
+    //검색 내용
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -156,6 +162,7 @@ fun SearchScreen(
                 } else {
                     coroutineScope.launch(Dispatchers.IO){
                         val resultMsg = itemViewModel.search(searchContent).await()
+                        Log.d(TAG,"before navigate = ${System.currentTimeMillis()}")
                         withContext(Dispatchers.Main){
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)

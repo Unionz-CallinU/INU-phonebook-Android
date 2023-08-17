@@ -65,7 +65,7 @@ fun FavoriteScreen(
     val screenHeight = configuration.screenHeightDp.dp
 
     //localDB내 favorite 리스트
-    val favoriteEmployees = itemViewModel.favEmployeeDatas.observeAsState()
+    val favoriteEmployees = itemViewModel.favEmployees.observeAsState()
     val categories = itemViewModel.categoryList.observeAsState()
 
     //dialog의 상태
@@ -109,7 +109,7 @@ fun FavoriteScreen(
                 )
             }
             else -> {
-                throw IllegalArgumentException("Error : Type is NOT ALLOWED")
+                throw IllegalArgumentException("Error : Type is not allowed on ${TAG}")
             }
         }
         itemViewModel.fetchFavEmployee()

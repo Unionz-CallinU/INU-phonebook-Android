@@ -14,11 +14,15 @@ import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.LocalDB.RoomRepository
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeDetailRespDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
+import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import com.example.inuphonebook.Retrofit.RetrofitClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.awaitResponse
 
 class ItemViewModel(context : Context) : ViewModel() {
@@ -36,30 +40,75 @@ class ItemViewModel(context : Context) : ViewModel() {
     private val employeeList = mutableListOf<Employee>()
 
     //임원진 리스트
-    private val _employeeDatas : MutableLiveData<MutableList<Employee>> = MutableLiveData(employeeList)
+    private val _employees : MutableLiveData<MutableList<Employee>> = MutableLiveData(employeeList)
 
     //즐겨찾기 임원진 리스트
-    private val _favEmployeeDatas : MutableLiveData<MutableList<Employee>> = MutableLiveData<MutableList<Employee>>()
+    private val _favEmployees : MutableLiveData<MutableList<Employee>> = MutableLiveData<MutableList<Employee>>()
 
-    val employeeDatas : LiveData<MutableList<Employee>>
-        get() = _employeeDatas
+    val employees : LiveData<MutableList<Employee>>
+        get() = _employees
 
-    val favEmployeeDatas : LiveData<MutableList<Employee>>
-        get() = _favEmployeeDatas
+    val favEmployees : LiveData<MutableList<Employee>>
+        get() = _favEmployees
 
-    //검색
+//    //검색
+//    fun search(content : String) : String {
+//        var resultMsg = ""
+//        val employeeReqDto = EmployeeReqDto(content)
+//        val call = RetrofitClient.getPhoneBookInterface().search(employeeReqDto)
+//        Log.d(TAG, "call end = ${System.currentTimeMillis()}")
+//        call.enqueue(object : Callback<EmployeeRespBody>{
+//            override fun onResponse(
+//                call: Call<EmployeeRespBody>,
+//                response: Response<EmployeeRespBody>,
+//            ) {
+//                when (response.code()) {
+//                    //응답 성공
+//                    200 -> {
+//                        val responseParameter = response.body() ?: throw NullPointerException("Error : Search Content is NULL on ${TAG}")
+//                        //조회 성공
+//                        if (responseParameter.code == 1) {
+//                            Log.d(TAG,"response success = ${System.currentTimeMillis()}")
+//                            resultMsg = "Success"
+//                            setResult(responseParameter.data)
+//                        }
+//                        //조회 실패
+//                        else {
+//                            resultMsg = responseParameter.msg
+//                        }
+//                    }
+//                    //요청 정상 처리 불가
+//                    400 -> {
+//                        resultMsg = "HttpStatus.BAD_REQUEST(400)\n요청이 정상적으로 처리되지 않음"
+//                    }
+//                    //해당 id에 해당하는 직원 없음
+//                    404 -> {
+//                        employeeList.clear()
+//                        resultMsg = "Result is NULL"
+//                    }
+//                }
+//            }
+//            override fun onFailure(call: Call<EmployeeRespBody>, t: Throwable) {
+//                throw IllegalArgumentException("Error : ${t.message}")
+//            }
+//        })
+//        Log.d(TAG,"search end = ${System.currentTimeMillis()}")
+//        return resultMsg
+//    }
+
     suspend fun search(content : String) : Deferred<String> =
         viewModelScope.async(Dispatchers.IO){
             var resultMsg = ""
             val employeeReqDto = EmployeeReqDto(content)
             val call = RetrofitClient.getPhoneBookInterface().search(employeeReqDto)
-
+            Log.d(TAG,"call end = ${System.currentTimeMillis()}")
             try {
+                /** 여기서 2000ms가 걸림 <> 속도를 줄여야 해 */
                 val response = call.awaitResponse()
                 when (response.code()){
                     //응답 성공
                     200 -> {
-                        val responseParameter = response.body() ?: throw NullPointerException("Search Content is NULL")
+                        val responseParameter = response.body() ?: throw NullPointerException("Error : Search Content is NULL on ${TAG}")
                         //조회 성공
                         if (responseParameter.code == 1){
                             resultMsg = "Success"
@@ -84,7 +133,6 @@ class ItemViewModel(context : Context) : ViewModel() {
                 //연결 실패 시 처리할 event
                 throw IllegalArgumentException("Error : ${t.message}")
             }
-            Log.d(TAG,"resultMsg : ${resultMsg}")
             return@async resultMsg
         }
 
@@ -98,7 +146,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     fun fetchFavEmployee(){
         viewModelScope.launch(Dispatchers.IO){
             val tmpList = roomRepo.getFavEmployee()
-            _favEmployeeDatas.postValue(tmpList)
+            _favEmployees.postValue(tmpList)
         }
     }
     //fav employee list에 값 추가
@@ -133,13 +181,12 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     //employee id 검색
     fun getEmployeeById(id : Long) : Employee? {
-        favEmployeeDatas.value?.forEach{
+        favEmployees.value?.forEach{
             if (it.id == id){
                 return it
             }
         }
-        employeeDatas.value?.forEach{
-            Log.d(TAG,"fav employee = ${it}")
+        employees.value?.forEach{
             if (it.id == id){
                 return it
             }
@@ -183,11 +230,10 @@ class ItemViewModel(context : Context) : ViewModel() {
     //받은 데이터를 정리해서 observed되는 리스트에 setting
     fun setResult(result : List<EmployeeDetailRespDto>){
         val tmpList = mutableListOf<Employee>()
-        Log.d(TAG,"result = ${result}")
         result.forEach{employee ->
             //test용 >> Json이 1L과 같은 형식으로 오고 있음
             val newId = (employee.id).substring(0..0).toLong()
-            val isFavorite = favEmployeeDatas.value?.any { it.id == newId} ?: throw NullPointerException("FavEmployeeDatas is NULL")
+            val isFavorite = favEmployees.value?.any { it.id == newId} ?: throw NullPointerException("Error : FavEmployeeDatas is NULL on ${TAG}")
 
             val newEmployee = Employee(
                 category = null,

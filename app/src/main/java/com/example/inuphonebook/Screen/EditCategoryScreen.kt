@@ -118,7 +118,7 @@ fun EditCategoryScreen(
                 )
             }
             else -> {
-                throw IllegalArgumentException("Error : 올바르지 않은 Type")
+                throw IllegalArgumentException("Error : This type is not allowed on ${TAG}")
             }
         }
     }
@@ -249,7 +249,7 @@ fun EditCategoryScreen(
     }
     //categories가 없다면
     else {
-        throw NullPointerException("Error : categoryList.value is NULL")
+        throw NullPointerException("Error : categoryList.value is NULL on ${TAG}")
     }
 }
 
