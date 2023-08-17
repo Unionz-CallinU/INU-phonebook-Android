@@ -32,7 +32,6 @@ fun SplashScreen(
     itemViewModel : ItemViewModel,
     navController : NavController
 ){
-
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -71,23 +70,6 @@ fun SplashScreen(
             delay(2000)
 
             navController.navigate(Screens.HomeScreen.name)
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestSplashScreen(){
-    INUPhoneBookTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ){
-            SplashScreen(
-                itemViewModel = ItemViewModel(LocalContext.current),
-                navController = rememberNavController()
-            )
         }
     }
 }

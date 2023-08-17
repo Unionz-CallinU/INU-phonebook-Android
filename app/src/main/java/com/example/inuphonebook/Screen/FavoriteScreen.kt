@@ -66,38 +66,24 @@ fun FavoriteScreen(
 
     //localDB내 favorite 리스트
     val favoriteEmployees = itemViewModel.favEmployeeDatas.observeAsState()
-    val categoryList = itemViewModel.categoryList.observeAsState()
+    val categories = itemViewModel.categoryList.observeAsState()
 
     //dialog의 상태
     var showCheckDialog by remember{mutableStateOf(false)}
-    //띄울 dialog의 타입
-    var type by remember{mutableStateOf("")}
+
+    var eventType by remember{mutableStateOf("")}
 
     //선택된 item
     var selectedItem by remember{mutableStateOf<Employee?>(null)}
-
+    
     if (showCheckDialog){
-        if (type == "Delete")
-        CustomAlertDialog(
-            modifier = Modifier
-                .width(screenWidth / 10 * 8)
-                .height(screenHeight / 5),
-            highlightText = "${selectedItem!!.name}",
-            baseText = "님이\n즐겨찾기목록에서 삭제 되었습니다.",
-            okMsg = "확인",
-            onDismissRequest = {
-                showCheckDialog = false
-            },
-            onOkClick = {
-                showCheckDialog = false
-            }
-        ) else if (type == "Add"){
-            CustomAlertDialog(
+        when (eventType) {
+            "Delete" -> CustomAlertDialog(
                 modifier = Modifier
                     .width(screenWidth / 10 * 8)
                     .height(screenHeight / 5),
-                highlightText = "${selectedItem!!.name}",
-                baseText = "님이\n즐겨찾기목록에 추가 되었습니다.",
+                highlightText = selectedItem!!.name,
+                baseText = "님이\n즐겨찾기목록에서 삭제 되었습니다.",
                 okMsg = "확인",
                 onDismissRequest = {
                     showCheckDialog = false
@@ -106,8 +92,25 @@ fun FavoriteScreen(
                     showCheckDialog = false
                 }
             )
-        } else {
-            throw IllegalArgumentException("Error : Type is NOT ALLOWED")
+            "Add" -> {
+                CustomAlertDialog(
+                    modifier = Modifier
+                        .width(screenWidth / 10 * 8)
+                        .height(screenHeight / 5),
+                    highlightText = selectedItem!!.name,
+                    baseText = "님이\n즐겨찾기목록에 추가 되었습니다.",
+                    okMsg = "확인",
+                    onDismissRequest = {
+                        showCheckDialog = false
+                    },
+                    onOkClick = {
+                        showCheckDialog = false
+                    }
+                )
+            }
+            else -> {
+                throw IllegalArgumentException("Error : Type is NOT ALLOWED")
+            }
         }
         itemViewModel.fetchFavEmployee()
     }
@@ -145,7 +148,8 @@ fun FavoriteScreen(
             }
             Spacer(Modifier.width(20.dp))
         }
-        //if (favorite List가 존재하지 않는다면)
+        
+        //favorite 아이템이 없다면
         if (favoriteEmployees.value!!.isEmpty()){
             Box(
                 modifier = Modifier
@@ -172,10 +176,11 @@ fun FavoriteScreen(
                     )
                 }
             }
-        } else {
+        } 
+        //favorite 아이템이 있다면
+        else {
             Spacer(Modifier.height(14.dp))
-            //if(학과 사무실 정보의 list.size가 0이 아니라면)
-            categoryList.value?.forEach{category ->
+            categories.value?.forEach{category ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -208,11 +213,11 @@ fun FavoriteScreen(
                                     if (employee.isFavorite){
                                         itemViewModel.deleteEmployee(employee.id)
                                         employee.isFavorite = false
-                                        type = "Delete"
+                                        eventType = "Delete"
                                     } else {
                                         itemViewModel.insertEmployee(employee, "기본")
                                         employee.isFavorite = true
-                                        type = "Add"
+                                        eventType = "Add"
                                     }
                                     showCheckDialog = true
                                 }
@@ -221,21 +226,6 @@ fun FavoriteScreen(
                     }
                 }
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestFavoriteScreen(){
-    INUPhoneBookTheme {
-        Box(
-            Modifier.fillMaxSize()
-        ){
-            FavoriteScreen(
-                navController = rememberNavController(),
-                itemViewModel = ItemViewModel(LocalContext.current)
-            )
         }
     }
 }

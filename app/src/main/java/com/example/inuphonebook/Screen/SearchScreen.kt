@@ -1,13 +1,11 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,8 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -41,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.inuphonebook.Component.CustomAlertDialog
 import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
@@ -51,7 +46,6 @@ import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
-import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,6 +58,8 @@ fun SearchScreen(
     _searchContent : String,
 ){
     val TAG = "SearchScreen"
+
+    //화면
     val context = LocalContext.current
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -72,15 +68,18 @@ fun SearchScreen(
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
 
-    val employeeDatas = itemViewModel.employeeDatas.observeAsState()
+    //즐겨찾기 데이터
+    val employees = itemViewModel.employeeDatas.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
 
-    var type by remember{mutableStateOf("")}
+    var eventType by remember{mutableStateOf("")}
+
+    //dialog 상태
     var showDialog by remember{mutableStateOf(false)}
 
     if (showDialog){
-        when (type) {
+        when (eventType) {
             "delete" -> {
                 CustomCheckDialog(
                     modifier = Modifier
@@ -189,7 +188,7 @@ fun SearchScreen(
         Spacer(Modifier.height(80.dp))
 
         //if (employeeDatas의 데이터가 비어있으면 로고만 띄워놓기)
-        if (employeeDatas.value?.size == 0){
+        if (employees.value?.size == 0){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -216,7 +215,7 @@ fun SearchScreen(
             }
         } else {
             LazyColumn{
-                items(employeeDatas.value!!){employee ->
+                items(employees.value!!){employee ->
                     ListItem(
                         employee = employee,
                         onClick = {
@@ -225,7 +224,7 @@ fun SearchScreen(
                             )
                         },
                         onFavoriteClick = {
-                            type = if (employee.isFavorite){
+                            eventType = if (employee.isFavorite){
                                 itemViewModel.deleteEmployee(employee.id)
                                 "delete"
                             } else {
@@ -244,16 +243,4 @@ fun SearchScreen(
 
 private fun showToast(context : Context, msg : String,){
     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-}
-
-@Composable
-@Preview
-fun TestSearchScreen(){
-    INUPhoneBookTheme {
-        SearchScreen(
-            itemViewModel = ItemViewModel(LocalContext.current),
-            navController = rememberNavController(),
-            _searchContent = "정보 대학"
-        )
-    }
 }

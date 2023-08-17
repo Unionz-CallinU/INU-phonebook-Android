@@ -6,9 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,19 +20,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,9 +40,13 @@ fun HomeScreen(
     itemViewModel: ItemViewModel
 ){
     val context = LocalContext.current
+
+    //네트워크 연결 관리자
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
     val coroutineScope = rememberCoroutineScope()
 
+    //backPressed 상태
     var backPressed by remember{mutableStateOf(false)}
 
     //뒤로가기 앱 종료
@@ -68,7 +65,7 @@ fun HomeScreen(
         }
     }
 
-    //와이파이 연결 확인
+    //와이파이 or 데이터 연결 확인
     val networkCapabilities = connectivityManager.activeNetwork?.let{
         connectivityManager.getNetworkCapabilities(it)
     }
@@ -77,7 +74,7 @@ fun HomeScreen(
     val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
     val isConnected = isWifiConnected || isCellularConnected
 
-    //Wifi에 연결이 되어있을 시
+    //연결이 되어있을 경우
     if (isConnected){
         //검색 내용
         var searchContent by remember{mutableStateOf("")}
@@ -166,29 +163,12 @@ fun HomeScreen(
             }
         }
     }
-//    Wifi 미 연결 시
+    //미 연결 시
     else {
-        navController.navigate(Screens.HomeScreen.name)
+        navController.navigate(Screens.SplashScreen.name)
     }
 }
 
 private fun showToast(context : Context, msg : String,){
     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-}
-
-@Preview
-@Composable
-fun TestHomeScreen(){
-    INUPhoneBookTheme {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ){
-            HomeScreen(
-                navController = rememberNavController(),
-                itemViewModel = ItemViewModel(LocalContext.current)
-            )
-        }
-    }
 }

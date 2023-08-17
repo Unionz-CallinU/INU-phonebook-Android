@@ -1,11 +1,7 @@
 package com.example.inuphonebook.Screen
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,13 +19,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CategorySpinner
 import com.example.inuphonebook.Component.CustomAlertDialog
 import com.example.inuphonebook.Component.CustomSelectDialog
@@ -37,7 +30,6 @@ import com.example.inuphonebook.Component.EmployeePage
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -49,32 +41,32 @@ fun DescriptionScreen(
 ){
     val TAG = "DescriptionScreen"
 
-    //화면 설정
     val configuration = LocalConfiguration.current
-
+    
+    //화면 넓이, 높이
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
-    //coroutineScope 정의
     val coroutineScope = rememberCoroutineScope()
 
-    //현재 categoryList
-    val categoryList = itemViewModel.categoryList.observeAsState()
+    //전체 categoryList
+    val categories = itemViewModel.categoryList.observeAsState()
     
-    //선택된 employee
-    val id = _id.toLong()
+    //현재 employee
+    val id = _id.toLong() //현재는 String으로 받기에 Long형으로 받는다면 바로 받아오면 될 듯
     val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL in ${TAG}")
 
-    //선택된 category
+    //현재 category
     var selectedCategory by remember{mutableStateOf(employee.category ?: "기본")}
 
-    //dialog의 상태
+    //dialog들의 상태
     var showDialog by remember{mutableStateOf(false)}
-    //check dialog의 상태
     var showCheckDialog by remember{mutableStateOf(false)}
 
     if (showDialog){
+        //즐겨찾기가 안되어 있다면 >> 추가
         if (!employee.isFavorite){
+            //즐겨찾기 추가를 확인하는 Dialog
             CustomSelectDialog(
                 modifier = Modifier
                     .width(screenWidth / 10 * 8)
@@ -82,7 +74,7 @@ fun DescriptionScreen(
                 onDismissRequest = {
                     showDialog = false
                 },
-                categoryList = categoryList.value ?: throw NullPointerException("Error : categoryList is NULL in ${TAG}"),
+                categoryList = categories.value ?: throw NullPointerException("Error : categoryList is NULL in ${TAG}"),
                 title = "즐겨찾기",
                 message = "즐겨찾기목록에 추가하시겠습니까?",
                 cancelMsg = "취소",
@@ -95,7 +87,9 @@ fun DescriptionScreen(
                 },
                 width = screenWidth / 10 * 8,
             )
-        } else {
+        } 
+        //즐겨찾기가 되어있다면 >> 삭제
+        else {
             CustomAlertDialog(
                 modifier = Modifier
                     .width(screenWidth / 10 * 8)
@@ -151,10 +145,9 @@ fun DescriptionScreen(
             modifier = Modifier.fillMaxSize()
         ){
             if (employee.isFavorite){
-                Log.d(TAG,"selectedCategroy : ${selectedCategory}")
                 CategorySpinner(
-                    modifier = Modifier.fillMaxWidth(), //itemViewModel에서 가져온 category
-                    categoryList = categoryList.value ?: throw NullPointerException("CategoryList is NULL in ${TAG}"),
+                    modifier = Modifier.fillMaxWidth(),
+                    categoryList = categories.value ?: throw NullPointerException("CategoryList is NULL in ${TAG}"),
                     changeItem = {
                         selectedCategory = it
                     },
@@ -181,27 +174,6 @@ fun DescriptionScreen(
                 itemViewModel.updateEmployeeCategory(employee,selectedCategory)
                 itemViewModel.fetchFavEmployee()
             }
-        }
-    }
-}
-private fun showToast(context : Context, msg : String,){
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-}
-@Preview
-@Composable
-fun TestDescriptionScreen(){
-    INUPhoneBookTheme {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ){
-            val itemViewModel = ItemViewModel(LocalContext.current)
-            DescriptionScreen(
-                navController = rememberNavController(),
-                itemViewModel = itemViewModel,
-                _id = "0"
-            )
         }
     }
 }

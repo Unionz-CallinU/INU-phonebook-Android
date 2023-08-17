@@ -1,6 +1,5 @@
 package com.example.inuphonebook.Screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -55,28 +54,34 @@ fun EditCategoryScreen(
 ){
     val TAG = "EditCategoryScreen"
 
-    val categoryList = itemViewModel.categoryList.observeAsState()
-
-    var showDialog by remember{mutableStateOf(false)} //dialog의 상태 조절
-    var showCheckDialog by remember{mutableStateOf(false)}
-
+    //화면 크기 변수
     val configuration = LocalConfiguration.current
 
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
-    var newCategory by remember{mutableStateOf("")} //category 입력
+    //전체 category
+    val categories = itemViewModel.categoryList.observeAsState()
 
+    //dialog의 상태
+    var showDialog by remember{mutableStateOf(false)}
+    var showCheckDialog by remember{mutableStateOf(false)}
+
+    //추가될 category
+    var newCategory by remember{mutableStateOf("")}
+
+    //선택된 category 모음
     val checkList = mutableListOf<FavCategory>()
 
-    var type by remember{mutableStateOf("")}
+    var eventType by remember{mutableStateOf("")}
 
-    //차선책 필요 (현재 삭제했는지 여부 확인해서 삭제헀으면 모든 상태를 false로 돌리는 중)
+    //삭제 여부
     var isDelete by remember{mutableStateOf(false)}
 
+    //event type에 따른 dialog
     if (showDialog){
-        when (type){
-            "Add" -> {
+        when (eventType){
+            "Insert" -> {
                 CustomAddCategoryDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
@@ -116,9 +121,9 @@ fun EditCategoryScreen(
                 throw IllegalArgumentException("Error : 올바르지 않은 Type")
             }
         }
-
     }
 
+    //추가 확인 dialog
     if (showCheckDialog){
         CustomCheckDialog(
             modifier = Modifier
@@ -134,7 +139,8 @@ fun EditCategoryScreen(
         )
     }
 
-    if (categoryList.value != null){
+    //categories 데이터가 있다면
+    if (categories.value != null){
         Column(
             modifier = Modifier.fillMaxSize()
         ){
@@ -157,7 +163,7 @@ fun EditCategoryScreen(
                     modifier = Modifier.size(24.dp),
                     onClick = {
                         showDialog = !showDialog
-                        type = "Add"
+                        eventType = "Insert"
                     }
                 ) {
                     Icon(
@@ -172,7 +178,7 @@ fun EditCategoryScreen(
                         //선택된 항목이 없이 삭제를 눌렀을 경우 다이얼로그를 띄우지 않음
                         if (checkList.size != 0){
                             deleteCategory(itemViewModel, checkList)
-                            type = "Delete"
+                            eventType = "Delete"
                             showDialog = true
                             isDelete = true
                         }
@@ -191,12 +197,13 @@ fun EditCategoryScreen(
                 verticalArrangement = Arrangement.spacedBy(space = 6.dp)
             ){
                 itemViewModel.fetchAllCategory()
-                items(categoryList.value!!) {category ->
+                items(categories.value!!) {category ->
                     var isSelected by remember{mutableStateOf(false)}
 
+                    //delete되면서 그려진 check 초기화
                     if (isDelete){
                         isSelected = false
-                        if (category == categoryList.value!!.last()){
+                        if (category == categories.value!!.last()){
                             isDelete = false
                         }
                     }
@@ -239,31 +246,17 @@ fun EditCategoryScreen(
                 }
             }
         }
-    } else {
+    }
+    //categories가 없다면
+    else {
         throw NullPointerException("Error : categoryList.value is NULL")
     }
 }
 
+//categories 삭제 함수
 private fun deleteCategory(itemViewModel : ItemViewModel, list : MutableList<FavCategory>){
     list.forEach{
         itemViewModel.deleteCategory(it.id)
     }
     list.clear()
-}
-
-@Preview
-@Composable
-fun TestEditCategoryScreen(){
-    INUPhoneBookTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ){
-            EditCategoryScreen(
-                itemViewModel = ItemViewModel(LocalContext.current),
-                navController = rememberNavController()
-            )
-        }
-    }
 }

@@ -28,8 +28,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             INUPhoneBookTheme {
+
+                //itemViewModel initialize
                 val itemViewModel = ItemViewModel(LocalContext.current)
-                //RoomDB category에 "기본"의 유무를 확인하고 없으면 추가
+
+                //RoomDB category 초기 설정
                 itemViewModel.insertBasicCategoryIsNull()
 
                 Surface(
@@ -40,12 +43,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    INUPhoneBookTheme {
     }
 }
