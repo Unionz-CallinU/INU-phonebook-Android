@@ -3,6 +3,7 @@ package com.example.inuphonebook.Component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,8 @@ fun CustomAddCategoryDialog(
     value : String = "",
     onChangeValue : (String) -> Unit
 ) {
+    val textColor = if(isSystemInDarkTheme()) White else Black
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
@@ -79,7 +82,7 @@ fun CustomAddCategoryDialog(
                         textAlign = TextAlign.Center,
                         text = title,
                         fontSize = 16.sp,
-                        color = Black,
+                        color = textColor,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                         letterSpacing = 1.sp,
                     )
@@ -115,22 +118,6 @@ fun CustomAddCategoryDialog(
                     textAlign = TextAlign.Center
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestAddDialog(){
-    INUPhoneBookTheme {
-        Box(
-            modifier = Modifier.wrapContentSize()
-        ){
-            CustomAddCategoryDialog(
-                onDismissRequest = {},
-                properties = DialogProperties(),
-                onChangeValue = {}
-            )
         }
     }
 }

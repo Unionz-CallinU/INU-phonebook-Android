@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -118,7 +120,7 @@ fun SearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = White),
+            .background(color = MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
@@ -129,7 +131,7 @@ fun SearchScreen(
             favoriteIcon = R.drawable.favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
-            }
+            },
         )
 
         Spacer(Modifier.height(25.dp))
@@ -139,7 +141,7 @@ fun SearchScreen(
             fontSize = 22.sp,
             textAlign = TextAlign.Center,
             fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-            color = Black,
+            color = if(isSystemInDarkTheme()) White else Black,
             letterSpacing = 2.sp
         )
 
@@ -162,7 +164,6 @@ fun SearchScreen(
                 } else {
                     coroutineScope.launch(Dispatchers.IO){
                         val resultMsg = itemViewModel.search(searchContent).await()
-                        Log.d(TAG,"before navigate = ${System.currentTimeMillis()}")
                         withContext(Dispatchers.Main){
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)

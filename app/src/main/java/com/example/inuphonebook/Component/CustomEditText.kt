@@ -88,20 +88,6 @@ fun CustomEditText(
                 }
             },
             shape = shape,
-            /** shadow 처리가 필요함 */
-//            modifier = Modifier.graphicsLayer (
-//                shadowElevation = 0.1f,
-//                clip = true,
-//                ambientShadowColor = Color(0x40000000),
-//                spotShadowColor = Color(0x40000000),
-//                shape = RoundedCornerShape(size = 25.dp)
-//            )
         )
     }
-}
-
-@Preview
-@Composable
-fun TestCustomEditText(){
-
 }

@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -150,7 +151,7 @@ fun EditCategoryScreen(
                     navController.navigateUp()
                 },
                 favoriteIcon = null,
-                title = "즐겨찾기 편집"
+                title = "즐겨찾기 편집",
             )
             Spacer(Modifier.height(40.dp))
             Row(

@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
+import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -33,7 +35,7 @@ fun SearchBar(
     CustomEditText(
         modifier = modifier
             .background(
-                color = BlueGray,
+                color = if (isSystemInDarkTheme()) Gray3 else BlueGray,
                 shape = shape
             ),
         fontSize = fontSize,
@@ -53,7 +55,9 @@ fun SearchBar(
 fun TestSearchBar(){
     INUPhoneBookTheme {
         Box(
-            modifier = Modifier.fillMaxSize().background(color = Color.White)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.White)
         ) {
             SearchBar(
                 modifier = Modifier,

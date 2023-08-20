@@ -2,11 +2,14 @@ package com.example.inuphonebook.Screen
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources.Theme
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +37,8 @@ import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.DarkModeBackground
+import com.example.inuphonebook.ui.theme.White
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -75,6 +80,8 @@ fun HomeScreen(
 
     //검색 내용
     var searchContent by remember{mutableStateOf("")}
+
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
 
     //검색 event
     val searchEvent : () -> Unit = {
@@ -142,7 +149,8 @@ fun HomeScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         TopBar(
@@ -152,7 +160,7 @@ fun HomeScreen(
             favoriteIcon = R.drawable.favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
-            }
+            },
         )
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -180,7 +188,7 @@ fun HomeScreen(
                 trailingIcon = R.drawable.search_icon,
                 onTrailingClick = searchEvent,
                 placeHolder = "상세 정보를 입력하세요",
-                onKeyboardDone = searchEvent
+                onKeyboardDone = searchEvent,
             )
         }
     }

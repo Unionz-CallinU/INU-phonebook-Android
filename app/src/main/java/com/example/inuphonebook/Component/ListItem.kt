@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.DividerLineColor
 import com.example.inuphonebook.ui.theme.Gray1
+import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.Yellow
@@ -41,6 +43,10 @@ fun ListItem(
     onClick : () -> Unit,
     onFavoriteClick : () -> Unit,
 ){
+
+    val textColor = if(isSystemInDarkTheme()) White else Black
+    val subTextColor = if(isSystemInDarkTheme()) Gray2 else Gray3
+
     Column(
         Modifier
             .fillMaxWidth()
@@ -68,7 +74,7 @@ fun ListItem(
                         text = employee.name,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
+                        color = textColor,
                         letterSpacing = 1.sp
                     )
 
@@ -78,7 +84,7 @@ fun ListItem(
                         text = employee.college_name,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
+                        color = subTextColor,
                         letterSpacing = 0.5.sp
                     )
                 }
@@ -89,7 +95,7 @@ fun ListItem(
                     text = employee.phoneNumber,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = Black,
+                    color = textColor,
                     letterSpacing = 1.sp
                 )
 
@@ -105,7 +111,7 @@ fun ListItem(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(R.drawable.filled_star),
                     contentDescription = "Is Favorite",
-                    tint = if(employee.isFavorite) Yellow else Gray1
+                    tint = if(employee.isFavorite) Yellow else if(isSystemInDarkTheme()) Gray2 else Gray1
                 )
             }
         }
@@ -114,35 +120,7 @@ fun ListItem(
         Divider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,
-            color = DividerLineColor
+            color = if(isSystemInDarkTheme()) Gray3 else DividerLineColor
         )
-    }
-}
-
-@Composable
-@Preview
-fun TestListItem(){
-    INUPhoneBookTheme {
-        Box(
-            Modifier.fillMaxSize().background(color = White)
-        ){
-            val dummyItem = Employee(
-                photo = "",
-                name = "서호준",
-                role = "연구생",
-                phoneNumber = "010-6472-3783",
-                isFavorite = true,
-                id = 0,
-                college_name = "정보통신대학",
-                department_name = "컴퓨터공학부",
-                email = "seohojon@naver.com",
-                category = "기본"
-            )
-            ListItem(
-                employee = dummyItem,
-                onClick = {},
-                onFavoriteClick = {},
-            )
-        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +32,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
@@ -52,6 +54,8 @@ fun CustomAlertDialog(
             append(baseText)
         }
     }
+    val textColor = if(isSystemInDarkTheme()) White else Black
+    val dialogBackground = if(isSystemInDarkTheme()) Gray4 else White
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -59,7 +63,10 @@ fun CustomAlertDialog(
     ){
         Column(
             modifier = modifier
-                .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp)),
+                .background(
+                    color = dialogBackground,
+                    shape = RoundedCornerShape(size = 10.dp)
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Spacer(Modifier.height(30.dp))
@@ -68,7 +75,7 @@ fun CustomAlertDialog(
                 text = text,
                 textAlign = TextAlign.Center,
                 fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = Black,
+                color = textColor,
                 letterSpacing = 1.sp
             )
 
@@ -77,15 +84,18 @@ fun CustomAlertDialog(
             Divider(thickness = 1.dp)
 
             Row(
-                modifier = Modifier.fillMaxWidth()
-                    .clickable{
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
                         onOkClick()
                     }
                     .background(color = Blue)
                     .weight(1f)
             ){
                 Text(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     text = okMsg,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
@@ -94,24 +104,6 @@ fun CustomAlertDialog(
                     letterSpacing = 1.sp
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestDialog(){
-    INUPhoneBookTheme {
-        Box(
-            modifier = Modifier.width(250.dp).height(100.dp)
-        ){
-            CustomAlertDialog(
-                onDismissRequest = {},
-                highlightText = "***님이",
-                baseText = "\n 즐겨찾기 목록에 추가되었습니다",
-                okMsg = "확인",
-                onOkClick = {}
-            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.inuphonebook.Component
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.Gray2
+import com.example.inuphonebook.ui.theme.Gray3
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +62,8 @@ fun TopBar(
             ){
                 Icon(
                     painter = painterResource(homeIcon),
-                    contentDescription = "navigationIcon"
+                    contentDescription = "navigationIcon",
+                    tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
                 )
             }
         },
@@ -72,7 +76,7 @@ fun TopBar(
                     Icon(
                         painter = painterResource(favoriteIcon),
                         contentDescription = "actionIcon",
-                        tint = if(isFavorite) Color.Yellow else Color.Unspecified
+                        tint = if(isFavorite) Color.Yellow else if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
                     )
                 }
             } else {

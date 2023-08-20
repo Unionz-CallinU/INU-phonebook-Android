@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import com.example.inuphonebook.ui.theme.White
 
 @Composable
 fun CustomSelectDialog(
@@ -43,13 +46,16 @@ fun CustomSelectDialog(
     onOkClick : () -> Unit = {},
     width : Dp,
 ){
+    val backgroundColor = if(isSystemInDarkTheme()) Gray4 else White
+    val textColor = if(isSystemInDarkTheme()) White else Black
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
     ){
         Column(
             modifier = modifier
-                .background(color = Color.White),
+                .background(color = backgroundColor),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
@@ -58,7 +64,7 @@ fun CustomSelectDialog(
                 text = title,
                 fontSize = 20.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = Black,
+                color = textColor,
                 letterSpacing = 1.sp
             )
             Spacer(Modifier.height(5.dp))
@@ -66,7 +72,7 @@ fun CustomSelectDialog(
                 text = message,
                 fontSize = 12.sp,
                 fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = Black,
+                color = textColor,
                 letterSpacing = 1.sp
             )
             Spacer(Modifier.height(10.dp))
@@ -87,49 +93,32 @@ fun CustomSelectDialog(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
-                    modifier = Modifier.weight(1f)
-                        .clickable{
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
                             onDismissRequest()
                         },
                     textAlign = TextAlign.Center,
                     text = cancelMsg,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = Black,
+                    color = textColor,
                     letterSpacing = 1.sp
                 )
                 Text(
-                    modifier = Modifier.weight(1f)
-                        .clickable{
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
                             onOkClick()
                         },
                     textAlign = TextAlign.Center,
                     text = okMsg,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = Black,
+                    color = textColor,
                     letterSpacing = 1.sp
                 )
             }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun TestCustomInputDialog(){
-    INUPhoneBookTheme {
-        Column(
-            modifier = Modifier
-                .width(300.dp)
-                .height(165.dp)
-                .background(color = Color.White),
-        ){
-            CustomSelectDialog(
-                categoryList = mutableListOf(),
-                onDismissRequest = {},
-                width = 300.dp
-            )
         }
     }
 }

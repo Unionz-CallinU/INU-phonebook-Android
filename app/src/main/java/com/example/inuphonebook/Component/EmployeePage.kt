@@ -9,6 +9,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,9 @@ import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
+import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
@@ -57,6 +60,10 @@ fun EmployeePage(
             showToast(context, "전화 연결 오류")
         }
     }
+
+    val imageBackground = if(isSystemInDarkTheme()) Gray3 else BlueGray
+    val textColor = if(isSystemInDarkTheme()) Gray2 else Gray3
+    val highlightColor = if(isSystemInDarkTheme()) White else Black
     
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -68,7 +75,7 @@ fun EmployeePage(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(shape = CircleShape)
-                    .background(color = BlueGray, shape = CircleShape),
+                    .background(color = imageBackground, shape = CircleShape),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
@@ -127,7 +134,7 @@ fun EmployeePage(
                         text = employee.college_name,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
+                        color = textColor,
                         letterSpacing = 0.5.sp
                     )
                 }
@@ -146,7 +153,7 @@ fun EmployeePage(
                         text = employee.department_name,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
+                        color = textColor,
                         letterSpacing = 0.5.sp
                     )
                 }
@@ -165,7 +172,7 @@ fun EmployeePage(
                         text = employee.role,
                         fontSize = 16.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Gray3,
+                        color = textColor,
                         letterSpacing = 0.5.sp
                     )
                 }
@@ -188,7 +195,7 @@ fun EmployeePage(
                         text = employee.phoneNumber,
                         fontSize = 18.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
+                        color = highlightColor,
                         letterSpacing = 1.sp
                     )
                 }
@@ -217,7 +224,7 @@ fun EmployeePage(
                         text = employee.email,
                         fontSize = 18.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
+                        color = highlightColor,
                         letterSpacing = 1.sp
                     )
                 }

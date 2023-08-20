@@ -1,5 +1,6 @@
 package com.example.inuphonebook.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -23,6 +24,9 @@ val Gray0 = Color(0xFFDADADA)
 val Gray1 = Color(0xFFE9E9E9)
 val Gray2 = Color(0xFFA1A1A1)
 val Gray3 = Color(0xFF676767)
+val Gray4 = Color(0xFF303030)
 val Black = Color(0xFF000000)
 
 val SearchBarTextColor = Color(0xFF7C7C7C)
+
+val DarkModeBackground = Color(0xFF232323)

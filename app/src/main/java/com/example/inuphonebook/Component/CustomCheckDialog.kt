@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ fun CustomCheckDialog(
     msg : String = "",
     okMsg : String = "",
 ){
+    val textColor = if(isSystemInDarkTheme()) White else Black
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
@@ -51,7 +53,9 @@ fun CustomCheckDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Column(
-                modifier = Modifier.fillMaxWidth().weight(2f)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(2f)
             ){
                 Spacer(Modifier.weight(1f))
 
@@ -60,7 +64,7 @@ fun CustomCheckDialog(
                     text = newCategory,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = Black,
+                    color = textColor,
                     textAlign = TextAlign.Center,
                     letterSpacing = 1.sp
                 )
@@ -70,7 +74,7 @@ fun CustomCheckDialog(
                     text = msg,
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = Black,
+                    color = textColor,
                     textAlign = TextAlign.Center,
                     letterSpacing = 1.sp
                 )
@@ -82,7 +86,7 @@ fun CustomCheckDialog(
                     .background(color = Blue)
                     .fillMaxWidth()
                     .weight(1f)
-                    .clickable{
+                    .clickable {
                         onDismissRequest()
                     },
                 verticalAlignment = Alignment.CenterVertically
@@ -91,7 +95,7 @@ fun CustomCheckDialog(
                     modifier = Modifier.fillMaxWidth(),
                     text = okMsg,
                     fontSize = 20.sp,
-                    color = White,
+                    color = textColor,
                     textAlign = TextAlign.Center,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     letterSpacing = 1.sp,

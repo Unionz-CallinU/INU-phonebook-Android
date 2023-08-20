@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.internal.isSensitiveHeader
 
 @Composable
 fun DescriptionScreen(
@@ -139,7 +141,7 @@ fun DescriptionScreen(
             favoriteIcon = if(employee.isFavorite) R.drawable.minus_btn else R.drawable.plus_btn,
             favoriteClick = {
                 showDialog = true
-            }
+            },
         )
         Column(
             modifier = Modifier.fillMaxSize()

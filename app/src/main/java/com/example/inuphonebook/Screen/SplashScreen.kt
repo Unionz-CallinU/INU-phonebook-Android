@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.Dispatchers
@@ -48,24 +51,51 @@ fun SplashScreen(
         }
     }
 
+    //video 렌더링 전 준비 여부
+    val isVideoPrepared = remember(mExoPlayer){
+        mutableStateOf(false)
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ){
-        AndroidView(
-            factory = {
-                StyledPlayerView(it).apply{
-                    player = mExoPlayer
-                    useController = false
-                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+        if (isVideoPrepared.value){
+            AndroidView(
+                factory = {
+                    StyledPlayerView(it).apply{
+                        player = mExoPlayer
+                        useController = false
+                        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
-    LaunchedEffect(Unit){
+    DisposableEffect(mExoPlayer){
+        val listener = object : Player.Listener{
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                if (isPlaying){
+                    isVideoPrepared.value = true
+                    mExoPlayer.removeListener(this)
+                }
+            }
+        }
+
+        mExoPlayer.addListener(listener)
+        onDispose {
+            mExoPlayer.removeListener(listener)
+        }
+    }
+
+    LaunchedEffect(mExoPlayer){
         coroutineScope.launch(Dispatchers.Main){
             itemViewModel.fetchFavEmployee()
             itemViewModel.fetchAllCategory()
+
+            while(!isVideoPrepared.value){
+                delay(100)
+            }
 
             delay(2000)
 

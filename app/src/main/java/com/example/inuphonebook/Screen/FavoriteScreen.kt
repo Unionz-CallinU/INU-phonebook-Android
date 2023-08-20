@@ -2,6 +2,7 @@ package com.example.inuphonebook.Screen
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,8 +49,10 @@ import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Blue
+import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import com.example.inuphonebook.ui.theme.White
 
 @Composable
 fun FavoriteScreen(
@@ -75,7 +78,9 @@ fun FavoriteScreen(
 
     //선택된 item
     var selectedItem by remember{mutableStateOf<Employee?>(null)}
-    
+
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
     if (showCheckDialog){
         when (eventType) {
             "Delete" -> CustomAlertDialog(
@@ -118,7 +123,7 @@ fun FavoriteScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White)
+            .background(color = backgroundColor)
     ){
         TopBar(
             title = "즐겨찾기 목록",
@@ -126,11 +131,12 @@ fun FavoriteScreen(
             favoriteIcon = null,
             homeClick = {
                 navController.navigateUp()
-            }
+            },
         )
         Spacer(Modifier.height(53.dp))
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(25.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
