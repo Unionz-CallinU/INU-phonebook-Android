@@ -39,6 +39,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
+import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
@@ -112,7 +113,7 @@ fun CustomAddCategoryDialog(
                     modifier = Modifier.fillMaxWidth(),
                     text = okMsg,
                     fontSize = 20.sp,
-                    color = White,
+                    color = if(isSystemInDarkTheme()) Black else Gray3,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     letterSpacing = 1.sp,
                     textAlign = TextAlign.Center

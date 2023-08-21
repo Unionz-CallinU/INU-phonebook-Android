@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
+import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -68,7 +71,8 @@ fun CustomSpinner(
                     modifier = Modifier.weight(1f),
                     text = selectedItem.category,
                     fontSize = 20.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if(isSystemInDarkTheme()) Gray4 else Gray3
                 )
                 Spacer(Modifier.width(5.dp))
                 IconButton(

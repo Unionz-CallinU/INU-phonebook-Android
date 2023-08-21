@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +46,13 @@ import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
+import com.example.inuphonebook.ui.theme.Gray0
+import com.example.inuphonebook.ui.theme.Gray1
+import com.example.inuphonebook.ui.theme.Gray2
+import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -143,7 +150,9 @@ fun EditCategoryScreen(
     //categories 데이터가 있다면
     if (categories.value != null){
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.primary)
         ){
             TopBar(
                 homeIcon = R.drawable.back_btn,
@@ -169,7 +178,8 @@ fun EditCategoryScreen(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.plus_btn),
-                        contentDescription = "Add Category"
+                        contentDescription = "Add Category",
+                        tint = if(isSystemInDarkTheme()) Black else Gray2
                     )
                 }
                 Spacer(Modifier.width(10.dp))
@@ -187,7 +197,8 @@ fun EditCategoryScreen(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.minus_btn),
-                        contentDescription = "Delete Category"
+                        contentDescription = "Delete Category",
+                        tint = if(isSystemInDarkTheme()) Black else Gray2
                     )
                 }
             }
@@ -213,7 +224,7 @@ fun EditCategoryScreen(
                         modifier = Modifier
                             .height(35.dp)
                             .fillMaxWidth()
-                            .background(color = FillNotFavoriteColor),
+                            .background(color = if (isSystemInDarkTheme()) Gray4 else Gray1),
                         verticalAlignment = Alignment.CenterVertically
                     ){
                         IconButton(
@@ -230,7 +241,7 @@ fun EditCategoryScreen(
                                 modifier = Modifier.clip(shape = CircleShape),
                                 painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
                                 contentDescription = "Check Box",
-                                tint = Color.Unspecified
+                                tint = if(isSelected) Color.Unspecified else if(isSystemInDarkTheme()) Gray3 else Gray0
                             )
                         }
                         Spacer(Modifier.width(10.dp))

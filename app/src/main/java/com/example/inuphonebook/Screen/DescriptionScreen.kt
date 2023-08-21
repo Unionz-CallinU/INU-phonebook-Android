@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -130,7 +132,8 @@ fun DescriptionScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = MaterialTheme.colorScheme.primary),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
@@ -169,8 +172,8 @@ fun DescriptionScreen(
                     context = LocalContext.current
                 )
             }
-
         }
+
         LaunchedEffect(selectedCategory){
             coroutineScope.launch(Dispatchers.IO){
                 itemViewModel.updateEmployeeCategory(employee,selectedCategory)

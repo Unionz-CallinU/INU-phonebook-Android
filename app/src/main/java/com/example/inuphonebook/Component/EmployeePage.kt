@@ -115,7 +115,7 @@ fun EmployeePage(
                         text = employee.name,
                         fontSize = 24.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Black,
+                        color = highlightColor,
                         letterSpacing = 1.sp
                     )
                 }

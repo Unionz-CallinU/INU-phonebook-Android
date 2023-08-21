@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.DividerLineColor
 import com.example.inuphonebook.ui.theme.Gray1
 import com.example.inuphonebook.ui.theme.Gray2
@@ -54,22 +55,24 @@ fun ListItem(
             .clickable {
                 onClick()
             }
-            .background(color = White),
+            .background(
+                color = if(isSystemInDarkTheme()) DarkModeBackground else White,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         Row(
             Modifier
                 .padding(start = 20.dp, end = 20.dp, top = 8.dp)
                 .height(60.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
-            Column{
+        ) {
+            Column {
                 Spacer(Modifier.weight(1f))
 
                 Row(
                     modifier = Modifier,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     Text(
                         text = employee.name,
                         fontSize = 20.sp,
@@ -111,7 +114,7 @@ fun ListItem(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(R.drawable.filled_star),
                     contentDescription = "Is Favorite",
-                    tint = if(employee.isFavorite) Yellow else if(isSystemInDarkTheme()) Gray2 else Gray1
+                    tint = if (employee.isFavorite) Yellow else if (isSystemInDarkTheme()) Gray2 else Gray1
                 )
             }
         }
@@ -120,7 +123,7 @@ fun ListItem(
         Divider(
             modifier = Modifier.fillMaxWidth(),
             thickness = 1.dp,
-            color = if(isSystemInDarkTheme()) Gray3 else DividerLineColor
+            color = if (isSystemInDarkTheme()) Gray3 else DividerLineColor
         )
     }
 }

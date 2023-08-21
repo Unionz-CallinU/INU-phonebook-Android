@@ -150,7 +150,7 @@ fun SearchScreen(
         SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 37.5.dp),
+                .padding(horizontal = 40.dp),
             value = searchContent,
             onValueChange = {content ->
                 searchContent = content

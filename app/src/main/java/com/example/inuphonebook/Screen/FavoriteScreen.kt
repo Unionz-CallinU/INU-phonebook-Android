@@ -24,6 +24,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,9 +49,13 @@ import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
+import com.example.inuphonebook.ui.theme.Gray1
+import com.example.inuphonebook.ui.theme.Gray2
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
@@ -149,13 +154,15 @@ fun FavoriteScreen(
             ){
                 Icon(
                     painter = painterResource(R.drawable.favorite_edit_btn),
-                    contentDescription = "Favorite Edit"
+                    contentDescription = "Favorite Edit",
+                    tint = if(isSystemInDarkTheme()) Gray2 else Black
                 )
             }
             Spacer(Modifier.width(20.dp))
         }
         
         //favorite 아이템이 없다면
+        Log.d(TAG,"favoriteEmployee : ${favoriteEmployees.value}")
         if (favoriteEmployees.value!!.isEmpty()){
             Box(
                 modifier = Modifier
@@ -191,7 +198,7 @@ fun FavoriteScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(35.dp)
-                        .background(color = FillNotFavoriteColor),
+                        .background(color = if (isSystemInDarkTheme()) Gray4 else Gray1),
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Spacer(Modifier.width(20.dp))

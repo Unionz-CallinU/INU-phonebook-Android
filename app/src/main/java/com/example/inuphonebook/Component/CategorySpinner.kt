@@ -2,6 +2,7 @@ package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,7 +38,9 @@ import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.BlueGray
 import com.example.inuphonebook.ui.theme.Gray1
+import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.Gray4
 
 @Composable
 fun CategorySpinner(
@@ -51,8 +54,10 @@ fun CategorySpinner(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = BlueGray)
-    ){
+            .background(
+                color = if (isSystemInDarkTheme()) Gray4 else BlueGray
+            )
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,7 +67,7 @@ fun CategorySpinner(
                     isOpen = !isOpen
                 },
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             Text(
                 modifier = Modifier.weight(1f),
                 text = selectedCategory,
@@ -81,7 +86,9 @@ fun CategorySpinner(
                 }
             ) {
                 Icon(
-                    painter = if(isOpen) painterResource(R.drawable.spinner_close_btn) else painterResource(R.drawable.spinner_dropdown_btn),
+                    painter = if (isOpen) painterResource(R.drawable.spinner_close_btn) else painterResource(
+                        R.drawable.spinner_dropdown_btn
+                    ),
                     contentDescription = "Spinner Button",
                     tint = Gray3
                 )
@@ -90,13 +97,14 @@ fun CategorySpinner(
         DropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp)
+                .background(color = if (isSystemInDarkTheme()) Gray2 else BlueGray),
             expanded = isOpen,
             onDismissRequest = {
                 isOpen = !isOpen
             }
-        ){
-            categoryList.forEach{item ->
+        ) {
+            categoryList.forEach { item ->
                 DropdownMenuItem(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -117,7 +125,7 @@ fun CategorySpinner(
                         )
                     }
                 )
-                if (item != categoryList[categoryList.lastIndex]){
+                if (item != categoryList[categoryList.lastIndex]) {
                     Divider(
                         thickness = 0.5.dp,
                         color = Gray3
