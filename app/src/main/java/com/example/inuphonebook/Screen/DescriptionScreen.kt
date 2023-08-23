@@ -33,6 +33,9 @@ import com.example.inuphonebook.Component.EmployeePage
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.DarkModeBackground
+import com.example.inuphonebook.ui.theme.Gray4
+import com.example.inuphonebook.ui.theme.White
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.internal.isSensitiveHeader
@@ -67,14 +70,17 @@ fun DescriptionScreen(
     var showDialog by remember{mutableStateOf(false)}
     var showCheckDialog by remember{mutableStateOf(false)}
 
+    //배경 색
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
     if (showDialog){
         //즐겨찾기가 안되어 있다면 >> 추가
         if (!employee.isFavorite){
             //즐겨찾기 추가를 확인하는 Dialog
             CustomSelectDialog(
                 modifier = Modifier
-                    .width(screenWidth / 10 * 8)
-                    .height(screenHeight / 5),
+                    .width((screenWidth / 10) * 8)
+                    .height((screenHeight / 10) * 2),
                 onDismissRequest = {
                     showDialog = false
                 },
@@ -133,7 +139,7 @@ fun DescriptionScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(

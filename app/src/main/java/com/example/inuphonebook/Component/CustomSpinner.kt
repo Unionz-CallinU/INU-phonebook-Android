@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
+import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
@@ -84,7 +85,8 @@ fun CustomSpinner(
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.spinner_dropdown_btn),
-                        contentDescription = "Spinner Button"
+                        contentDescription = "Spinner Button",
+                        tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
                     )
                 }
             }

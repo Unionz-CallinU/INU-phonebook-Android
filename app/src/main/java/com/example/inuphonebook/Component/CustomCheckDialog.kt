@@ -26,6 +26,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.White
 
 @Composable
@@ -38,6 +39,8 @@ fun CustomCheckDialog(
     okMsg : String = "",
 ){
     val textColor = if(isSystemInDarkTheme()) White else Black
+    val dialogBackground = if(isSystemInDarkTheme()) Gray4 else White
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = properties,
@@ -45,7 +48,7 @@ fun CustomCheckDialog(
         Column(
             modifier = modifier
                 .background(
-                    color = Color.White,
+                    color = dialogBackground,
                     shape = RoundedCornerShape(size = 10.dp)
                 )
                 .clip(shape = RoundedCornerShape(size = 10.dp)),
@@ -95,7 +98,7 @@ fun CustomCheckDialog(
                     modifier = Modifier.fillMaxWidth(),
                     text = okMsg,
                     fontSize = 20.sp,
-                    color = textColor,
+                    color = White,
                     textAlign = TextAlign.Center,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     letterSpacing = 1.sp,

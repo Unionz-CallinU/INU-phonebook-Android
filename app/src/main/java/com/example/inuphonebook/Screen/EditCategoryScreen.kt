@@ -1,9 +1,10 @@
 package com.example.inuphonebook.Screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,11 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CustomAddCategoryDialog
 import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.TopBar
@@ -47,13 +46,13 @@ import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
-import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
+import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.Gray0
 import com.example.inuphonebook.ui.theme.Gray1
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
+import com.example.inuphonebook.ui.theme.White
 
 @Composable
 fun EditCategoryScreen(
@@ -61,6 +60,8 @@ fun EditCategoryScreen(
     navController : NavController
 ){
     val TAG = "EditCategoryScreen"
+
+    val context = LocalContext.current
 
     //화면 크기 변수
     val configuration = LocalConfiguration.current
@@ -85,6 +86,9 @@ fun EditCategoryScreen(
 
     //삭제 여부
     var isDelete by remember{mutableStateOf(false)}
+
+    //배경 색
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
 
     //event type에 따른 dialog
     if (showDialog){
@@ -152,7 +156,7 @@ fun EditCategoryScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.primary)
+                .background(color = backgroundColor)
         ){
             TopBar(
                 homeIcon = R.drawable.back_btn,
@@ -179,7 +183,7 @@ fun EditCategoryScreen(
                     Icon(
                         painter = painterResource(R.drawable.plus_btn),
                         contentDescription = "Add Category",
-                        tint = if(isSystemInDarkTheme()) Black else Gray2
+                        tint = if(isSystemInDarkTheme()) Gray2 else Black
                     )
                 }
                 Spacer(Modifier.width(10.dp))
@@ -198,7 +202,7 @@ fun EditCategoryScreen(
                     Icon(
                         painter = painterResource(R.drawable.minus_btn),
                         contentDescription = "Delete Category",
-                        tint = if(isSystemInDarkTheme()) Black else Gray2
+                        tint = if(isSystemInDarkTheme()) Gray2 else Black
                     )
                 }
             }
@@ -229,11 +233,16 @@ fun EditCategoryScreen(
                     ){
                         IconButton(
                             onClick = {
-                                isSelected = !isSelected
-                                if (isSelected){
-                                    checkList.add(category)
+                                //만약 "기본"을 선택할 경우 선택을 취소하고 알림을 띄움
+                                if (category.category == "기본"){
+                                    message(context, "기본 카테고리는 삭제할 수 없습니다.")
                                 } else {
-                                    checkList.remove(category)
+                                    isSelected = !isSelected
+                                    if (isSelected){
+                                        checkList.add(category)
+                                    } else {
+                                        checkList.remove(category)
+                                    }
                                 }
                             }
                         ){
@@ -271,4 +280,13 @@ private fun deleteCategory(itemViewModel : ItemViewModel, list : MutableList<Fav
         itemViewModel.deleteCategory(it.id)
     }
     list.clear()
+}
+
+//toast 메세지
+private fun message(context : Context, msg : String) {
+    Toast.makeText(
+        context,
+        msg,
+        Toast.LENGTH_SHORT
+    ).show()
 }

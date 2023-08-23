@@ -1,6 +1,8 @@
 package com.example.inuphonebook.Model
 
+import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -19,6 +21,8 @@ import com.example.inuphonebook.Retrofit.RetrofitClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,6 +48,15 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     //즐겨찾기 임원진 리스트
     private val _favEmployees : MutableLiveData<MutableList<Employee>> = MutableLiveData<MutableList<Employee>>()
+
+    //현재 모드
+    val currentMode : Flow<Int> = flow{
+        emit(getCurrentMode(context))
+    }
+
+    private fun getCurrentMode(context : Context) : Int{
+        return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    }
 
     val employees : LiveData<MutableList<Employee>>
         get() = _employees

@@ -39,6 +39,7 @@ import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.DarkModeBackground
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.White
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -151,7 +152,7 @@ fun HomeScreen(
 
     Column(
         modifier = Modifier.fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         TopBar(

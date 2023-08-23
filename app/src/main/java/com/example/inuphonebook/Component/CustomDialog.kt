@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -66,7 +67,8 @@ fun CustomAlertDialog(
                 .background(
                     color = dialogBackground,
                     shape = RoundedCornerShape(size = 10.dp)
-                ),
+                )
+                .clip(shape = RoundedCornerShape(size = 10.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Spacer(Modifier.height(30.dp))
@@ -90,7 +92,8 @@ fun CustomAlertDialog(
                         onOkClick()
                     }
                     .background(color = Blue)
-                    .weight(1f)
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
                     modifier = Modifier

@@ -97,7 +97,6 @@ fun CategorySpinner(
         DropdownMenu(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
                 .background(color = if (isSystemInDarkTheme()) Gray2 else BlueGray),
             expanded = isOpen,
             onDismissRequest = {

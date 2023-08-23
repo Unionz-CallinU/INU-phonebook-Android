@@ -52,7 +52,6 @@ import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.DarkModeBackground
-import com.example.inuphonebook.ui.theme.FillNotFavoriteColor
 import com.example.inuphonebook.ui.theme.Gray1
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray4
@@ -162,7 +161,6 @@ fun FavoriteScreen(
         }
         
         //favorite 아이템이 없다면
-        Log.d(TAG,"favoriteEmployee : ${favoriteEmployees.value}")
         if (favoriteEmployees.value!!.isEmpty()){
             Box(
                 modifier = Modifier

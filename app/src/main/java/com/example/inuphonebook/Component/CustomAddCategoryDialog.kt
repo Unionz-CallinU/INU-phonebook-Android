@@ -39,7 +39,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
+import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
@@ -56,6 +58,7 @@ fun CustomAddCategoryDialog(
     onChangeValue : (String) -> Unit
 ) {
     val textColor = if(isSystemInDarkTheme()) White else Black
+    val dialogBackground = if(isSystemInDarkTheme()) Gray4 else White
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -63,7 +66,10 @@ fun CustomAddCategoryDialog(
     ){
         Column(
             modifier = modifier
-                .background(color = Color.White, shape = RoundedCornerShape(size = 10.dp))
+                .background(
+                    color = dialogBackground,
+                    shape = RoundedCornerShape(size = 10.dp)
+                )
                 .clip(shape = RoundedCornerShape(size = 10.dp)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -74,7 +80,7 @@ fun CustomAddCategoryDialog(
                 modifier = Modifier
                     .padding(10.dp)
                     .background(
-                        color = White,
+                        color = dialogBackground,
                         shape = RoundedCornerShape(size = 20.dp)
                     ),
                 placeholder = {
@@ -89,7 +95,7 @@ fun CustomAddCategoryDialog(
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    containerColor = White,
+                    containerColor = dialogBackground,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
                 ),
@@ -113,7 +119,7 @@ fun CustomAddCategoryDialog(
                     modifier = Modifier.fillMaxWidth(),
                     text = okMsg,
                     fontSize = 20.sp,
-                    color = if(isSystemInDarkTheme()) Black else Gray3,
+                    color = White,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                     letterSpacing = 1.sp,
                     textAlign = TextAlign.Center

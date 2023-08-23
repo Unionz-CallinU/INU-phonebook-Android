@@ -34,6 +34,7 @@ import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +48,9 @@ fun TopBar(
     favoriteIcon : Int?,
     favoriteClick : () -> Unit = {}
 ){
+    //배경 색
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
     TopAppBar(
         title = {
             Row(
@@ -65,7 +69,7 @@ fun TopBar(
         },
         modifier = modifier.padding(horizontal = 20.dp),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = backgroundColor,
         ),
         navigationIcon = {
             IconButton(

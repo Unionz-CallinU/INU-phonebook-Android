@@ -48,10 +48,13 @@ import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
+import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.DarkModeBackground
+import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,33 +87,41 @@ fun SearchScreen(
     //dialog 상태
     var showDialog by remember{mutableStateOf(false)}
 
+    //선택된 Employee
+    var selectedEmployee by remember{mutableStateOf<Employee?>(null)}
+
+    //배경 색
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else com.example.inuphonebook.ui.theme.White
+
     //즐겨찾기 삭제 혹은 추가 dialog
     if (showDialog){
+        selectedEmployee ?: throw NullPointerException("Error : Selected Employee is NULL on ${TAG}")
+        val onDismissRequest = {
+            showDialog = false
+        }
         when (eventType) {
             "delete" -> {
-                CustomCheckDialog(
+                CustomAlertDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 4),
-                    onDismissRequest = {
-                        showDialog = false
-                    },
-                    newCategory = "즐겨찾기 삭제 되었습니다.",
-                    msg = "",
-                    okMsg = "확인"
+                    onDismissRequest = onDismissRequest,
+                    highlightText = selectedEmployee!!.name,
+                    baseText = "님이\n즐겨찾기 목록에서 삭제 되었습니다.",
+                    okMsg = "확인",
+                    onOkClick = onDismissRequest
                 )
             }
             "insert" -> {
-                CustomCheckDialog(
+                CustomAlertDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 4),
-                    onDismissRequest = {
-                        showDialog = false
-                    },
-                    newCategory = "즐겨찾기 추가 되었습니다.",
-                    msg = "",
-                    okMsg = "확인"
+                    onDismissRequest = onDismissRequest,
+                    highlightText = selectedEmployee!!.name,
+                    baseText = "님이\n즐겨찾기 목록에 추가 되었습니다.",
+                    okMsg = "확인",
+                    onOkClick = onDismissRequest
                 )
             }
         }
@@ -120,7 +131,7 @@ fun SearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
@@ -240,6 +251,7 @@ fun SearchScreen(
                                 "insert"
                             }
                             employee.isFavorite = !employee.isFavorite
+                            selectedEmployee = employee
                             showDialog = true
                         }
                     )
