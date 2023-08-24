@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -34,11 +33,9 @@ import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.DarkModeBackground
-import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.White
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.internal.isSensitiveHeader
 
 @Composable
 fun DescriptionScreen(
