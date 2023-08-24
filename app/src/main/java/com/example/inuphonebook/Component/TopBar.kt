@@ -62,7 +62,6 @@ fun TopBar(
                     text = title,
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                    color = if (isSystemInDarkTheme()) White else Black,
                     letterSpacing = 1.sp
                 )
             }
@@ -70,6 +69,7 @@ fun TopBar(
         modifier = modifier.padding(horizontal = 20.dp),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = backgroundColor,
+            titleContentColor = if (isSystemInDarkTheme()) White else Black,
         ),
         navigationIcon = {
             IconButton(

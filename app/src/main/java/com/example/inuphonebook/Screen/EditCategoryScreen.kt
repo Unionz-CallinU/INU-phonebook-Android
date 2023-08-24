@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -164,9 +165,18 @@ fun EditCategoryScreen(
                     navController.navigateUp()
                 },
                 favoriteIcon = null,
-                title = "즐겨찾기 편집",
             )
-            Spacer(Modifier.height(40.dp))
+            Spacer(Modifier.height(35.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "즐겨찾기 편집",
+                fontSize = 24.sp,
+                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                color = if(isSystemInDarkTheme()) Gray1 else Black,
+                letterSpacing = 2.sp,
+                textAlign = TextAlign.Center
+            )
+            Spacer(Modifier.height(45.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

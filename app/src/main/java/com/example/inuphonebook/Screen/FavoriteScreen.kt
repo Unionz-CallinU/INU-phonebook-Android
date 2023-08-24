@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -130,14 +131,26 @@ fun FavoriteScreen(
             .background(color = backgroundColor)
     ){
         TopBar(
-            title = "즐겨찾기 목록",
+            title = "",
             homeIcon = R.drawable.back_btn,
             favoriteIcon = null,
             homeClick = {
                 navController.navigateUp()
             },
         )
-        Spacer(Modifier.height(53.dp))
+        Spacer(Modifier.height(35.dp))
+
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "즐겨찾기 목록",
+            fontSize = 24.sp,
+            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+            color = if(isSystemInDarkTheme()) Gray1 else Black,
+            letterSpacing = 2.sp,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(Modifier.height(45.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
