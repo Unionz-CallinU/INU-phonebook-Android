@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 interface PhoneBookInterface {
     //직원 리스트 조회
-    @POST("employee")
-    fun search(@Body employeeReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
+    @POST("/api/v1/employee")
+    fun search(@Body employeeSearchReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
 }

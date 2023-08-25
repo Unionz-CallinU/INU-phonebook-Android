@@ -6,7 +6,7 @@ data class EmployeeRespBody(
     @SerializedName("code")
     val code : Int,
     @SerializedName("data")
-    val data : List<EmployeeDetailRespDto>,
+    val data : EmployeeDtoList,
     @SerializedName("msg")
     val msg : String
 )

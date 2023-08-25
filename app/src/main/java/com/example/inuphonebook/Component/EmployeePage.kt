@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.inuphonebook.LocalDB.Employee
@@ -92,7 +93,7 @@ fun EmployeePage(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(shape = CircleShape),
-                painter = rememberImagePainter(data = employee.photo),
+                painter = rememberImagePainter(data = employee.photo.toUri()),
                 contentDescription = "Image",
             )
         }
@@ -158,25 +159,25 @@ fun EmployeePage(
                     )
                 }
             }
-            Spacer(Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    Text(
-                        text = employee.role,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = textColor,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-            }
+//            Spacer(Modifier.height(10.dp))
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ){
+//                Row(
+//                    modifier = Modifier.weight(3f),
+//                    horizontalArrangement = Arrangement.Center,
+//                ){
+//                    Text(
+//                        text = employee.role,
+//                        fontSize = 16.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = textColor,
+//                        letterSpacing = 0.5.sp
+//                    )
+//                }
+//            }
             Spacer(Modifier.height(40.dp))
             Row(
                 modifier = Modifier
@@ -200,35 +201,35 @@ fun EmployeePage(
                     )
                 }
             }
-            Spacer(Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    Text(
-                        modifier = Modifier.clickable{
-                            if (employee.email != "-"){
-                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
-                                    data = Uri.parse("mailto:${employee.email}")
-                                }
-                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
-                            } else {
-                                showToast(context,"등록된 email이 없습니다.")
-                            }
-                        },
-                        text = employee.email,
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = highlightColor,
-                        letterSpacing = 1.sp
-                    )
-                }
-            }
+//            Spacer(Modifier.height(10.dp))
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                verticalAlignment = Alignment.CenterVertically
+//            ){
+//                Row(
+//                    modifier = Modifier.weight(3f),
+//                    horizontalArrangement = Arrangement.Center,
+//                ){
+//                    Text(
+//                        modifier = Modifier.clickable{
+//                            if (employee.email != "-"){
+//                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
+//                                    data = Uri.parse("mailto:${employee.email}")
+//                                }
+//                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
+//                            } else {
+//                                showToast(context,"등록된 email이 없습니다.")
+//                            }
+//                        },
+//                        text = employee.email,
+//                        fontSize = 18.sp,
+//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                        color = highlightColor,
+//                        letterSpacing = 1.sp
+//                    )
+//                }
+//            }
         }
     }
 }

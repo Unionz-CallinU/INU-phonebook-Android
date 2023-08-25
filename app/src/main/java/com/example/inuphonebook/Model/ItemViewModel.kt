@@ -1,34 +1,26 @@
 package com.example.inuphonebook.Model
 
-import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.TypeConverters
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.LocalDB.RoomRepository
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeDetailRespDto
+import com.example.inuphonebook.Model.RetrofitDto.EmployeeDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import com.example.inuphonebook.Retrofit.RetrofitClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.awaitResponse
 
+@TypeConverters
 class ItemViewModel(context : Context) : ViewModel() {
     val TAG = "ItemViewModel"
 
@@ -48,11 +40,6 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     //즐겨찾기 임원진 리스트
     private val _favEmployees : MutableLiveData<MutableList<Employee>> = MutableLiveData<MutableList<Employee>>()
-
-    //현재 모드
-    val currentMode : Flow<Int> = flow{
-        emit(getCurrentMode(context))
-    }
 
     private fun getCurrentMode(context : Context) : Int{
         return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -125,7 +112,7 @@ class ItemViewModel(context : Context) : ViewModel() {
                         //조회 성공
                         if (responseParameter.code == 1){
                             resultMsg = "Success"
-                            setResult(responseParameter.data)
+                            setResult(responseParameter.data.employeeDtoList)
                         }
                         //조회 실패
                         else {
@@ -241,24 +228,23 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //받은 데이터를 정리해서 observed되는 리스트에 setting
-    fun setResult(result : List<EmployeeDetailRespDto>){
+    fun setResult(result : List<EmployeeDto>){
         val tmpList = mutableListOf<Employee>()
         result.forEach{employee ->
             //test용 >> Json이 1L과 같은 형식으로 오고 있음
-            val newId = (employee.id).substring(0..0).toLong()
-            val isFavorite = favEmployees.value?.any { it.id == newId} ?: throw NullPointerException("Error : FavEmployeeDatas is NULL on ${TAG}")
+            val isFavorite = favEmployees.value?.any { it.id == employee.id} ?: throw NullPointerException("Error : FavEmployeeDatas is NULL on ${TAG}")
 
             val newEmployee = Employee(
                 category = null,
                 name = employee.name,
-                role = employee.role ?: "-",
+//                role = employee.role ?: "-",
                 phoneNumber = employee.phoneNumber,
                 isFavorite = isFavorite,
-                photo = "",
-                email = employee.email ?: "-",
+                photo = employee.imageUrl.toString(),
+//                email = employee.email ?: "-",
                 college_name = employee.college,
                 department_name = employee.department ?: "-",
-                id = newId
+                id = employee.id
             )
             tmpList.add(newEmployee)
         }
