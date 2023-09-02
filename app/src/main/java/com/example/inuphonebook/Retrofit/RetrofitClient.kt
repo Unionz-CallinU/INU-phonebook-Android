@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     private val phoneBookInterface : PhoneBookInterface
     //아직 https 아님 https가 되면 manifest networkSecurityConfig 설정을 지우고 xml 파일 삭제
-    private const val baseUrl = "http://ec2-43-201-168-104.ap-northeast-2.compute.amazonaws.com"
+    private const val baseUrl = "http://em-todo.inuappcenter.kr"
 
     init{
         val retrofit = Retrofit.Builder()

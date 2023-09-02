@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +32,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.R
+import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.BlueGray
+import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,13 +73,15 @@ fun CustomEditText(
                 )
             },
             colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.Transparent
+                containerColor = Color.Transparent,
+                cursorColor = if(isSystemInDarkTheme()) White else Black,
             ),
             trailingIcon = {
                 if (trailingIcon != null){
                     IconButton(
                         onClick = onTrailingClick,
-                        modifier = Modifier.size(25.dp)
+                        modifier = Modifier
+                            .size(25.dp)
                             .background(color = Color.Transparent),
                         content = {
                             Icon(

@@ -3,6 +3,7 @@ package com.example.inuphonebook.Component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -69,20 +70,23 @@ fun CustomAlertDialog(
                     shape = RoundedCornerShape(size = 10.dp)
                 )
                 .clip(shape = RoundedCornerShape(size = 10.dp)),
-            horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Spacer(Modifier.height(30.dp))
+            Column(
+                modifier = Modifier.weight(2f)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ){
+                Spacer(Modifier.weight(3f))
 
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                color = textColor,
-                letterSpacing = 1.sp
-            )
-
-            Spacer(Modifier.height(20.dp))
-
+                Text(
+                    text = text,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = textColor,
+                    letterSpacing = 1.sp
+                )
+                Spacer(Modifier.weight(2f))
+            }
             Divider(thickness = 1.dp)
 
             Row(

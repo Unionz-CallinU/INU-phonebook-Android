@@ -41,10 +41,6 @@ class ItemViewModel(context : Context) : ViewModel() {
     //즐겨찾기 임원진 리스트
     private val _favEmployees : MutableLiveData<MutableList<Employee>> = MutableLiveData<MutableList<Employee>>()
 
-    private fun getCurrentMode(context : Context) : Int{
-        return context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-    }
-
     val employees : LiveData<MutableList<Employee>>
         get() = _employees
 
@@ -231,16 +227,19 @@ class ItemViewModel(context : Context) : ViewModel() {
     fun setResult(result : List<EmployeeDto>){
         val tmpList = mutableListOf<Employee>()
         result.forEach{employee ->
-            //test용 >> Json이 1L과 같은 형식으로 오고 있음
+            //서버에서 받아온 데이터와 로컬에 저장된 데이터를 비교 >> 즐겨찾기 확인
             val isFavorite = favEmployees.value?.any { it.id == employee.id} ?: throw NullPointerException("Error : FavEmployeeDatas is NULL on ${TAG}")
+
+            val photoUrl = if(employee.imageUrl == null) null else employee.imageUrl.toString()
+            val phoneNumber = if(employee.phoneNumber == "null" || employee.phoneNumber == null) null else employee.phoneNumber
 
             val newEmployee = Employee(
                 category = null,
                 name = employee.name,
 //                role = employee.role ?: "-",
-                phoneNumber = employee.phoneNumber,
+                phoneNumber = phoneNumber ?: "-",
                 isFavorite = isFavorite,
-                photo = employee.imageUrl.toString(),
+                photo = photoUrl,
 //                email = employee.email ?: "-",
                 college_name = employee.college,
                 department_name = employee.department ?: "-",

@@ -97,8 +97,6 @@ fun HomeScreen(
             } else {
                 coroutineScope.launch(Dispatchers.IO){
                     val resultMsg = itemViewModel.search(searchContent).await()
-                    Log.d(TAG,"before navigate = ${System.currentTimeMillis()}")
-                    Log.d(TAG,"result message : ${resultMsg}")
                     withContext(Dispatchers.Main){
                         if (resultMsg == "Success" || resultMsg == "Result is NULL"){
                             navController.navigate(

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,13 +54,15 @@ fun EmployeePage(
     employee : Employee,
     context : Context
 ){
+    val TAG = "EmployeePage"
+
     //전화 걸기 계약
     val dialLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK || it.resultCode == Activity.RESULT_CANCELED){
-            showToast(context, "전화 종료")
-        } else {
-            showToast(context, "전화 연결 오류")
-        }
+//        if (it.resultCode == Activity.RESULT_OK || it.resultCode == Activity.RESULT_CANCELED){
+//            showToast(context, "전화 종료")
+//        } else {
+//            showToast(context, "전화 연결 오류")
+//        }
     }
 
     val imageBackground = if(isSystemInDarkTheme()) Gray3 else BlueGray
@@ -72,6 +75,7 @@ fun EmployeePage(
         verticalArrangement = Arrangement.Center
     ){
         if (employee.photo == null || employee.photo == ""){
+            Log.d(TAG, "photo is NULL")
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -93,7 +97,7 @@ fun EmployeePage(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(shape = CircleShape),
-                painter = rememberImagePainter(data = employee.photo.toUri()),
+                painter = rememberImagePainter(data = employee.photo),
                 contentDescription = "Image",
             )
         }
@@ -189,7 +193,9 @@ fun EmployeePage(
                     horizontalArrangement = Arrangement.Center,
                 ){
                     Text(
-                        modifier = Modifier.clickable{
+                        modifier = Modifier.clickable(
+                            enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
+                        ){
                             val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
                             dialLauncher.launch(dialIntent)
                         },
@@ -232,8 +238,4 @@ fun EmployeePage(
 //            }
         }
     }
-}
-
-private fun showToast(context : Context, msg : String,){
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }

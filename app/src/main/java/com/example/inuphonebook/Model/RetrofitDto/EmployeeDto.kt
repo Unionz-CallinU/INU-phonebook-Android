@@ -1,5 +1,6 @@
 package com.example.inuphonebook.Model.RetrofitDto
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
 
@@ -11,7 +12,7 @@ data class EmployeeDto(
     @SerializedName("college")
     val college : String,
     @SerializedName("phoneNumber")
-    val phoneNumber : String,
+    val phoneNumber : String?,
     @SerializedName("department")
     val department : String?,
 //    @SerializedName("role")
@@ -19,5 +20,5 @@ data class EmployeeDto(
 //    @SerializedName("email")
 //    val email : String?,
     @SerializedName("imageUrl")
-    val imageUrl : String?,
+    val imageUrl : Uri?,
 )

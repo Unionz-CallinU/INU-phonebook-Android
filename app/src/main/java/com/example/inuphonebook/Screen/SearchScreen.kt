@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -91,8 +92,12 @@ fun SearchScreen(
     var selectedEmployee by remember{mutableStateOf<Employee?>(null)}
 
     //배경 색
-    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else com.example.inuphonebook.ui.theme.White
+    val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
 
+    BackHandler {
+        navController.navigate(Screens.HomeScreen.name)
+    }
+    
     //즐겨찾기 삭제 혹은 추가 dialog
     if (showDialog){
         selectedEmployee ?: throw NullPointerException("Error : Selected Employee is NULL on ${TAG}")
@@ -107,7 +112,7 @@ fun SearchScreen(
                         .height(screenHeight / 4),
                     onDismissRequest = onDismissRequest,
                     highlightText = selectedEmployee!!.name,
-                    baseText = "님이\n즐겨찾기 목록에서 삭제 되었습니다.",
+                    baseText = " 님이\n즐겨찾기 목록에서 삭제 되었습니다.",
                     okMsg = "확인",
                     onOkClick = onDismissRequest
                 )
@@ -119,7 +124,7 @@ fun SearchScreen(
                         .height(screenHeight / 4),
                     onDismissRequest = onDismissRequest,
                     highlightText = selectedEmployee!!.name,
-                    baseText = "님이\n즐겨찾기 목록에 추가 되었습니다.",
+                    baseText = " 님이\n즐겨찾기 목록에 추가 되었습니다.",
                     okMsg = "확인",
                     onOkClick = onDismissRequest
                 )
@@ -178,6 +183,10 @@ fun SearchScreen(
                         withContext(Dispatchers.Main){
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
+                            } else {
+                                navController.navigate(
+                                    route = "${Screens.SearchScreen.name}/${searchContent}"
+                                )
                             }
                         }
                     }
@@ -197,6 +206,10 @@ fun SearchScreen(
                         withContext(Dispatchers.Main){
                             if (resultMsg != "Success" && resultMsg != "Result is NULL"){
                                 showToast(context, resultMsg)
+                            } else {
+                                navController.navigate(
+                                    route = "${Screens.SearchScreen.name}/${searchContent}"
+                                )
                             }
                         }
                     }
