@@ -1,24 +1,17 @@
 package com.example.inuphonebook.Component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,9 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -39,15 +30,12 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
-import com.example.inuphonebook.ui.theme.Gray2
-import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomAddCategoryDialog(
+fun InputCategoryDialog(
     modifier : Modifier = Modifier,
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
@@ -55,7 +43,8 @@ fun CustomAddCategoryDialog(
     okMsg : String = "okMsg",
     onAddClick : () -> Unit = {},
     value : String = "",
-    onChangeValue : (String) -> Unit
+    onChangeValue : (String) -> Unit,
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
 ) {
     val textColor = if(isSystemInDarkTheme()) White else Black
     val dialogBackground = if(isSystemInDarkTheme()) Gray4 else White
@@ -90,7 +79,7 @@ fun CustomAddCategoryDialog(
                         text = title,
                         fontSize = 16.sp,
                         color = textColor,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        fontFamily = fontFamily,
                         letterSpacing = 1.sp,
                     )
                 },
@@ -120,7 +109,7 @@ fun CustomAddCategoryDialog(
                     text = okMsg,
                     fontSize = 20.sp,
                     color = White,
-                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    fontFamily = fontFamily,
                     letterSpacing = 1.sp,
                     textAlign = TextAlign.Center
                 )

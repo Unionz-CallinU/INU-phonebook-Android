@@ -43,9 +43,11 @@ fun CategorySpinner(
     modifier : Modifier = Modifier,
     categoryList : MutableList<FavCategory>,
     changeItem : (String) -> Unit,
-    selectedCategory : String
+    selectedCategory : String,
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
 ){
-    var isOpen by remember{ mutableStateOf(false) } //spinner의 상태
+    //spinner의 상태
+    var isOpen by remember{ mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -70,7 +72,7 @@ fun CategorySpinner(
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = Blue,
-                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                fontFamily = fontFamily,
                 letterSpacing = 1.sp
             )
             Spacer(Modifier.width(5.dp))
@@ -114,7 +116,7 @@ fun CategorySpinner(
                             text = item.category,
                             textAlign = TextAlign.Center,
                             color = Gray3,
-                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                            fontFamily = fontFamily,
                             letterSpacing = 1.sp,
                             fontSize = 20.sp
                         )

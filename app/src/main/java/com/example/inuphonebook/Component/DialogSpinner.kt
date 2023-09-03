@@ -41,7 +41,7 @@ import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
 
 @Composable
-fun CustomSpinner(
+fun DialogSpinner(
     modifier : Modifier = Modifier,
     itemList : List<FavCategory> = listOf(),
     width : Dp,

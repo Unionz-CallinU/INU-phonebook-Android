@@ -39,7 +39,7 @@ import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomEditText(
+fun EditText(
     modifier : Modifier = Modifier,
     value : String = "",
     onValueChange : (String) -> Unit = {},
@@ -74,7 +74,7 @@ fun CustomEditText(
                     text = placeholder,
                     fontSize = fontSize,
                     color = textColor,
-                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    fontFamily = fontFamily,
                     letterSpacing = 1.sp
                 )
             },

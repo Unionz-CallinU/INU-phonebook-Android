@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.inuphonebook.Component.CustomAlertDialog
+import com.example.inuphonebook.Component.AlertDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
@@ -97,7 +97,7 @@ fun SearchScreen(
         }
         when (eventType) {
             "delete" -> {
-                CustomAlertDialog(
+                AlertDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 4),
@@ -109,7 +109,7 @@ fun SearchScreen(
                 )
             }
             "insert" -> {
-                CustomAlertDialog(
+                AlertDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 4),

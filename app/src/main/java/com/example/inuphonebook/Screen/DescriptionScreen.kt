@@ -24,10 +24,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.inuphonebook.Component.AlertDialog
 import com.example.inuphonebook.Component.CategorySpinner
-import com.example.inuphonebook.Component.CustomAlertDialog
-import com.example.inuphonebook.Component.CustomSelectDialog
 import com.example.inuphonebook.Component.EmployeePage
+import com.example.inuphonebook.Component.SelectCategoryDialog
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
@@ -73,7 +73,7 @@ fun DescriptionScreen(
         //즐겨찾기가 안되어 있다면 >> 추가
         if (!employee.isFavorite){
             //즐겨찾기 추가를 확인하는 Dialog
-            CustomSelectDialog(
+            SelectCategoryDialog(
                 modifier = Modifier
                     .width((screenWidth / 10) * 8)
                     .height((screenHeight / 10) * 2),
@@ -96,7 +96,7 @@ fun DescriptionScreen(
         } 
         //즐겨찾기가 되어있다면 >> 삭제
         else {
-            CustomAlertDialog(
+            AlertDialog(
                 modifier = Modifier
                     .width(screenWidth / 10 * 8)
                     .height(screenHeight / 5),
@@ -116,7 +116,7 @@ fun DescriptionScreen(
     }
 
     if (showCheckDialog){
-        CustomAlertDialog(
+        AlertDialog(
             modifier = Modifier
                 .width(screenWidth / 10 * 8)
                 .height(screenHeight / 5),

@@ -31,7 +31,7 @@ fun SearchBar(
     onKeyboardDone : () -> Unit,
     shape : Shape = RoundedCornerShape(size = 25.dp)
 ){
-    CustomEditText(
+    EditText(
         modifier = modifier
             .background(
                 color = if (isSystemInDarkTheme()) Gray3 else BlueGray,
@@ -47,26 +47,4 @@ fun SearchBar(
         onTrailingClick = onTrailingClick,
         shape = shape
     )
-}
-
-@Preview
-@Composable
-fun TestSearchBar(){
-    INUPhoneBookTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ) {
-            SearchBar(
-                modifier = Modifier,
-                onValueChange = {},
-                trailingIcon = R.drawable.search,
-                onTrailingClick = {},
-                placeHolder = "상세 정보를 입력하세요",
-                onKeyboardDone = {},
-                shape = RoundedCornerShape(size = 20.dp)
-            )
-        }
-    }
 }

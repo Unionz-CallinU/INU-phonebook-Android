@@ -39,8 +39,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.inuphonebook.Component.CustomAddCategoryDialog
-import com.example.inuphonebook.Component.CustomCheckDialog
+import com.example.inuphonebook.Component.CheckDialog
+import com.example.inuphonebook.Component.InputCategoryDialog
 import com.example.inuphonebook.Component.TopBar
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.Model.ItemViewModel
@@ -95,7 +95,7 @@ fun EditCategoryScreen(
     if (showDialog){
         when (eventType){
             "Insert" -> {
-                CustomAddCategoryDialog(
+                InputCategoryDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 5),
@@ -118,7 +118,7 @@ fun EditCategoryScreen(
                 )
             }
             "Delete" -> {
-                CustomCheckDialog(
+                CheckDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
                         .height(screenHeight / 4),
@@ -138,7 +138,7 @@ fun EditCategoryScreen(
 
     //추가 확인 dialog
     if (showCheckDialog){
-        CustomCheckDialog(
+        CheckDialog(
             modifier = Modifier
                 .width(screenWidth / 10 * 8)
                 .height(screenHeight / 4),

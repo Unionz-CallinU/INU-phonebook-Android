@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.inuphonebook.Component.CustomCheckDialog
+import com.example.inuphonebook.Component.CheckDialog
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
@@ -132,7 +132,7 @@ fun HomeScreen(
             showNetworkErrorDialog = false
             navController.navigate(Screens.HomeScreen.name)
         }
-        CustomCheckDialog(
+        CheckDialog(
             modifier = Modifier
                 .width(screenWidth / 10 * 8)
                 .height(screenHeight / 4),

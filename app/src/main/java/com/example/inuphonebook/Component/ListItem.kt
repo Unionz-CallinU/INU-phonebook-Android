@@ -39,6 +39,7 @@ fun ListItem(
     employee : Employee,
     onClick : () -> Unit,
     onFavoriteClick : () -> Unit,
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
 ){
 
     val textColor = if(isSystemInDarkTheme()) White else Black
@@ -72,7 +73,7 @@ fun ListItem(
                     Text(
                         text = employee.name,
                         fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        fontFamily = fontFamily,
                         color = textColor,
                         letterSpacing = 1.sp
                     )
@@ -82,7 +83,7 @@ fun ListItem(
                     Text(
                         text = employee.college_name,
                         fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        fontFamily = fontFamily,
                         color = subTextColor,
                         letterSpacing = 0.5.sp
                     )
@@ -93,7 +94,7 @@ fun ListItem(
                 Text(
                     text = employee.phoneNumber,
                     fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    fontFamily = fontFamily,
                     color = textColor,
                     letterSpacing = 1.sp
                 )
