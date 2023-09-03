@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,7 +61,7 @@ fun TestSearchBar(){
             SearchBar(
                 modifier = Modifier,
                 onValueChange = {},
-                trailingIcon = R.drawable.search_icon,
+                trailingIcon = R.drawable.search,
                 onTrailingClick = {},
                 placeHolder = "상세 정보를 입력하세요",
                 onKeyboardDone = {},

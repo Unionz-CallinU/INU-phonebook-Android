@@ -142,7 +142,7 @@ fun FavoriteScreen(
                 }
             ){
                 Icon(
-                    painter = painterResource(R.drawable.favorite_edit_btn),
+                    painter = painterResource(R.drawable.btn_edit_favorite),
                     contentDescription = "Favorite Edit",
                     tint = if(isSystemInDarkTheme()) Gray2 else Black
                 )
@@ -166,7 +166,7 @@ fun FavoriteScreen(
                     Logo(
                         height = 100.dp,
                         width = 76.dp,
-                        logoIcon = R.drawable.non_color_logo,
+                        logoIcon = R.drawable.main_logo_monochrome,
                         colorFilter = null
                     )
                     Spacer(Modifier.height(52.dp))

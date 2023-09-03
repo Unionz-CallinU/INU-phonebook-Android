@@ -149,10 +149,10 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         TopBar(
-            homeIcon = R.drawable.home,
+            homeIcon = R.drawable.btn_home,
             homeClick = {
             },
-            favoriteIcon = R.drawable.favorite,
+            favoriteIcon = R.drawable.not_favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
             },
@@ -180,7 +180,7 @@ fun HomeScreen(
                 onValueChange = {content ->
                     searchContent = content
                 },
-                trailingIcon = R.drawable.search_icon,
+                trailingIcon = R.drawable.search,
                 onTrailingClick = searchEvent,
                 placeHolder = "상세 정보를 입력하세요",
                 onKeyboardDone = searchEvent,

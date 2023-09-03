@@ -131,11 +131,11 @@ fun SearchScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopBar(
-            homeIcon = R.drawable.home,
+            homeIcon = R.drawable.btn_home,
             homeClick = {
                 navController.navigate(Screens.HomeScreen.name)
             },
-            favoriteIcon = R.drawable.favorite,
+            favoriteIcon = R.drawable.not_favorite,
             favoriteClick = {
                 navController.navigate(Screens.FavoriteScreen.name)
             },
@@ -184,7 +184,7 @@ fun SearchScreen(
                 }
             },
             placeHolder = "상세 정보를 입력하세요",
-            trailingIcon = R.drawable.search_icon,
+            trailingIcon = R.drawable.search,
             onTrailingClick = {
                 if (searchContent == ""){
                     showToast(

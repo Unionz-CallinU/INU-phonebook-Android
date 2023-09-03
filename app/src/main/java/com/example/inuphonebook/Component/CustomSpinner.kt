@@ -80,7 +80,7 @@ fun CustomSpinner(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.spinner_dropdown_btn),
+                        painter = painterResource(R.drawable.btn_open_spinner),
                         contentDescription = "Spinner Button",
                         tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
                     )

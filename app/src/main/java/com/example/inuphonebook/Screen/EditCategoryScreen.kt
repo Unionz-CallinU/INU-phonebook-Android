@@ -192,7 +192,7 @@ fun EditCategoryScreen(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.plus_btn),
+                        painter = painterResource(R.drawable.btn_plus),
                         contentDescription = "Add Category",
                         tint = if(isSystemInDarkTheme()) Gray2 else Black
                     )
@@ -211,7 +211,7 @@ fun EditCategoryScreen(
                     }
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.minus_btn),
+                        painter = painterResource(R.drawable.btn_minus),
                         contentDescription = "Delete Category",
                         tint = if(isSystemInDarkTheme()) Gray2 else Black
                     )
@@ -259,7 +259,7 @@ fun EditCategoryScreen(
                         ){
                             Icon(
                                 modifier = Modifier.clip(shape = CircleShape),
-                                painter = if (isSelected) painterResource(R.drawable.check_btn) else painterResource(R.drawable.non_check_btn),
+                                painter = if (isSelected) painterResource(R.drawable.btn_checked) else painterResource(R.drawable.btn_not_checked),
                                 contentDescription = "Check Box",
                                 tint = if(isSelected) Color.Unspecified else if(isSystemInDarkTheme()) Gray3 else Gray0
                             )

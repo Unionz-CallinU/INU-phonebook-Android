@@ -6,7 +6,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,7 +16,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,10 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.R
-import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.BlueGray
-import com.example.inuphonebook.ui.theme.Gray1
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
@@ -86,8 +82,8 @@ fun CategorySpinner(
                 }
             ) {
                 Icon(
-                    painter = if (isOpen) painterResource(R.drawable.spinner_close_btn) else painterResource(
-                        R.drawable.spinner_dropdown_btn
+                    painter = if (isOpen) painterResource(R.drawable.btn_close_spinner) else painterResource(
+                        R.drawable.btn_open_spinner
                     ),
                     contentDescription = "Spinner Button",
                     tint = Gray3

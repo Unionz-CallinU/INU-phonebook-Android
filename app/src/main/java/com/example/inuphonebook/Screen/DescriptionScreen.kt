@@ -143,7 +143,7 @@ fun DescriptionScreen(
             homeClick = {
                 navController.navigateUp()
             },
-            favoriteIcon = if(employee.isFavorite) R.drawable.minus_btn else R.drawable.plus_btn,
+            favoriteIcon = if(employee.isFavorite) R.drawable.btn_minus else R.drawable.btn_plus,
             favoriteClick = {
                 showDialog = true
             },
