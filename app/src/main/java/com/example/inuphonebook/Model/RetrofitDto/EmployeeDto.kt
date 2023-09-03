@@ -3,7 +3,6 @@ package com.example.inuphonebook.Model.RetrofitDto
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
-
 data class EmployeeDto(
     @SerializedName("id")
     val id : Long,

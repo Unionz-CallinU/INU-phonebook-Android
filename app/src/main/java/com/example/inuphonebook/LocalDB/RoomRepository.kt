@@ -1,8 +1,6 @@
 package com.example.inuphonebook.LocalDB
 
 import android.content.Context
-import android.util.Log
-import kotlinx.coroutines.coroutineScope
 
 class RoomRepository(context : Context) {
     private var roomDB : RoomDB

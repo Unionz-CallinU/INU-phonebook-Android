@@ -95,22 +95,6 @@ fun FavoriteScreen(
                     showCheckDialog = false
                 }
             )
-            "Add" -> {
-                CustomAlertDialog(
-                    modifier = Modifier
-                        .width(screenWidth / 10 * 8)
-                        .height(screenHeight / 5),
-                    highlightText = selectedItem!!.name,
-                    baseText = "님이\n즐겨찾기목록에 추가 되었습니다.",
-                    okMsg = "확인",
-                    onDismissRequest = {
-                        showCheckDialog = false
-                    },
-                    onOkClick = {
-                        showCheckDialog = false
-                    }
-                )
-            }
             else -> {
                 throw IllegalArgumentException("Error : Type is not allowed on ${TAG}")
             }
@@ -126,6 +110,7 @@ fun FavoriteScreen(
         TopBar(
             title = "",
             homeIcon = R.drawable.back_btn,
+            homeIconSize = 26.dp,
             favoriteIcon = null,
             homeClick = {
                 navController.navigateUp()
@@ -227,15 +212,10 @@ fun FavoriteScreen(
                                 },
                                 onFavoriteClick = {
                                     selectedItem = employee
-                                    if (employee.isFavorite){
-                                        itemViewModel.deleteEmployee(employee.id)
-                                        employee.isFavorite = false
-                                        eventType = "Delete"
-                                    } else {
-                                        itemViewModel.insertEmployee(employee, "기본")
-                                        employee.isFavorite = true
-                                        eventType = "Add"
-                                    }
+                                    itemViewModel.deleteEmployee(employee.id)
+                                    eventType = "Delete"
+                                    itemViewModel.updateFavorite(employee.id)
+
                                     showCheckDialog = true
                                 }
                             )

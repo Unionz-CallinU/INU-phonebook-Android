@@ -44,6 +44,7 @@ fun TopBar(
     title : String = "",
     homeIcon : Int,
     homeClick : () -> Unit = {},
+    homeIconSize : Dp = 24.dp,
     isFavorite : Boolean = false,
     favoriteIcon : Int?,
     favoriteClick : () -> Unit = {}
@@ -74,7 +75,7 @@ fun TopBar(
         navigationIcon = {
             IconButton(
                 modifier = Modifier
-                    .size(24.dp),
+                    .size(homeIconSize),
                 onClick = homeClick
             ){
                 Icon(

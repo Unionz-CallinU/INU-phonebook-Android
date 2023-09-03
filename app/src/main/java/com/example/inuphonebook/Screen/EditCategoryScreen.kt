@@ -47,6 +47,7 @@ import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.Model.ItemViewModel
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
+import com.example.inuphonebook.ui.theme.Blue
 import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.Gray0
 import com.example.inuphonebook.ui.theme.Gray1
@@ -164,6 +165,7 @@ fun EditCategoryScreen(
                 homeClick = {
                     navController.navigateUp()
                 },
+                homeIconSize = 26.dp,
                 favoriteIcon = null,
             )
             Spacer(Modifier.height(35.dp))
@@ -269,7 +271,7 @@ fun EditCategoryScreen(
                                 .fillMaxWidth(),
                             text = category.category,
                             fontSize = 20.sp,
-                            color = Color.Blue,
+                            color = Blue,
                             fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                             letterSpacing = 1.sp
                         )

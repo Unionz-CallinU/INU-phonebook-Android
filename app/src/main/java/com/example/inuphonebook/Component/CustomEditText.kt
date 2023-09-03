@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
@@ -49,6 +50,7 @@ fun CustomEditText(
     trailingIcon : Int?,
     onTrailingClick : () -> Unit,
     onKeyboardDone : () -> Unit,
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium)),
     shape : Shape
 ){
     Box(
@@ -57,6 +59,10 @@ fun CustomEditText(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
+            textStyle = TextStyle(
+                fontSize = fontSize,
+                fontFamily = fontFamily
+            ),
             singleLine = true,
             keyboardOptions = keyboardOptions,
             keyboardActions = KeyboardActions(

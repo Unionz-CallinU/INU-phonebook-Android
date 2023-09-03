@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +17,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,12 +26,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,13 +39,13 @@ import com.example.inuphonebook.ui.theme.BlueGray
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
 fun CustomSpinner(
     modifier : Modifier = Modifier,
     itemList : List<FavCategory> = listOf(),
     width : Dp,
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
 ){
     var selectedItem by remember{mutableStateOf(itemList[0])}//itemList의 선택 값 기억
     var isOpen by remember{mutableStateOf(false)} //spinner의 상태
@@ -73,12 +69,12 @@ fun CustomSpinner(
                     text = selectedItem.category,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
-                    color = if(isSystemInDarkTheme()) Gray4 else Gray3
+                    color = if(isSystemInDarkTheme()) Gray4 else Gray3,
+                    fontFamily = fontFamily
                 )
                 Spacer(Modifier.width(5.dp))
                 IconButton(
                     modifier = Modifier.size(10.dp),
-                    //spinner open
                     onClick = {
                         isOpen = !isOpen
                     }
@@ -92,7 +88,7 @@ fun CustomSpinner(
             }
             DropdownMenu(
                 modifier = Modifier
-                    .width(width),
+                    .width(width-2.dp),
                 expanded = isOpen,
                 onDismissRequest = {
                     isOpen = !isOpen
@@ -111,7 +107,7 @@ fun CustomSpinner(
                                 modifier = Modifier.fillMaxWidth(),
                                 text = item.category,
                                 textAlign = TextAlign.Center,
-                                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                                fontFamily = fontFamily,
                                 letterSpacing = 1.sp
                             )
                         }
@@ -121,22 +117,6 @@ fun CustomSpinner(
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-@Preview
-fun TestCustomSpinner(){
-    INUPhoneBookTheme {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-        ){
-            CustomSpinner(
-                width = LocalConfiguration.current.screenWidthDp.dp - 50.dp
-            )
         }
     }
 }
