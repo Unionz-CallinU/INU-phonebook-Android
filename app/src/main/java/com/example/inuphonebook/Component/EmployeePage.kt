@@ -71,7 +71,6 @@ fun EmployeePage(
         verticalArrangement = Arrangement.Center
     ){
         if (employee.photo == null || employee.photo == ""){
-            Log.d(TAG, "photo is NULL")
             Box(
                 modifier = Modifier
                     .size(120.dp)

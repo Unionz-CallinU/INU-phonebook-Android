@@ -55,28 +55,19 @@ class ItemViewModel(context : Context) : ViewModel() {
 
             try {
                 val response = call.awaitResponse()
-                when (response.code()){
+                resultMsg = when (response.code()){
                     //응답 성공
                     200 -> {
                         val responseParameter = response.body() ?: throw NullPointerException("Error : Search Content is NULL on ${TAG}")
                         //조회 성공
                         if (responseParameter.code == 1){
-                            resultMsg = "Success"
                             setResult(responseParameter.data.employeeDtoList)
                         }
-                        //조회 실패
-                        else {
-                            resultMsg = responseParameter.msg
-                        }
+                        responseParameter.msg
                     }
                     //요청 정상 처리 불가
-                    400 -> {
-                        resultMsg = "HttpStatus.BAD_REQUEST(400)\n요청이 정상적으로 처리되지 않음"
-                    }
-                    //해당 id에 해당하는 직원 없음
-                    404 -> {
-                        employeeList.clear()
-                        resultMsg = "Result is NULL"
+                    else -> {
+                        response.body()!!.msg
                     }
                 }
             } catch (t : Throwable){
