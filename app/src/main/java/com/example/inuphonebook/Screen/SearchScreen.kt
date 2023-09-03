@@ -1,9 +1,6 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -38,13 +34,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.Component.CustomAlertDialog
-import com.example.inuphonebook.Component.CustomCheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
@@ -55,8 +48,6 @@ import com.example.inuphonebook.Model.Screens
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.DarkModeBackground
-import com.example.inuphonebook.ui.theme.Gray4
-import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
