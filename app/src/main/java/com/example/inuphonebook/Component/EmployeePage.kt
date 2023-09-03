@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -187,19 +188,21 @@ fun EmployeePage(
                     modifier = Modifier.weight(3f),
                     horizontalArrangement = Arrangement.Center,
                 ){
-                    Text(
-                        modifier = Modifier.clickable(
-                            enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
-                        ){
-                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
-                            dialLauncher.launch(dialIntent)
-                        },
-                        text = employee.phoneNumber,
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = highlightColor,
-                        letterSpacing = 1.sp
-                    )
+                    SelectionContainer {
+                        Text(
+                            modifier = Modifier.clickable(
+                                enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
+                            ){
+                                val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
+                                dialLauncher.launch(dialIntent)
+                            },
+                            text = employee.phoneNumber,
+                            fontSize = 18.sp,
+                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                            color = highlightColor,
+                            letterSpacing = 1.sp
+                        )
+                    }
                 }
             }
 //            Spacer(Modifier.height(10.dp))
@@ -212,23 +215,25 @@ fun EmployeePage(
 //                    modifier = Modifier.weight(3f),
 //                    horizontalArrangement = Arrangement.Center,
 //                ){
-//                    Text(
-//                        modifier = Modifier.clickable{
-//                            if (employee.email != "-"){
-//                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
-//                                    data = Uri.parse("mailto:${employee.email}")
+//                    SelectionContainer{
+//                        Text(
+//                            modifier = Modifier.clickable{
+//                                if (employee.email != "-"){
+//                                    val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
+//                                        data = Uri.parse("mailto:${employee.email}")
+//                                    }
+//                                    context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
+//                                } else {
+//                                    showToast(context,"등록된 email이 없습니다.")
 //                                }
-//                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
-//                            } else {
-//                                showToast(context,"등록된 email이 없습니다.")
-//                            }
-//                        },
-//                        text = employee.email,
-//                        fontSize = 18.sp,
-//                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-//                        color = highlightColor,
-//                        letterSpacing = 1.sp
-//                    )
+//                            },
+//                            text = employee.email,
+//                            fontSize = 18.sp,
+//                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+//                            color = highlightColor,
+//                            letterSpacing = 1.sp
+//                        )
+//                    }
 //                }
 //            }
         }
