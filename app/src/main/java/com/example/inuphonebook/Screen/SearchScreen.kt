@@ -1,6 +1,9 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -38,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.inuphonebook.Component.AlertDialog
+import com.example.inuphonebook.Component.CheckDialog
 import com.example.inuphonebook.Component.ListItem
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
@@ -59,12 +63,25 @@ fun SearchScreen(
     _searchContent : String,
 ){
     val TAG = "SearchScreen"
+    val successSearch = "직원리스트조회 성공"
 
     //화면
     val context = LocalContext.current
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+
+    //네트워크 연결 관리자
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    //와이파이 or 데이터 연결 확인
+    val networkCapabilities = connectivityManager.activeNetwork?.let{
+        connectivityManager.getNetworkCapabilities(it)
+    }
+
+    val isWifiConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true
+    val isCellularConnected = networkCapabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true
+    val isConnected = isWifiConnected || isCellularConnected
 
     //검색 내용 저장
     var searchContent by remember{mutableStateOf(_searchContent)}
@@ -82,13 +99,63 @@ fun SearchScreen(
     //선택된 Employee
     var selectedEmployee by remember{mutableStateOf<Employee?>(null)}
 
+    //네트워크 오류 dialog 상태
+    var showNetworkErrorDialog by remember{mutableStateOf(false)}
+
+    //검색 이벤트
+    val searchEvent : () -> Unit = {
+        //인터넷 연결
+        if (isConnected){
+            if (searchContent == ""){
+                showToast(
+                    context = context,
+                    msg = "검색 내용을 입력해주세요"
+                )
+            } else {
+                coroutineScope.launch(Dispatchers.IO){
+                    val resultMsg = itemViewModel.search(searchContent).await()
+                    withContext(Dispatchers.Main){
+                        if (resultMsg == successSearch || resultMsg == "Result is NULL"){
+                            navController.navigate(
+                                route = "${Screens.SearchScreen.name}/${searchContent}"
+                            )
+                        } else {
+                            showToast(context, resultMsg)
+                        }
+                    }
+                }
+            }
+        }
+        //미 연결 시
+        else {
+            showNetworkErrorDialog = true
+        }
+    }
+
     //배경 색
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
 
     BackHandler {
         navController.navigate(Screens.HomeScreen.name)
     }
-    
+
+    //네트워크 오류 dialog + Home 화면으로 돌아감
+    if (showNetworkErrorDialog) {
+        val onDismissRequest = {
+            showNetworkErrorDialog = false
+            navController.navigate(Screens.HomeScreen.name)
+        }
+        CheckDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 4),
+            onDismissRequest = onDismissRequest,
+            newCategory = "경고!",
+            msg = "네트워크 연결이 불안정합니다.\n확인하고 다시 실행시켜 주세요",
+            okMsg = "확인",
+        )
+    }
+
     //즐겨찾기 삭제 혹은 추가 dialog
     if (showDialog){
         selectedEmployee ?: throw NullPointerException("Error : Selected Employee is NULL on ${TAG}")
@@ -162,50 +229,10 @@ fun SearchScreen(
             onValueChange = {content ->
                 searchContent = content
             },
-            onKeyboardDone = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    coroutineScope.launch(Dispatchers.IO){
-                        val resultMsg = itemViewModel.search(searchContent).await()
-                        withContext(Dispatchers.Main){
-                            if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-                                showToast(context, resultMsg)
-                            } else {
-                                navController.navigate(
-                                    route = "${Screens.SearchScreen.name}/${searchContent}"
-                                )
-                            }
-                        }
-                    }
-                }
-            },
+            onKeyboardDone = searchEvent,
             placeHolder = "상세 정보를 입력하세요",
             trailingIcon = R.drawable.search,
-            onTrailingClick = {
-                if (searchContent == ""){
-                    showToast(
-                        context = context,
-                        msg = "검색 내용을 입력해주세요"
-                    )
-                } else {
-                    coroutineScope.launch(Dispatchers.IO){
-                        val resultMsg = itemViewModel.search(searchContent).await()
-                        withContext(Dispatchers.Main){
-                            if (resultMsg != "Success" && resultMsg != "Result is NULL"){
-                                showToast(context, resultMsg)
-                            } else {
-                                navController.navigate(
-                                    route = "${Screens.SearchScreen.name}/${searchContent}"
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+            onTrailingClick = searchEvent,
         )
 
         Spacer(Modifier.height(80.dp))

@@ -47,6 +47,7 @@ fun HomeScreen(
     itemViewModel: ItemViewModel
 ){
     val TAG = "HomeScreen"
+    val successSearch = "직원리스트조회 성공"
 
     //화면
     val context = LocalContext.current
@@ -93,7 +94,7 @@ fun HomeScreen(
                 coroutineScope.launch(Dispatchers.IO){
                     val resultMsg = itemViewModel.search(searchContent).await()
                     withContext(Dispatchers.Main){
-                        if (resultMsg == "Success" || resultMsg == "Result is NULL"){
+                        if (resultMsg == successSearch || resultMsg == "Result is NULL"){
                             navController.navigate(
                                 route = "${Screens.SearchScreen.name}/${searchContent}"
                             )

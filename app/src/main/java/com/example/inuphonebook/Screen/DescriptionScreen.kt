@@ -179,7 +179,6 @@ fun DescriptionScreen(
         LaunchedEffect(selectedCategory){
             coroutineScope.launch(Dispatchers.IO){
                 itemViewModel.updateEmployeeCategory(employee,selectedCategory)
-                itemViewModel.fetchFavEmployee()
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Model
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -126,8 +127,10 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     //Local 데이터의 category 수정
     fun updateEmployeeCategory(employee : Employee, category : String){
+        Log.d(TAG,"Before updating Employee's category : ${System.currentTimeMillis()}")
         viewModelScope.launch(Dispatchers.IO){
             roomRepo.updateEmployeeCategory(employee.id, category)
+            Log.d(TAG,"After updating Employee's category : ${System.currentTimeMillis()}")
         }
     }
 
