@@ -1,5 +1,7 @@
 package com.example.inuphonebook.Screen
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -50,14 +52,12 @@ fun DescriptionScreen(
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
-    val coroutineScope = rememberCoroutineScope()
-
     //전체 categoryList
     val categories = itemViewModel.categoryList.observeAsState()
     
     //현재 employee
     val id = _id.toLong() //현재는 String으로 받기에 Long형으로 받는다면 바로 받아오면 될 듯
-    val employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL on ${TAG}")
+    var employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("Error : Employee is NULL on ${TAG}")
 
     //현재 category
     var selectedCategory by remember{mutableStateOf(employee.category ?: "기본")}
@@ -68,6 +68,11 @@ fun DescriptionScreen(
 
     //배경 색
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
+//    BackHandler {
+//        itemViewModel.updateEmployeeCategory(employee, selectedCategory)
+//        navController.navigateUp()
+//    }
 
     if (showDialog){
         //즐겨찾기가 안되어 있다면 >> 추가
@@ -177,9 +182,9 @@ fun DescriptionScreen(
         }
 
         LaunchedEffect(selectedCategory){
-            coroutineScope.launch(Dispatchers.IO){
-                itemViewModel.updateEmployeeCategory(employee,selectedCategory)
-            }
+            employee = itemViewModel.updateEmployeeCategory(employee,selectedCategory).await()
+            itemViewModel.fetchFavEmployee()
+            Log.d("ItemViewModel","After updating employee : ${employee}")
         }
     }
 }

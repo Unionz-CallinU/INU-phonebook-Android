@@ -126,13 +126,10 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //Local 데이터의 category 수정
-    fun updateEmployeeCategory(employee : Employee, category : String){
-        Log.d(TAG,"Before updating Employee's category : ${System.currentTimeMillis()}")
-        viewModelScope.launch(Dispatchers.IO){
-            roomRepo.updateEmployeeCategory(employee.id, category)
-            Log.d(TAG,"After updating Employee's category : ${System.currentTimeMillis()}")
+    suspend fun updateEmployeeCategory(employee : Employee, category : String) : Deferred<Employee> =
+        viewModelScope.async(Dispatchers.IO){
+            return@async roomRepo.updateEmployeeCategory(employee.id, category)
         }
-    }
 
     //employee id 검색
     fun getEmployeeById(id : Long) : Employee? {
