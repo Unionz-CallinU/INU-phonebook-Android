@@ -75,6 +75,7 @@ fun EditCategoryScreen(
 
     //dialog의 상태
     var showDialog by remember{mutableStateOf(false)}
+    var showDelCheckDialog by remember{mutableStateOf(false)}
     var showCheckDialog by remember{mutableStateOf(false)}
 
     //추가될 category
@@ -118,6 +119,7 @@ fun EditCategoryScreen(
                 )
             }
             "Delete" -> {
+                //category에 포함된 데이터들이 있음을 알리고 그래도 삭제할 것인지 확인 받는 dialog? 아니면 자동으로 기본 Category로 수정?
                 CheckDialog(
                     modifier = Modifier
                         .width(screenWidth / 10 * 8)
