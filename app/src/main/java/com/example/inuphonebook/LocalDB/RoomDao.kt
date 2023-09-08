@@ -46,5 +46,9 @@ interface RoomDao {
     //Employee 카테고리 업데이트
     @Query("UPDATE Employee SET category = (:category) WHERE id = (:id)")
     fun updateEmployeeCategory(id : Long, category : String)
+
+    //category 에 속한 데이터 개수
+    @Query("SELECT COUNT(*) FROM Employee WHERE category = (:category)")
+    fun getEmployeesInCategory(category : String) : Int
 }
 

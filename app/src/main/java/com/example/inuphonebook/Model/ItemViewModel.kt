@@ -205,4 +205,10 @@ class ItemViewModel(context : Context) : ViewModel() {
         }
         submitList(tmpList)
     }
+
+    //category안에 데이터가 있는지 확인
+    suspend fun isEmployeeInCategory(category : String) : Deferred<Boolean> =
+        viewModelScope.async(Dispatchers.IO){
+            return@async roomRepo.getEmployeesInCategory(category) != 0
+        }
 }

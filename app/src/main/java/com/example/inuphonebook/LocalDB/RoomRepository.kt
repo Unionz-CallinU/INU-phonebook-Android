@@ -48,6 +48,10 @@ class RoomRepository(context : Context) {
         return roomDao.getEmployeeById(id)
     }
 
+    fun getEmployeesInCategory(category : String) : Int {
+        return roomDao.getEmployeesInCategory(category)
+    }
+
     companion object{
         private var INSTANCE : RoomRepository ?= null
 

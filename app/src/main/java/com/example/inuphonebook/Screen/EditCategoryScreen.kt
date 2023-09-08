@@ -1,6 +1,7 @@
 package com.example.inuphonebook.Screen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +56,10 @@ import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.Gray4
 import com.example.inuphonebook.ui.theme.White
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun EditCategoryScreen(
@@ -91,6 +97,9 @@ fun EditCategoryScreen(
 
     //배경 색
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
+    //coroutineScope
+    val coroutineScope = rememberCoroutineScope()
 
     //event type에 따른 dialog
     if (showDialog){
@@ -250,11 +259,20 @@ fun EditCategoryScreen(
                                 if (category.category == "기본"){
                                     message(context, "기본 카테고리는 삭제할 수 없습니다.")
                                 } else {
-                                    isSelected = !isSelected
-                                    if (isSelected){
-                                        checkList.add(category)
-                                    } else {
-                                        checkList.remove(category)
+                                    coroutineScope.launch(Dispatchers.IO){
+                                        if (itemViewModel.isEmployeeInCategory(category.category).await()){
+                                            //category 내부 데이터가 있다면 선택 불가
+                                            withContext(Dispatchers.Main){
+                                                message(context,"카테고리 내부 데이터를 정리해주세요.\n 데이터가 남아 있습니다.")
+                                            }
+                                        } else {
+                                            isSelected = !isSelected
+                                            if (isSelected){
+                                                checkList.add(category)
+                                            } else {
+                                                checkList.remove(category)
+                                            }
+                                        }
                                     }
                                 }
                             }
