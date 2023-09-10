@@ -1,14 +1,13 @@
 package com.example.inuphonebook.Retrofit
 
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeRespBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface PhoneBookInterface {
 
     //직원 리스트 조회
-    @POST("/api/v1/employee")
-    fun search(@Body employeeSearchReqDto : EmployeeReqDto) : Call<EmployeeRespBody>
+    @GET("/api/v1/employee")
+    fun search(@Query("employeeSearchReqDto") search : String) : Call<EmployeeRespBody>
 }

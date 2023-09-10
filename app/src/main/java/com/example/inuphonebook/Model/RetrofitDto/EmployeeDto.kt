@@ -19,5 +19,5 @@ data class EmployeeDto(
 //    @SerializedName("email")
 //    val email : String?,
     @SerializedName("imageUrl")
-    val imageUrl : Uri?,
+    val imageUrl : String?,
 )

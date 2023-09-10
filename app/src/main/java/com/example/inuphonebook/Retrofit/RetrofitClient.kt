@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     
     private val phoneBookInterface : PhoneBookInterface
-    private const val baseUrl = "http://em-todo.inuappcenter.kr"
+    private const val baseUrl = "https://callinu.inuappcenter.kr"
 
     init{
         val retrofit = Retrofit.Builder()

@@ -11,7 +11,6 @@ import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.LocalDB.FavCategory
 import com.example.inuphonebook.LocalDB.RoomRepository
 import com.example.inuphonebook.Model.RetrofitDto.EmployeeDto
-import com.example.inuphonebook.Model.RetrofitDto.EmployeeReqDto
 import com.example.inuphonebook.Retrofit.RetrofitClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -51,8 +50,7 @@ class ItemViewModel(context : Context) : ViewModel() {
         viewModelScope.async(Dispatchers.IO){
 
             var resultMsg = ""
-            val employeeReqDto = EmployeeReqDto(content)
-            val call = RetrofitClient.getPhoneBookInterface().search(employeeReqDto)
+            val call = RetrofitClient.getPhoneBookInterface().search(content)
 
             try {
                 val response = call.awaitResponse()
@@ -71,6 +69,7 @@ class ItemViewModel(context : Context) : ViewModel() {
                         response.body()!!.msg
                     }
                 }
+                Log.d(TAG,"done try ${resultMsg}")
             } catch (t : Throwable){
                 //연결 실패 시 처리할 event
                 throw IllegalArgumentException("Error : ${t.message}")
