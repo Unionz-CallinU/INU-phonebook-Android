@@ -10,6 +10,7 @@
 - refactor : 코드 리팩토링
 - design : 사용자 UI 변경
 - gradle : gradle 환경 수정
+- data : 데이터 설정 수정
 
 ---
 
