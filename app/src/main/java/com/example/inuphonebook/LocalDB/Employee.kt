@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 data class Employee(
     @ColumnInfo val category : String?,
     @ColumnInfo val name : String,
-//    @ColumnInfo val role : String,
+    @ColumnInfo val role : String,
     @ColumnInfo val phoneNumber : String,
     @ColumnInfo var isFavorite : Boolean,
     @ColumnInfo val photo : String?,
-//    @ColumnInfo val email : String,
+    @ColumnInfo val email : String,
     @ColumnInfo val college_name : String,
     @ColumnInfo val department_name : String,
     @PrimaryKey

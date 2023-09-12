@@ -48,12 +48,13 @@ class ItemViewModel(context : Context) : ViewModel() {
     //검색
     suspend fun search(content : String) : Deferred<String> =
         viewModelScope.async(Dispatchers.IO){
-
+            Log.d(TAG,"before time : ${System.currentTimeMillis()}")
             var resultMsg = ""
             val call = RetrofitClient.getPhoneBookInterface().search(content)
 
             try {
                 val response = call.awaitResponse()
+                Log.d(TAG,"after time : ${System.currentTimeMillis()}")
                 resultMsg = when (response.code()){
                     //응답 성공
                     200 -> {
@@ -69,7 +70,6 @@ class ItemViewModel(context : Context) : ViewModel() {
                         response.body()!!.msg
                     }
                 }
-                Log.d(TAG,"done try ${resultMsg}")
             } catch (t : Throwable){
                 //연결 실패 시 처리할 event
                 throw IllegalArgumentException("Error : ${t.message}")
@@ -96,8 +96,10 @@ class ItemViewModel(context : Context) : ViewModel() {
             val newEmployee = Employee(
                 category = category,
                 name = employee.name,
+                role = employee.role,
                 phoneNumber = employee.phoneNumber,
                 isFavorite = true,
+                email = employee.email,
                 photo = employee.photo,
                 college_name = employee.college_name,
                 department_name = employee.department_name,
@@ -125,7 +127,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //Local 데이터의 category 수정
-    suspend fun updateEmployeeCategory(employee : Employee, category : String) : Deferred<Employee> =
+    fun updateEmployeeCategory(employee : Employee, category : String) : Deferred<Employee> =
         viewModelScope.async(Dispatchers.IO){
             return@async roomRepo.updateEmployeeCategory(employee.id, category)
         }
@@ -185,17 +187,18 @@ class ItemViewModel(context : Context) : ViewModel() {
             //서버에서 받아온 데이터와 로컬에 저장된 데이터를 비교 >> 즐겨찾기 확인
             val isFavorite = favEmployees.value?.any { it.id == employee.id} ?: throw NullPointerException("Error : FavEmployeeDatas is NULL on ${TAG}")
 
-            val photoUrl = if(employee.imageUrl == null) null else employee.imageUrl.toString()
-            val phoneNumber = if(employee.phoneNumber == "null" || employee.phoneNumber == null) null else employee.phoneNumber
+            val photoUrl = if(employee.imageUrl == "null") null else employee.imageUrl
+
+            val phoneNumber = if(employee.phoneNumber == "null" || employee.phoneNumber == null || employee.phoneNumber == "--") null else employee.phoneNumber
 
             val newEmployee = Employee(
                 category = null,
                 name = employee.name,
-//                role = employee.role ?: "-",
+                role = employee.role ?: "-",
                 phoneNumber = phoneNumber ?: "-",
                 isFavorite = isFavorite,
                 photo = photoUrl,
-//                email = employee.email ?: "-",
+                email = employee.email ?: "-",
                 college_name = employee.college,
                 department_name = employee.department ?: "-",
                 id = employee.id
@@ -206,7 +209,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //category안에 데이터가 있는지 확인
-    suspend fun isEmployeeInCategory(category : String) : Deferred<Boolean> =
+    fun isEmployeeInCategory(category : String) : Deferred<Boolean> =
         viewModelScope.async(Dispatchers.IO){
             return@async roomRepo.getEmployeesInCategory(category) != 0
         }

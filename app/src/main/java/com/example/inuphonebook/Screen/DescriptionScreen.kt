@@ -184,7 +184,6 @@ fun DescriptionScreen(
         LaunchedEffect(selectedCategory){
             employee = itemViewModel.updateEmployeeCategory(employee,selectedCategory).await()
             itemViewModel.fetchFavEmployee()
-            Log.d("ItemViewModel","After updating employee : ${employee}")
         }
     }
 }
