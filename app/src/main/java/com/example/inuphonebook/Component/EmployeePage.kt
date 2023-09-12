@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,23 +36,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
 import com.example.inuphonebook.LocalDB.Employee
 import com.example.inuphonebook.R
 import com.example.inuphonebook.ui.theme.BlueGray
 import com.example.inuphonebook.ui.theme.Gray2
 import com.example.inuphonebook.ui.theme.Gray3
 import com.example.inuphonebook.ui.theme.White
-import java.nio.charset.Charset
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
@@ -94,18 +90,34 @@ fun EmployeePage(
             }
         } else {
 
-            val decodedByteArray = Base64.decode(employee.photo, Base64.DEFAULT)
-            val bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.size)
-            val bitmapImage = bitmap.asImageBitmap()
+            //체육학부 >> url로 이동
+            if (employee.department_name == "체육학부"){
 
-            Image(
-                modifier = Modifier
-                    .size(120.dp)
-                    .background(color = Transparent, shape = CircleShape)
-                    .clip(shape = CircleShape),
-                bitmap = bitmapImage,
-                contentDescription = "Image",
-            )
+                Image(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .background(color = Transparent, shape = CircleShape)
+                        .clip(shape = CircleShape),
+                    painter = rememberImagePainter(data = employee.photo),
+                    contentDescription = "Image"
+                )
+
+            }
+            //그 외 >> Bitmap 데이터 받기
+            else {
+                val decodedByteArray = Base64.decode(employee.photo, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.size)
+                val bitmapImage = bitmap.asImageBitmap()
+
+                Image(
+                    modifier = Modifier
+                        .size(120.dp)
+                        .background(color = Transparent, shape = CircleShape)
+                        .clip(shape = CircleShape),
+                    bitmap = bitmapImage,
+                    contentDescription = "Image",
+                )
+            }
         }
         Column(
             modifier = Modifier
@@ -116,15 +128,88 @@ fun EmployeePage(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = employee.name,
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = highlightColor,
+                    letterSpacing = 1.sp
+                )
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = employee.college_name,
+                    textAlign = TextAlign.Center,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = textColor,
+                    letterSpacing = 0.5.sp
+                )
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = employee.department_name,
+                    textAlign = TextAlign.Center,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = textColor,
+                    letterSpacing = 0.5.sp
+                )
+            }
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ){
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = employee.role,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                    color = textColor,
+                    letterSpacing = 0.5.sp
+                )
+            }
+            Spacer(Modifier.height(40.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ){
+                SelectionContainer {
                     Text(
-                        text = employee.name,
-                        fontSize = 24.sp,
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable(
+                            enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
+                        ){
+                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
+                            dialLauncher.launch(dialIntent)
+                        },
+                        textAlign = TextAlign.Center,
+                        text = employee.phoneNumber,
+                        fontSize = 18.sp,
                         fontFamily = FontFamily(Font(R.font.pretendard_medium)),
                         color = highlightColor,
                         letterSpacing = 1.sp
@@ -133,117 +218,30 @@ fun EmployeePage(
             }
             Spacer(Modifier.height(10.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
+                SelectionContainer{
                     Text(
-                        text = employee.college_name,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = textColor,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    Text(
-                        text = employee.department_name,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = textColor,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    Text(
-                        text = employee.role ?: "-",
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = textColor,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-            }
-            Spacer(Modifier.height(40.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    SelectionContainer {
-                        Text(
-                            modifier = Modifier.clickable(
-                                enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
-                            ){
-                                val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
-                                dialLauncher.launch(dialIntent)
-                            },
-                            text = employee.phoneNumber,
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                            color = highlightColor,
-                            letterSpacing = 1.sp
-                        )
-                    }
-                }
-            }
-            Spacer(Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Row(
-                    modifier = Modifier.weight(3f),
-                    horizontalArrangement = Arrangement.Center,
-                ){
-                    SelectionContainer{
-                        Text(
-                            modifier = Modifier.clickable{
-                                if (employee.email != "-"){
-                                    val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
-                                        data = Uri.parse("mailto:${employee.email}")
-                                    }
-                                    context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
-                                } else {
-                                    Toast.makeText(context,"등록된 email이 없습니다.",Toast.LENGTH_SHORT).show()
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable{
+                            if (employee.email != "-"){
+                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
+                                    data = Uri.parse("mailto:${employee.email}")
                                 }
-                            },
-                            text = employee.email ?: "-",
-                            fontSize = 18.sp,
-                            fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                            color = highlightColor,
-                            letterSpacing = 1.sp
-                        )
-                    }
+                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
+                            } else {
+                                Toast.makeText(context,"등록된 email이 없습니다.",Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        text = employee.email,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                        color = highlightColor,
+                        letterSpacing = 1.sp
+                    )
                 }
             }
         }
