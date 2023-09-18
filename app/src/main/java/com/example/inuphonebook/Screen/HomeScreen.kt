@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.inuphonebook.Component.CheckDialog
+import com.example.inuphonebook.Component.LoadingDialog
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
@@ -53,8 +54,8 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp
+    val screenWidth = configuration.screenWidthDp
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -80,6 +81,9 @@ fun HomeScreen(
     var searchContent by remember{mutableStateOf("")}
 
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
+    //데이터 수신 여부
+    val isLoading = itemViewModel.isLoading.value
 
     //검색 event
     val searchEvent : () -> Unit = {
@@ -135,8 +139,8 @@ fun HomeScreen(
         }
         CheckDialog(
             modifier = Modifier
-                .width(screenWidth / 10 * 8)
-                .height(screenHeight / 4),
+                .width((screenWidth / 10 * 8).dp)
+                .height((screenHeight / 4).dp),
             onDismissRequest = onDismissRequest,
             newCategory = "경고!",
             msg = "네트워크 연결이 불안정합니다.\n확인하고 다시 실행시켜 주세요",
@@ -144,8 +148,18 @@ fun HomeScreen(
         )
     }
 
+    //데이터 수신 중 >> Loading 다이얼로그
+    if (!isLoading){
+        LoadingDialog(
+            onDismissRequest = {},
+            width = 100.dp,
+            height = 70.dp,
+        )
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
     ){

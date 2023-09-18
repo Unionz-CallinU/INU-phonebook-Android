@@ -2,6 +2,9 @@ package com.example.inuphonebook.Model
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,15 +47,23 @@ class ItemViewModel(context : Context) : ViewModel() {
 
     val favEmployees : LiveData<MutableList<Employee>>
         get() = _favEmployees
-    
+
+    //data 로딩 상태
+    private val _isLoading = mutableStateOf(true)
+    val isLoading : State<Boolean> = _isLoading
+
     //검색
     suspend fun search(content : String) : Deferred<String> =
         viewModelScope.async(Dispatchers.IO){
-            Log.d(TAG,"before time : ${System.currentTimeMillis()}")
+
+
             var resultMsg = ""
             val call = RetrofitClient.getPhoneBookInterface().search(content)
 
             try {
+                Log.d(TAG,"isLoading? : ${isLoading.value}")
+                _isLoading.value = false
+
                 val response = call.awaitResponse()
                 Log.d(TAG,"after time : ${System.currentTimeMillis()}")
                 resultMsg = when (response.code()){
@@ -70,6 +81,10 @@ class ItemViewModel(context : Context) : ViewModel() {
                         response.body()!!.msg
                     }
                 }
+
+                _isLoading.value = true
+                Log.d(TAG,"isLOading!! : ${isLoading.value}")
+
             } catch (t : Throwable){
                 //연결 실패 시 처리할 event
                 throw IllegalArgumentException("Error : ${t.message}")

@@ -43,6 +43,7 @@ import androidx.navigation.NavController
 import com.example.inuphonebook.Component.AlertDialog
 import com.example.inuphonebook.Component.CheckDialog
 import com.example.inuphonebook.Component.ListItem
+import com.example.inuphonebook.Component.LoadingDialog
 import com.example.inuphonebook.Component.Logo
 import com.example.inuphonebook.Component.SearchBar
 import com.example.inuphonebook.Component.TopBar
@@ -101,6 +102,9 @@ fun SearchScreen(
 
     //네트워크 오류 dialog 상태
     var showNetworkErrorDialog by remember{mutableStateOf(false)}
+
+    //데이터 수신 여부
+    val isLoading = itemViewModel.isLoading.value
 
     //검색 이벤트
     val searchEvent : () -> Unit = {
@@ -188,6 +192,15 @@ fun SearchScreen(
                 )
             }
         }
+    }
+
+    //수신되는 동안 Loading Dialog
+    if (!isLoading){
+        LoadingDialog(
+            onDismissRequest = {},
+            width = 100.dp,
+            height = 70.dp,
+        )
     }
 
     //검색 내용
