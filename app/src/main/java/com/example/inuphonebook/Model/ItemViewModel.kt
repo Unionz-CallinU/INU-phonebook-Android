@@ -53,7 +53,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     val isLoading : State<Boolean> = _isLoading
 
     //검색
-    suspend fun search(content : String) : Deferred<String> =
+    suspend fun search(content : String) : String =
         viewModelScope.async(Dispatchers.IO){
 
 
@@ -90,7 +90,7 @@ class ItemViewModel(context : Context) : ViewModel() {
                 throw IllegalArgumentException("Error : ${t.message}")
             }
             return@async resultMsg
-        }
+        }.await()
 
     //데이터 갱신
     private fun submitList(list : MutableList<Employee>){
@@ -196,7 +196,7 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //서버에서 받은 데이터 세팅
-    fun setResult(result : List<EmployeeDto>){
+    private fun setResult(result : List<EmployeeDto>){
         val tmpList = mutableListOf<Employee>()
         result.forEach{employee ->
             //서버에서 받아온 데이터와 로컬에 저장된 데이터를 비교 >> 즐겨찾기 확인
@@ -224,8 +224,8 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //category안에 데이터가 있는지 확인
-    fun isEmployeeInCategory(category : String) : Deferred<Boolean> =
+    suspend fun isEmployeeInCategory(category : String) : Boolean =
         viewModelScope.async(Dispatchers.IO){
             return@async roomRepo.getEmployeesInCategory(category) != 0
-        }
+        }.await()
 }
