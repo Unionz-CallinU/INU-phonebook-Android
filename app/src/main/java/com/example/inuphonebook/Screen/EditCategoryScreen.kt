@@ -260,7 +260,7 @@ fun EditCategoryScreen(
                                     message(context, "기본 카테고리는 삭제할 수 없습니다.")
                                 } else {
                                     coroutineScope.launch(Dispatchers.IO){
-                                        if (itemViewModel.isEmployeeInCategory(category.category).await()){
+                                        if (itemViewModel.isEmployeeInCategory(category.category)){
                                             //category 내부 데이터가 있다면 선택 불가
                                             withContext(Dispatchers.Main){
                                                 message(context,"카테고리 내부 데이터를 정리해주세요.\n 데이터가 남아 있습니다.")

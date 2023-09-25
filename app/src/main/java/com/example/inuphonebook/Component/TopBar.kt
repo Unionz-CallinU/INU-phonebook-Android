@@ -1,7 +1,9 @@
 package com.example.inuphonebook.Component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,13 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.inuphonebook.R
+import com.example.inuphonebook.Screen.HomeScreen
 import com.example.inuphonebook.ui.theme.Black
 import com.example.inuphonebook.ui.theme.DarkModeBackground
 import com.example.inuphonebook.ui.theme.Gray2
+import com.example.inuphonebook.ui.theme.INUPhoneBookTheme
 import com.example.inuphonebook.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,22 +65,24 @@ fun TopBar(
                 )
             }
         },
-        modifier = modifier.padding(horizontal = 20.dp),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = backgroundColor,
             titleContentColor = if (isSystemInDarkTheme()) White else Black,
         ),
         navigationIcon = {
-            IconButton(
-                modifier = Modifier
-                    .size(homeIconSize),
-                onClick = homeClick
-            ){
-                Icon(
-                    painter = painterResource(homeIcon),
-                    contentDescription = "navigationIcon",
-                    tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
-                )
+            Row {
+                Spacer(Modifier.width(20.dp))
+                IconButton(
+                    modifier = Modifier
+                        .size(homeIconSize),
+                    onClick = homeClick
+                ){
+                    Icon(
+                        painter = painterResource(homeIcon),
+                        contentDescription = "navigationIcon",
+                        tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
+                    )
+                }
             }
         },
         actions = {
@@ -93,6 +101,7 @@ fun TopBar(
             } else {
                 Spacer(Modifier.width(24.dp))
             }
+            Spacer(Modifier.width(20.dp))
         }
     )
 }

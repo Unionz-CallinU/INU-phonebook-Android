@@ -117,7 +117,7 @@ fun SearchScreen(
                 )
             } else {
                 coroutineScope.launch(Dispatchers.IO){
-                    val resultMsg = itemViewModel.search(searchContent).await()
+                    val resultMsg = itemViewModel.search(searchContent)
                     withContext(Dispatchers.Main){
                         if (resultMsg == successSearch || resultMsg == "Result is NULL"){
                             navController.navigate(
