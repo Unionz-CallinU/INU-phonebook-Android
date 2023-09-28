@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.inuphonebook'
+    namespace 'inuphonebook'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.inuphonebook"
+        applicationId "inuphonebook.callin_u"
         minSdk 27
         targetSdk 33
         versionCode 1
