@@ -5,8 +5,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -77,6 +81,9 @@ fun FavoriteScreen(
     var selectedItem by remember{mutableStateOf<Employee?>(null)}
 
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
+
+    //scroll 상태
+    val scrollState = rememberScrollState()
 
     if (showCheckDialog){
         when (eventType) {
@@ -181,43 +188,56 @@ fun FavoriteScreen(
         //favorite 아이템이 있다면
         else {
             Spacer(Modifier.height(14.dp))
-            categories.value?.forEach{category ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(35.dp)
-                        .background(color = if (isSystemInDarkTheme()) Gray4 else Gray1),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Spacer(Modifier.width(20.dp))
-                    Text(
-                        text = category.category,
-                        fontSize = 20.sp,
-                        fontFamily = FontFamily(Font(R.font.pretendard_medium)),
-                        color = Blue,
-                        letterSpacing = 1.sp
-                    )
-                }
-                Spacer(Modifier.height(5.dp))
-                LazyColumn{
-                    items(favoriteEmployees.value!!){employee ->
-                        if (employee.category == category.category){
-                            ListItem(
-                                employee = employee,
-                                onClick = {
-                                    navController.navigate(
-                                        route = "${Screens.DescriptionScreen.name}/${employee.id}"
-                                    )
-                                },
-                                onFavoriteClick = {
-                                    selectedItem = employee
-                                    itemViewModel.deleteEmployee(employee.id)
-                                    eventType = "Delete"
-                                    itemViewModel.updateFavorite(employee.id)
-
-                                    showCheckDialog = true
-                                }
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .verticalScroll(state = scrollState),
+            ){
+                categories.value!!.forEach{ category ->
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(5.dp)
+                    ){
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(35.dp)
+                                .background(color = if (isSystemInDarkTheme()) Gray4 else Gray1),
+                            verticalAlignment = Alignment.CenterVertically
+                        ){
+                            Spacer(Modifier.width(20.dp))
+                            Text(
+                                text = category.category,
+                                fontSize = 20.sp,
+                                fontFamily = FontFamily(Font(R.font.pretendard_medium)),
+                                color = Blue,
+                                letterSpacing = 1.sp
                             )
+                        }
+                    }
+                    Spacer(Modifier.height(5.dp))
+
+                    Spacer(Modifier.height(5.dp))
+
+                    Column{
+                        favoriteEmployees.value!!.forEach{employee ->
+                            if (employee.category == category.category){
+                                ListItem(
+                                    employee = employee,
+                                    onClick = {
+                                        navController.navigate(
+                                            route = "${Screens.DescriptionScreen.name}/${employee.id}"
+                                        )
+                                    },
+                                    onFavoriteClick = {
+                                        selectedItem = employee
+                                        itemViewModel.deleteEmployee(employee.id)
+                                        eventType = "Delete"
+                                        itemViewModel.updateFavorite(employee.id)
+
+                                        showCheckDialog = true
+                                    }
+                                )
+                            }
                         }
                     }
                 }
