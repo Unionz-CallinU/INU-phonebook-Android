@@ -2,6 +2,7 @@ package inuphonebook.Component
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
@@ -109,12 +110,22 @@ fun EmployeePage(
                 val bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.size)
                 val bitmapImage = bitmap.asImageBitmap()
 
+                Log.d(TAG,"width : ${bitmapImage.width.dp} \nheight : ${bitmapImage.height.dp}")
+
+                //이미지 커팅
+                val originalWidth = bitmap.width
+                val originalHeight = bitmap.height
+
+                val left = 0
+                val top = (originalHeight - 85) / 2
+                val newImage = Bitmap.createBitmap(bitmap, left, top, originalWidth, 85)
+
                 Image(
                     modifier = Modifier
                         .size(120.dp)
                         .background(color = Transparent, shape = CircleShape)
                         .clip(shape = CircleShape),
-                    bitmap = bitmapImage,
+                    bitmap = newImage.asImageBitmap(),
                     contentDescription = "Image",
                 )
             }
