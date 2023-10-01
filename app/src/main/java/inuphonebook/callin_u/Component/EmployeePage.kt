@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -93,7 +94,6 @@ fun EmployeePage(
 
             //체육학부 >> url로 이동
             if (employee.department_name == "체육학부"){
-
                 Image(
                     modifier = Modifier
                         .size(120.dp)
@@ -102,32 +102,29 @@ fun EmployeePage(
                     painter = rememberImagePainter(data = employee.photo),
                     contentDescription = "Image"
                 )
-
             }
             //그 외 >> Bitmap 데이터 받기
             else {
                 val decodedByteArray = Base64.decode(employee.photo, Base64.DEFAULT)
                 val bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.size)
-                val bitmapImage = bitmap.asImageBitmap()
 
-                Log.d(TAG,"width : ${bitmapImage.width.dp} \nheight : ${bitmapImage.height.dp}")
+                //image 크기 변경
+                val targetSize = with(LocalDensity.current) { 120.dp.toPx() }
+                val scaledBitmap = Bitmap.createScaledBitmap(bitmap, targetSize.toInt(), targetSize.toInt(), true)
 
-                //이미지 커팅
-                val originalWidth = bitmap.width
-                val originalHeight = bitmap.height
+                Box(
+                    modifier = Modifier.size(120.dp)
+                ){
+                    Image(
+                        bitmap = scaledBitmap.asImageBitmap(),
+                        modifier = Modifier
+                            .size(120.dp)
+                            .background(color = Transparent, shape = CircleShape)
+                            .clip(shape = CircleShape),
+                        contentDescription = "Image",
+                    )
+                }
 
-                val left = 0
-                val top = (originalHeight - 85) / 2
-                val newImage = Bitmap.createBitmap(bitmap, left, top, originalWidth, 85)
-
-                Image(
-                    modifier = Modifier
-                        .size(120.dp)
-                        .background(color = Transparent, shape = CircleShape)
-                        .clip(shape = CircleShape),
-                    bitmap = newImage.asImageBitmap(),
-                    contentDescription = "Image",
-                )
             }
         }
         Column(
@@ -211,13 +208,17 @@ fun EmployeePage(
             ){
                 SelectionContainer {
                     Text(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .clickable(
-                            enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
-                        ){
-                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${employee.phoneNumber}"))
-                            dialLauncher.launch(dialIntent)
-                        },
+                                enabled = employee.phoneNumber != "-" && employee.phoneNumber != ""
+                            ) {
+                                val dialIntent = Intent(
+                                    Intent.ACTION_DIAL,
+                                    Uri.parse("tel:${employee.phoneNumber}")
+                                )
+                                dialLauncher.launch(dialIntent)
+                            },
                         textAlign = TextAlign.Center,
                         text = employee.phoneNumber,
                         fontSize = 18.sp,
@@ -235,17 +236,25 @@ fun EmployeePage(
             ){
                 SelectionContainer{
                     Text(
-                        modifier = Modifier.fillMaxWidth()
-                            .clickable{
-                            if (employee.email != "-"){
-                                val emailIntent = Intent(Intent.ACTION_SENDTO).apply{
-                                    data = Uri.parse("mailto:${employee.email}")
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                if (employee.email != "-") {
+                                    val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = Uri.parse("mailto:${employee.email}")
+                                    }
+                                    context.startActivity(
+                                        Intent.createChooser(
+                                            emailIntent,
+                                            "이메일 보내기"
+                                        )
+                                    )
+                                } else {
+                                    Toast
+                                        .makeText(context, "등록된 email이 없습니다.", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
-                                context.startActivity(Intent.createChooser(emailIntent,"이메일 보내기"))
-                            } else {
-                                Toast.makeText(context,"등록된 email이 없습니다.",Toast.LENGTH_SHORT).show()
-                            }
-                        },
+                            },
                         text = employee.email,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
