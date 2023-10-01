@@ -41,7 +41,9 @@ fun SelectCategoryDialog(
     okMsg : String = "okMsg",
     onOkClick : () -> Unit = {},
     width : Dp,
-    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium)),
+    selectedCategory : String,
+    onChangeCategory : (String) -> Unit
 ){
     val backgroundColor = if(isSystemInDarkTheme()) Gray4 else White
     val textColor = if(isSystemInDarkTheme()) White else Black
@@ -83,7 +85,9 @@ fun SelectCategoryDialog(
                 DialogSpinner(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     itemList = categoryList,
-                    width = width - 60.dp
+                    width = width - 60.dp,
+                    selectedCategory = selectedCategory,
+                    onChangeCategory = onChangeCategory
                 )
             }
             Spacer(Modifier.height(10.dp))

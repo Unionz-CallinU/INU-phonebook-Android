@@ -60,11 +60,10 @@ class ItemViewModel(context : Context) : ViewModel() {
             val call = RetrofitClient.getPhoneBookInterface().search(content)
 
             try {
-                Log.d(TAG,"isLoading? : ${isLoading.value}")
                 _isLoading.value = false
 
                 val response = call.awaitResponse()
-                Log.d(TAG,"after time : ${System.currentTimeMillis()}")
+
                 resultMsg = when (response.code()){
                     //응답 성공
                     200 -> {
@@ -82,7 +81,6 @@ class ItemViewModel(context : Context) : ViewModel() {
                 }
 
                 _isLoading.value = true
-                Log.d(TAG,"isLOading!! : ${isLoading.value}")
 
             } catch (t : Throwable){
                 //연결 실패 시 처리할 event
@@ -141,10 +139,10 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //Local 데이터의 category 수정
-    fun updateEmployeeCategory(employee : Employee, category : String) : Deferred<Employee> =
+    suspend fun updateEmployeeCategory(employee : Employee, category : String) =
         viewModelScope.async(Dispatchers.IO){
             return@async roomRepo.updateEmployeeCategory(employee.id, category)
-        }
+        }.await()
 
     //employee id 검색
     fun getEmployeeById(id : Long) : Employee? {

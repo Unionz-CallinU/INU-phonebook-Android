@@ -1,5 +1,6 @@
 package inuphonebook.Screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -64,11 +65,6 @@ fun DescriptionScreen(
     //배경 색
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
 
-//    BackHandler {
-//        itemViewModel.updateEmployeeCategory(employee, selectedCategory)
-//        navController.navigateUp()
-//    }
-
     if (showDialog){
         //즐겨찾기가 안되어 있다면 >> 추가
         if (!employee.isFavorite){
@@ -86,12 +82,19 @@ fun DescriptionScreen(
                 cancelMsg = "취소",
                 okMsg = "확인",
                 onOkClick = {
+                    if (employee == null){
+                        employee = itemViewModel.getEmployeeById(id) ?: throw NullPointerException("해당 아이디에 속한 항목이 없습니다.")
+                    }
                     itemViewModel.insertEmployee(employee, selectedCategory)
                     employee.isFavorite = true
                     showCheckDialog = true
                     showDialog = false
                 },
                 width = screenWidth / 10 * 8,
+                selectedCategory = selectedCategory,
+                onChangeCategory = {
+                    selectedCategory = it
+                }
             )
         } 
         //즐겨찾기가 되어있다면 >> 삭제
@@ -177,7 +180,7 @@ fun DescriptionScreen(
         }
 
         LaunchedEffect(selectedCategory){
-            employee = itemViewModel.updateEmployeeCategory(employee,selectedCategory).await()
+            employee = itemViewModel.updateEmployeeCategory(employee,selectedCategory)
             itemViewModel.fetchFavEmployee()
         }
     }

@@ -45,9 +45,11 @@ fun DialogSpinner(
     modifier : Modifier = Modifier,
     itemList : List<FavCategory> = listOf(),
     width : Dp,
-    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
+    fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium)),
+    selectedCategory : String,
+    onChangeCategory : (String) -> Unit,
 ){
-    var selectedItem by remember{mutableStateOf(itemList[0])}//itemList의 선택 값 기억
+//    var selectedItem by remember{mutableStateOf(itemList[0])}//itemList의 선택 값 기억
     var isOpen by remember{mutableStateOf(false)} //spinner의 상태
 
     Box(
@@ -66,7 +68,7 @@ fun DialogSpinner(
             ){
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = selectedItem.category,
+                    text = selectedCategory,
                     fontSize = 20.sp,
                     textAlign = TextAlign.Center,
                     color = if(isSystemInDarkTheme()) Gray4 else Gray3,
@@ -99,7 +101,7 @@ fun DialogSpinner(
                         modifier = Modifier
                             .height(30.dp),
                         onClick = {
-                            selectedItem = item
+                            onChangeCategory(item.category)
                             isOpen = !isOpen
                         },
                         text = {
