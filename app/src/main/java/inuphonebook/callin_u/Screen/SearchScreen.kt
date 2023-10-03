@@ -53,6 +53,7 @@ import inuphonebook.Model.ItemViewModel
 import inuphonebook.Model.Screens
 import inuphonebook.R
 import inuphonebook.callin_u.checkInput
+import inuphonebook.callin_u.showToast
 import inuphonebook.ui.theme.DarkModeBackground
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -107,6 +108,9 @@ fun SearchScreen(
     //데이터 수신 여부
     val isLoading = itemViewModel.isLoading.value
 
+    //마지막으로 클릭한 시간
+    var lastClickTime by remember{mutableStateOf(0L)}
+    
     //검색 이벤트
     val searchEvent : () -> Unit = {
         //인터넷 연결
@@ -293,9 +297,15 @@ fun SearchScreen(
                     ListItem(
                         employee = employee,
                         onClick = {
-                            navController.navigate(
-                                route = "${Screens.DescriptionScreen.name}/${employee.id}"
-                            )
+                            val currentTime = System.currentTimeMillis()
+                            
+                            //navigate되기 전 여러 중첩 뷰가 생성되는 것을 방지
+                            if (currentTime - lastClickTime > 500L){
+                                navController.navigate(
+                                    route = "${Screens.DescriptionScreen.name}/${employee.id}"
+                                )
+                                lastClickTime = currentTime 
+                            }
                         },
                         onFavoriteClick = {
                             eventType = if (employee.isFavorite){
@@ -314,8 +324,4 @@ fun SearchScreen(
             }
         }
     }
-}
-
-private fun showToast(context : Context, msg : String,){
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }
