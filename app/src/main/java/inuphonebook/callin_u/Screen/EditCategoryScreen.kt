@@ -50,6 +50,7 @@ import inuphonebook.Component.TopBar
 import inuphonebook.LocalDB.FavCategory
 import inuphonebook.Model.ItemViewModel
 import inuphonebook.R
+import inuphonebook.callin_u.showToast
 import inuphonebook.ui.theme.DarkModeBackground
 import inuphonebook.ui.theme.Gray0
 import inuphonebook.ui.theme.Gray1
@@ -114,11 +115,15 @@ fun EditCategoryScreen(
                     title = "카테고리 이름을 정해주세요",
                     okMsg = "추가",
                     onAddClick = {
-                        val categoryItem = FavCategory(
-                            category = newCategory
-                        )
-                        itemViewModel.insertCategory(categoryItem)
-                        showCheckDialog = true
+                        if (newCategory.isBlank()) {
+                            showToast(context, "내용을 입력해주세요")
+                        } else {
+                            val categoryItem = FavCategory(
+                                category = newCategory
+                            )
+                            itemViewModel.insertCategory(categoryItem)
+                            showCheckDialog = true
+                        }
                     },
                     value = newCategory,
                     onChangeValue = {

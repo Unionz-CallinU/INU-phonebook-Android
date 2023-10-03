@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import inuphonebook.Component.Logo
-import inuphonebook.R
 import inuphonebook.ui.theme.White
 import inuphonebook.Component.CheckDialog
 import inuphonebook.Component.LoadingDialog
@@ -36,6 +35,9 @@ import inuphonebook.Component.SearchBar
 import inuphonebook.Component.TopBar
 import inuphonebook.Model.ItemViewModel
 import inuphonebook.Model.Screens
+import inuphonebook.R
+import inuphonebook.callin_u.checkInput
+import inuphonebook.callin_u.showToast
 import inuphonebook.ui.theme.DarkModeBackground
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -89,23 +91,33 @@ fun HomeScreen(
     val searchEvent : () -> Unit = {
         //인터넷 연결
         if (isConnected){
-            if (searchContent == ""){
+            if (searchContent.isBlank()){
                 showToast(
                     context = context,
                     msg = "검색 내용을 입력해주세요"
                 )
             } else {
-                coroutineScope.launch(Dispatchers.IO){
-                    val resultMsg = itemViewModel.search(searchContent)
-                    withContext(Dispatchers.Main){
-                        if (resultMsg == successSearch || resultMsg == "Result is NULL"){
-                            navController.navigate(
-                                route = "${Screens.SearchScreen.name}/${searchContent}"
-                            )
-                        } else {
-                            showToast(context, resultMsg)
+                //특수 기호가 포함되어 있지 않을 때
+                if (checkInput(searchContent)){
+                    coroutineScope.launch(Dispatchers.IO){
+                        val resultMsg = itemViewModel.search(searchContent)
+                        withContext(Dispatchers.Main){
+                            if (resultMsg == successSearch || resultMsg == "Result is NULL"){
+                                navController.navigate(
+                                    route = "${Screens.SearchScreen.name}/${searchContent}"
+                                )
+                            } else {
+                                showToast(context, resultMsg)
+                            }
                         }
                     }
+                }
+                //있을 때
+                else {
+                    showToast(
+                        context = context,
+                        msg = "특수 문자로는 검색을 허용하지 않습니다."
+                    )
                 }
             }
         }
@@ -202,8 +214,4 @@ fun HomeScreen(
             )
         }
     }
-}
-
-private fun showToast(context : Context, msg : String,){
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }

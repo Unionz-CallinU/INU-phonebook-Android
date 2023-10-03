@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import inuphonebook.Component.AlertDialog
-import inuphonebook.R
 import inuphonebook.ui.theme.DarkModeBackground
 import inuphonebook.ui.theme.White
 import inuphonebook.Component.CategorySpinner
@@ -33,6 +32,7 @@ import inuphonebook.Component.EmployeePage
 import inuphonebook.Component.SelectCategoryDialog
 import inuphonebook.Component.TopBar
 import inuphonebook.Model.ItemViewModel
+import inuphonebook.R
 
 @Composable
 fun DescriptionScreen(
