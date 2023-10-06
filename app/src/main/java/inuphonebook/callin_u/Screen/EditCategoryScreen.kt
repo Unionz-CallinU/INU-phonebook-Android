@@ -101,6 +101,10 @@ fun EditCategoryScreen(
     //coroutineScope
     val coroutineScope = rememberCoroutineScope()
 
+    val chDialog = {
+        showCheckDialog = true
+    }
+
     //event type에 따른 dialog
     if (showDialog){
         when (eventType){
@@ -121,8 +125,7 @@ fun EditCategoryScreen(
                             val categoryItem = FavCategory(
                                 category = newCategory
                             )
-                            itemViewModel.insertCategory(categoryItem)
-                            showCheckDialog = true
+                            itemViewModel.insertCategory(chDialog, context, categoryItem)
                         }
                     },
                     value = newCategory,

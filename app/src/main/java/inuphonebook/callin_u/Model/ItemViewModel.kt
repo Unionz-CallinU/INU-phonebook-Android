@@ -8,16 +8,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.TypeConverters
 import inuphonebook.LocalDB.Employee
 import inuphonebook.LocalDB.FavCategory
 import inuphonebook.LocalDB.RoomRepository
 import inuphonebook.Model.RetrofitDto.EmployeeDto
 import inuphonebook.Retrofit.RetrofitClient
+import inuphonebook.callin_u.showToast
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
 @TypeConverters
@@ -179,9 +182,16 @@ class ItemViewModel(context : Context) : ViewModel() {
     }
 
     //category 추가
-    fun insertCategory(category : FavCategory){
+    fun insertCategory(chDialog : () -> Unit, context : Context, category : FavCategory){
         viewModelScope.launch(Dispatchers.IO){
-            roomRepo.insertCategory(category)
+            if (checkDupCategory(category.category)){
+                roomRepo.insertCategory(category)
+                chDialog()
+            } else {
+                withContext(Dispatchers.Main){
+                    showToast(context, "해당 카테고리는 이미 존재합니다.")
+                }
+            }
         }
     }
 
@@ -206,7 +216,7 @@ class ItemViewModel(context : Context) : ViewModel() {
             val newEmployee = Employee(
                 category = null,
                 name = employee.name,
-                role = employee.role ?: "-",
+                role = employee.position ?: "-",
                 phoneNumber = phoneNumber ?: "-",
                 isFavorite = isFavorite,
                 photo = photoUrl,
@@ -224,5 +234,12 @@ class ItemViewModel(context : Context) : ViewModel() {
     suspend fun isEmployeeInCategory(category : String) : Boolean =
         viewModelScope.async(Dispatchers.IO){
             return@async roomRepo.getEmployeesInCategory(category) != 0
+        }.await()
+
+    //category 중복 확인
+    suspend fun checkDupCategory(category : String) =
+        viewModelScope.async(Dispatchers.IO){
+            val favCategory = roomRepo.checkDupCategory(category)
+            return@async favCategory == null
         }.await()
 }

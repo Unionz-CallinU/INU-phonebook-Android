@@ -52,6 +52,10 @@ class RoomRepository(context : Context) {
         return roomDao.getEmployeesInCategory(category)
     }
 
+    fun checkDupCategory(category : String) : FavCategory? {
+        return roomDao.getCategoryByName(category)
+    }
+
     companion object{
         private var INSTANCE : RoomRepository ?= null
 

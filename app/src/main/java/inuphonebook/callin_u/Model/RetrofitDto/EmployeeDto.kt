@@ -13,8 +13,8 @@ data class EmployeeDto(
     val phoneNumber : String?,
     @SerializedName("department")
     val department : String?,
-    @SerializedName("role")
-    val role : String?,
+    @SerializedName("position")
+    val position : String?,
     @SerializedName("email")
     val email : String?,
     @SerializedName("imageUrl")
