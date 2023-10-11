@@ -33,7 +33,7 @@ import inuphonebook.ui.theme.Gray2
 fun TopBar(
     modifier : Modifier = Modifier,
     title : String = "",
-    homeIcon : Int,
+    homeIcon : Int?,
     homeClick : () -> Unit = {},
     homeIconSize : Dp = 24.dp,
     isFavorite : Boolean = false,
@@ -65,16 +65,20 @@ fun TopBar(
         navigationIcon = {
             Row {
                 Spacer(Modifier.width(20.dp))
-                IconButton(
-                    modifier = Modifier
-                        .size(homeIconSize),
-                    onClick = homeClick
-                ){
-                    Icon(
-                        painter = painterResource(homeIcon),
-                        contentDescription = "navigationIcon",
-                        tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
-                    )
+                if (homeIcon == null){
+                    Spacer(Modifier.size(homeIconSize))
+                } else {
+                    IconButton(
+                        modifier = Modifier
+                            .size(homeIconSize),
+                        onClick = homeClick
+                    ){
+                        Icon(
+                            painter = painterResource(homeIcon),
+                            contentDescription = "navigationIcon",
+                            tint = if(isSystemInDarkTheme()) Gray2 else Color.Unspecified
+                        )
+                    }
                 }
             }
         },

@@ -176,7 +176,7 @@ fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
         TopBar(
-            homeIcon = R.drawable.btn_home,
+            homeIcon = null,
             homeClick = {
             },
             favoriteIcon = R.drawable.not_favorite,
