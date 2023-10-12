@@ -33,7 +33,7 @@ fun CheckDialog(
     modifier : Modifier = Modifier,
     onDismissRequest : () -> Unit,
     properties : DialogProperties = DialogProperties(),
-    newCategory : String = "",
+    newCategory : String? = "",
     msg : String = "",
     okMsg : String = "",
     fontFamily : FontFamily = FontFamily(Font(R.font.pretendard_medium))
@@ -64,16 +64,18 @@ fun CheckDialog(
             ){
                 Spacer(Modifier.weight(1f))
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = newCategory,
-                    fontSize = 20.sp,
-                    fontFamily = fontFamily,
-                    color = textColor,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 1.sp
-                )
-                Spacer(Modifier.height(5.dp))
+                if (newCategory != null){
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = newCategory,
+                        fontSize = 20.sp,
+                        fontFamily = fontFamily,
+                        color = textColor,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 1.sp
+                    )
+                    Spacer(Modifier.height(5.dp))
+                }
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = msg,

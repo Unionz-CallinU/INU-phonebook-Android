@@ -6,5 +6,6 @@ enum class Screens {
     DescriptionScreen,
     SearchScreen,
     SplashScreen,
-    EditCategoryScreen
+    EditCategoryScreen,
+    DelCategoryScreen
 }

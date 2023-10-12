@@ -58,7 +58,6 @@ class ItemViewModel(context : Context) : ViewModel() {
     suspend fun search(content : String) : String =
         viewModelScope.async(Dispatchers.IO){
 
-
             var resultMsg = ""
             val call = RetrofitClient.getPhoneBookInterface().search(content)
 

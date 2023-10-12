@@ -22,6 +22,7 @@ val Gray1 = Color(0xFFE9E9E9)
 val Gray2 = Color(0xFFA1A1A1)
 val Gray3 = Color(0xFF676767)
 val Gray4 = Color(0xFF303030)
+val Gray5 = Color(0xFFD9D9D9)
 val Black = Color(0xFF000000)
 
 val DarkModeBackground = Color(0xFF232323)

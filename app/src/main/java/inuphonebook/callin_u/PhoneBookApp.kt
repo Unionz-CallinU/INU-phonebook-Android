@@ -12,6 +12,7 @@ import inuphonebook.Screen.SearchScreen
 import inuphonebook.Screen.SplashScreen
 import inuphonebook.Model.ItemViewModel
 import inuphonebook.Model.Screens
+import inuphonebook.callin_u.Screen.DelCategoryScreen
 import inuphonebook.ui.theme.INUPhoneBookTheme
 
 @Composable
@@ -60,6 +61,12 @@ fun PhoneBookApp(
             }
             composable(Screens.EditCategoryScreen.name){
                 EditCategoryScreen(
+                    itemViewModel = itemViewModel,
+                    navController = navController
+                )
+            }
+            composable(Screens.DelCategoryScreen.name){
+                DelCategoryScreen(
                     itemViewModel = itemViewModel,
                     navController = navController
                 )

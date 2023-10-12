@@ -49,6 +49,7 @@ import inuphonebook.Component.InputCategoryDialog
 import inuphonebook.Component.TopBar
 import inuphonebook.LocalDB.FavCategory
 import inuphonebook.Model.ItemViewModel
+import inuphonebook.Model.Screens
 import inuphonebook.R
 import inuphonebook.callin_u.showToast
 import inuphonebook.ui.theme.DarkModeBackground
@@ -81,7 +82,6 @@ fun EditCategoryScreen(
 
     //dialog의 상태
     var showDialog by remember{mutableStateOf(false)}
-    var showDelCheckDialog by remember{mutableStateOf(false)}
     var showCheckDialog by remember{mutableStateOf(false)}
 
     //추가될 category
@@ -92,14 +92,8 @@ fun EditCategoryScreen(
 
     var eventType by remember{mutableStateOf("")}
 
-    //삭제 여부
-    var isDelete by remember{mutableStateOf(false)}
-
     //배경 색
     val backgroundColor = if(isSystemInDarkTheme()) DarkModeBackground else White
-
-    //coroutineScope
-    val coroutineScope = rememberCoroutineScope()
 
     val chDialog = {
         showCheckDialog = true
@@ -107,51 +101,30 @@ fun EditCategoryScreen(
 
     //event type에 따른 dialog
     if (showDialog){
-        when (eventType){
-            "Insert" -> {
-                InputCategoryDialog(
-                    modifier = Modifier
-                        .width(screenWidth / 10 * 8)
-                        .height(screenHeight / 5),
-                    onDismissRequest = {
-                        showDialog = !showDialog
-                    },
-                    title = "카테고리 이름을 정해주세요",
-                    okMsg = "추가",
-                    onAddClick = {
-                        if (newCategory.isBlank()) {
-                            showToast(context, "내용을 입력해주세요")
-                        } else {
-                            val categoryItem = FavCategory(
-                                category = newCategory
-                            )
-                            itemViewModel.insertCategory(chDialog, context, categoryItem)
-                        }
-                    },
-                    value = newCategory,
-                    onChangeValue = {
-                        newCategory = it
-                    }
-                )
+        InputCategoryDialog(
+            modifier = Modifier
+                .width(screenWidth / 10 * 8)
+                .height(screenHeight / 5),
+            onDismissRequest = {
+                showDialog = !showDialog
+            },
+            title = "카테고리 이름을 정해주세요",
+            okMsg = "추가",
+            onAddClick = {
+                if (newCategory.isBlank()) {
+                    showToast(context, "내용을 입력해주세요")
+                } else {
+                    val categoryItem = FavCategory(
+                        category = newCategory
+                    )
+                    itemViewModel.insertCategory(chDialog, context, categoryItem)
+                }
+            },
+            value = newCategory,
+            onChangeValue = {
+                newCategory = it
             }
-            "Delete" -> {
-                //category에 포함된 데이터들이 있음을 알리고 그래도 삭제할 것인지 확인 받는 dialog? 아니면 자동으로 기본 Category로 수정?
-                CheckDialog(
-                    modifier = Modifier
-                        .width(screenWidth / 10 * 8)
-                        .height(screenHeight / 4),
-                    onDismissRequest = {
-                        showDialog = false
-                    },
-                    newCategory = newCategory,
-                    msg = "카테고리가 삭제 되었습니다.",
-                    okMsg = "확인"
-                )
-            }
-            else -> {
-                throw IllegalArgumentException("Error : This type is not allowed on ${TAG}")
-            }
-        }
+        )
     }
 
     //추가 확인 dialog
@@ -178,9 +151,9 @@ fun EditCategoryScreen(
                 .background(color = backgroundColor)
         ){
             TopBar(
-                homeIcon = R.drawable.btn_back,
+                homeIcon = R.drawable.btn_home,
                 homeClick = {
-                    navController.navigateUp()
+                    navController.navigate(Screens.HomeScreen.name)
                 },
                 homeIconSize = 26.dp,
                 favoriteIcon = null,
@@ -220,12 +193,7 @@ fun EditCategoryScreen(
                     modifier = Modifier.size(24.dp),
                     onClick = {
                         //선택된 항목이 없이 삭제를 눌렀을 경우 다이얼로그를 띄우지 않음
-                        if (checkList.size != 0){
-                            deleteCategory(itemViewModel, checkList)
-                            eventType = "Delete"
-                            showDialog = true
-                            isDelete = true
-                        }
+                        navController.navigate(Screens.DelCategoryScreen.name)
                     }
                 ) {
                     Icon(
@@ -243,15 +211,6 @@ fun EditCategoryScreen(
             ){
                 itemViewModel.fetchAllCategory()
                 items(categories.value!!) {category ->
-                    var isSelected by remember{mutableStateOf(false)}
-
-                    //delete되면서 그려진 check 초기화
-                    if (isDelete){
-                        isSelected = false
-                        if (category == categories.value!!.last()){
-                            isDelete = false
-                        }
-                    }
 
                     Row(
                         modifier = Modifier
@@ -260,37 +219,6 @@ fun EditCategoryScreen(
                             .background(color = if (isSystemInDarkTheme()) Gray4 else Gray1),
                         verticalAlignment = Alignment.CenterVertically
                     ){
-                        IconButton(
-                            onClick = {
-                                //만약 "기본"을 선택할 경우 선택을 취소하고 알림을 띄움
-                                if (category.category == "기본"){
-                                    message(context, "기본 카테고리는 삭제할 수 없습니다.")
-                                } else {
-                                    coroutineScope.launch(Dispatchers.IO){
-                                        if (itemViewModel.isEmployeeInCategory(category.category)){
-                                            //category 내부 데이터가 있다면 선택 불가
-                                            withContext(Dispatchers.Main){
-                                                message(context,"카테고리 내부 데이터를 정리해주세요.\n 데이터가 남아 있습니다.")
-                                            }
-                                        } else {
-                                            isSelected = !isSelected
-                                            if (isSelected){
-                                                checkList.add(category)
-                                            } else {
-                                                checkList.remove(category)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        ){
-                            Icon(
-                                modifier = Modifier.clip(shape = CircleShape),
-                                painter = if (isSelected) painterResource(R.drawable.btn_checked) else painterResource(R.drawable.btn_not_checked),
-                                contentDescription = "Check Box",
-                                tint = if(isSelected) Color.Unspecified else if(isSystemInDarkTheme()) Gray3 else Gray0
-                            )
-                        }
                         Spacer(Modifier.width(10.dp))
                         Text(
                             modifier = Modifier
@@ -310,21 +238,4 @@ fun EditCategoryScreen(
     else {
         throw NullPointerException("Error : categoryList.value is NULL on ${TAG}")
     }
-}
-
-//categories 삭제 함수
-private fun deleteCategory(itemViewModel : ItemViewModel, list : MutableList<FavCategory>){
-    list.forEach{
-        itemViewModel.deleteCategory(it.id)
-    }
-    list.clear()
-}
-
-//toast 메세지
-private fun message(context : Context, msg : String) {
-    Toast.makeText(
-        context,
-        msg,
-        Toast.LENGTH_SHORT
-    ).show()
 }

@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import inuphonebook.Model.ItemViewModel
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
             INUPhoneBookTheme {
 
                 //itemViewModel initialize
-                val itemViewModel = ItemViewModel(LocalContext.current)
+                val context = LocalContext.current
+                val itemViewModel = ItemViewModel(context)
 
                 //RoomDB category 초기 설정
                 itemViewModel.insertBasicCategoryIsNull()
