@@ -8,12 +8,19 @@ android {
     namespace 'inuphonebook'
     compileSdk 33
 
+    /*
+    2023-10-31
+    개발자 콘솔 인앱 버전 오류로 인한 gradle 수정
+    version code 6
+    version name 1.1.2
+    */
+
     defaultConfig {
         applicationId "inuphonebook.callin_u"
         minSdk 27
         targetSdk 33
-        versionCode 5
-        versionName "1.1.1"
+        versionCode 6
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
